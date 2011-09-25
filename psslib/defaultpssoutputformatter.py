@@ -48,11 +48,11 @@ class DefaultPssOutputFormatter(OutputFormatter):
         if self.show_column_of_first_match:
             self._emit('%s:' % first_match_range[0])
 
-        # Emit the chunk before the first match
+        # Emit the chunk before the first matching chunk
         line = matchresult.matching_line
         self._emit(line[:first_match_range[0]])
-        # Now emit the matching chunks, along with the non-matching chunks that 
-        # come after them
+        # Now emit the matching chunks (colored), along with the non-matching
+        # chunks that come after them
         for i, (match_start, match_end) in enumerate(
                 matchresult.matching_column_ranges):
             self._emit_colored(line[match_start:match_end], self.style_match)

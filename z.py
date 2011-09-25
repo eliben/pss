@@ -19,11 +19,14 @@ pss_run(sys.argv[2:], pattern=sys.argv[1],
         only_find_files=False,
         #type_pattern='.*der\.pyc',
         search_all_types=True,
-        show_column_of_first_match=True,
+        #show_column_of_first_match=True,
+        ncontext_before=3,
+        ncontext_after=3,
         )
 
 
-#from psslib.utils import istextfile
-#print istextfile(open('psslib/colorama/initialise.pyc'))
+from psslib.driver import _build_match_context_dict
+matches = [MatchResult('', 20, []), MatchResult('', 25, [])]
 
+#print _build_match_context_dict(matches, 7, 0)
 

@@ -94,6 +94,8 @@ def pss_run(roots,
         do_colors=True,
         prefix_filename_to_file_matches=True,
         show_column_of_first_match=False,
+        ncontext_before=0,
+        ncontext_after=0,
         ):
     """ The main pss invocation function - handles all PSS logic.
         For documentation of options, see the --help output of the pss script,
@@ -173,7 +175,7 @@ def pss_run(roots,
             continue
         # The main path: do matching inside the file.
         # Some files appear to be binary - they are not of a known file type
-        # an the heuristic istextfile says they're binary. For these files 
+        # and the heuristic istextfile says they're binary. For these files 
         # we try to find a single match and then simply report they're binary
         # files with a match. For other files, we let ContentMatcher do its
         # full work.
@@ -192,8 +194,42 @@ def pss_run(roots,
             # Nothing to see here... move along
             continue
         output_formatter.start_matches_in_file(filepath)
-        for match in matches:
-            output_formatter.matching_line(match)
+        if ncontext_before > 0 or ncontext_after > 0:
+            # If context lines should be printed, we have to read in the file 
+            # line by line, marking which lines belong to context, which are
+            # matches, and which aren't interesting.
+            # _build_match_context_dict is used to create a dictionary that
+            # tells us for each line what category it belongs to
+            #
+            fileobj.seek(0)
+            match_context_dict = _build_match_context_dict(
+                    matches, ncontext_before, ncontext_after)
+            # For being able to correctly emit context separators between 
+            # non-adjacent chunks of context, these flags are maintained:
+            # prev_was_blank: the previous line was blank
+            # had_context: we already had some context printed before
+            #
+            prev_was_blank = False
+            had_context = False
+            for n, line in enumerate(fileobj):
+                # Find out whether this line is a match, context or neither,
+                # and act accordingly
+                result, match = match_context_dict.get(n, (None, None))
+                if result is None:
+                    prev_was_blank = True
+                    continue
+                elif result == LINE_MATCH:
+                    output_formatter.matching_line(match)
+                elif result == LINE_CONTEXT:
+                    if prev_was_blank and had_context:
+                        output_formatter.context_separator()
+                    output_formatter.context_line(line, n)
+                    had_context = True
+                prev_was_blank = False
+        else:
+            # just show the matches without considering context
+            for match in matches:
+                output_formatter.matching_line(match)
         output_formatter.end_matches_in_file(filepath)
 
 
@@ -224,7 +260,26 @@ def _pattern_has_uppercase(pattern):
                 return True
     return False
 
-    
 
+LINE_MATCH, LINE_CONTEXT = range(2)
+
+    
+def _build_match_context_dict(matches, ncontext_before, ncontext_after):
+    """ Given a list of MatchResult objects and number of context lines before
+        and after a match, builds a dictionary that maps line numbers into 
+        (line_kind, data) pairs. line_kind is either LINE_MATCH or LINE_CONTEXT
+        and data holds the match object for LINE_MATCH.
+    """
+    d = {}
+    for match in matches:
+        lineno = match.matching_lineno
+        d[lineno] = LINE_MATCH, match
+
+        context_start = lineno - ncontext_before
+        context_end = lineno + ncontext_after
+        for ncontext in range(context_start, context_end + 1):
+            if ncontext not in d:
+                d[ncontext] = LINE_CONTEXT, None
+    return d
 
 
