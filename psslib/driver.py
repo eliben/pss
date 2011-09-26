@@ -212,6 +212,7 @@ def pss_run(roots,
             prev_was_blank = False
             had_context = False
             for n, line in enumerate(fileobj):
+                n += 1
                 # Find out whether this line is a match, context or neither,
                 # and act accordingly
                 result, match = match_context_dict.get(n, (None, None))
@@ -266,12 +267,13 @@ LINE_MATCH, LINE_CONTEXT = range(2)
     
 def _build_match_context_dict(matches, ncontext_before, ncontext_after):
     """ Given a list of MatchResult objects and number of context lines before
-        and after a match, builds a dictionary that maps line numbers into 
+        and after a match, build a dictionary that maps line numbers to 
         (line_kind, data) pairs. line_kind is either LINE_MATCH or LINE_CONTEXT
         and data holds the match object for LINE_MATCH.
     """
     d = {}
     for match in matches:
+        # Take care to give LINE_MATCH entries priority over LINE_CONTEXT
         lineno = match.matching_lineno
         d[lineno] = LINE_MATCH, match
 
