@@ -2,6 +2,7 @@
 
 from psslib.defaultpssoutputformatter import DefaultPssOutputFormatter
 from psslib.matchresult import MatchResult
+from psslib.contentmatcher import ContentMatcher
 from psslib.driver import pss_run
 
 from psslib.colorama import init
@@ -15,18 +16,20 @@ import sys
 #df.context_line('here I come\n', 45 )
 #df.matching_line(MatchResult('abc = 24 + def - yuas\n', 40, [(6, 8), (11, 14)]))
 
+
 pss_run(sys.argv[2:], pattern=sys.argv[1],
-        only_find_files=False,
-        #type_pattern='.*der\.pyc',
-        search_all_types=True,
-        #show_column_of_first_match=True,
-        ncontext_before=3,
-        ncontext_after=3,
+        type_pattern='zb',
         )
 
 
-from psslib.driver import _build_match_context_dict
-matches = [MatchResult('', 20, []), MatchResult('', 25, [])]
+#matcher = ContentMatcher(
+        #pattern='cde',
+        #ignore_case=False,
+        #invert_match=False,
+        #whole_words=False,
+        #literal_pattern=False,
+        #max_match_count=1)
 
-#print _build_match_context_dict(matches, 7, 0)
+#matches = list(matcher.match_file(fileobj=open('test/testdirs/testdir1/subdir1/zb.zzz')))
+#print(matches)
 

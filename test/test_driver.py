@@ -123,6 +123,92 @@ class TestDriver(unittest.TestCase):
                         ('CONTEXT', 18), ('CONTEXT', 19), ('CONTEXT', 20),
                         ]))
 
+    def test_ignored_dirs(self):
+        maindir = path_to_testdir('ignored_dirs')
+
+        # no dirs ignored
+        of = MockOutputFormatter('ignored_dirs')
+        pss_run(
+            roots=[maindir],
+            output_formatter=of,
+            pattern='def',
+            include_types=['xml'])
+
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'ignored_dirs/file.xml', [('MATCH', (1, [(3, 6)]))]) +
+                self._gen_outputs_in_file(
+                    'ignored_dirs/dir1/file.xml', [('MATCH', (1, [(3, 6)]))]) +
+                self._gen_outputs_in_file(
+                    'ignored_dirs/dir2/file.xml', [('MATCH', (1, [(3, 6)]))]))
+
+        # both dir1 and dir2 ignored
+        of = MockOutputFormatter('ignored_dirs')
+        pss_run(
+            roots=[maindir],
+            output_formatter=of,
+            pattern='def',
+            add_ignored_dirs=['dir1', 'dir2'],
+            include_types=['xml'])
+
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'ignored_dirs/file.xml', [('MATCH', (1, [(3, 6)]))]))
+
+        # dir1 ignored (dir2 also appears in remove_ignored_dirs)
+        of = MockOutputFormatter('ignored_dirs')
+        pss_run(
+            roots=[maindir],
+            output_formatter=of,
+            add_ignored_dirs=['dir1', 'dir2'],
+            remove_ignored_dirs=['dir2'],
+            pattern='def',
+            include_types=['xml'])
+
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'ignored_dirs/file.xml', [('MATCH', (1, [(3, 6)]))]) +
+                self._gen_outputs_in_file(
+                    'ignored_dirs/dir2/file.xml', [('MATCH', (1, [(3, 6)]))]))
+
+    def test_only_find_files(self):
+        pss_run(
+            roots=[self.testdir1],
+            pattern='abc',
+            output_formatter=self.of,
+            include_types=['cc'],
+            only_find_files=True)
+
+        self.assertEqual(self.of.output,
+                [   ('FOUND_FILENAME', 'testdir1/filea.c'), 
+                    ('FOUND_FILENAME', 'testdir1/filea.h'),
+                    ('FOUND_FILENAME', 'testdir1/subdir1/filey.c'),
+                    ('FOUND_FILENAME', 'testdir1/subdir1/filez.c')])
+
+        # now with a pattern
+        self.setUp()
+        pss_run(
+            roots=[self.testdir1],
+            pattern='abc',
+            output_formatter=self.of,
+            type_pattern='.*y\.',
+            include_types=['cc'],
+            only_find_files=True)
+
+        self.assertEqual(self.of.output,
+                [('FOUND_FILENAME', 'testdir1/subdir1/filey.c')])
+
+    def test_binary_matches(self):
+        pss_run(
+            roots=[self.testdir1],
+            pattern='cde',
+            output_formatter=self.of,
+            type_pattern='zb')
+        
+        binary_match = self.of.output[-1]
+        self.assertEqual(binary_match[0], 'BINARY_MATCH')
+        self.assertTrue(binary_match[1].find('zb.zzz') > 0)
+
     def _gen_outputs_in_file(self, filename, outputs):
         """ Helper method for constructing a list of output pairs in the format
             of MockOutputFormatter, delimited from both ends with START_MATCHES

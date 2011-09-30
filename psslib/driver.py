@@ -182,6 +182,8 @@ def pss_run(roots,
         #
         fileobj = open(filepath)
         if not _known_file_type(filepath) and not istextfile(fileobj):
+            # istextfile does some reading on fileobj, so rewind it
+            fileobj.seek(0)
             matches = list(matcher.match_file(fileobj, max_match_count=1))
             if matches:
                 output_formatter.binary_file_matches(
