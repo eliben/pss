@@ -18,14 +18,28 @@ except ImportError:
     sys.path.extend(['.', '..'])
 
 from psslib import __version__
-from psslib.driver import pss_run
+from psslib.driver import pss_run, TYPE_EXTENSION_MAP
 
 
 def main():
     options, args = parse_cmdline(sys.argv[1:])
-    # parse the command-line arguments and invoke pss_run
-    # can use option groups
-    pass
+
+    print options
+
+
+DESCRIPTION = r'''
+Search for the pattern in each source file, starting with the
+current directory and its sub-directories, recursively. If
+[files] is specified, only these files/directories are searched.
+
+Only files with known extensions are searched, and this can be
+configured by providing --<type> options. For example, --python
+will search all Python files, and "--lisp --scheme" will search
+all Lisp and all Scheme files. By default, all known file types
+are searched. 
+
+Run with --help-types for more help on how to select file types.
+'''.lstrip()
 
 
 def parse_cmdline(cmdline_args):
@@ -34,10 +48,17 @@ def parse_cmdline(cmdline_args):
     """
     optparser = optparse.OptionParser(
         usage='usage: %prog [options] <pattern> [files]',
-        description='pss',
+        description=DESCRIPTION,
         prog='pss',
         add_help_option=False,  # -h is a real option
         version='pss %s' % __version__)
+
+    optparser.add_option('--help-types',
+        action='store_true', dest='help_types',
+        help='Display supported file types')
+    optparser.add_option('--help',
+        action='store_true', dest='help',
+        help='Display this information')
 
     group_searching = optparse.OptionGroup(optparser, 'Searching')
     group_searching.add_option('-i', '--ignore-case',
@@ -107,22 +128,43 @@ def parse_cmdline(cmdline_args):
     group_inclusion.add_option('-u', '--unrestricted',
         action='store_true', dest='unrestricted',
         help='All files are searched, including those in ignored directories')
+    group_inclusion.add_option('--ignore-dir',
+        action='append', dest='ignored_dirs', metavar='name',
+        help='Add directory to the list of ignored dirs')
+    group_inclusion.add_option('--noignore-dir',
+        action='append', dest='noignored_dirs', metavar='name',
+        help='Remove directory from the list of ignored dirs')
     group_inclusion.add_option('-r', '-R', '--recurse',
         action='store_true', dest='recurse',
         help='Recurse into subdirectories (default)')
     group_inclusion.add_option('-n', '--no-recurse',
         action='store_false', dest='recurse',
         help='Do not recurse into subdirectories')
+    group_inclusion.add_option('-G',
+        action='store', dest='type_pattern', metavar='REGEX',
+        help='Only search files that match REGEX')
     optparser.add_option_group(group_inclusion)
 
-    group_misc = optparse.OptionGroup(optparser, 'Miscellaneous')
-    group_misc.add_option('--help-types',
-        action='store_true', dest='help_types',
-        help='Display supported file types')
-    group_misc.add_option('--help',
-        action='store_true', dest='help',
-        help='Display this information')
-    optparser.add_option_group(group_misc)
+    # Parsing --<type> and --no<type> options for all supported types is
+    # done with a callback action. The callback function stores a list
+    # of all type options in the typelist attribute of the options.
+    #
+    def type_option_callback(option, opt_str, value, parser):
+        optname = opt_str.lstrip('-')
+        if hasattr(parser.values, 'typelist'):
+            parser.values.typelist.append(optname)
+        else:
+            parser.values.typelist = [optname]
+
+    for t in TYPE_EXTENSION_MAP:
+        optparser.add_option('--' + t,
+            help=optparse.SUPPRESS_HELP,
+            action='callback',
+            callback=type_option_callback)
+        optparser.add_option('--no' + t,
+            help=optparse.SUPPRESS_HELP,
+            action='callback',
+            callback=type_option_callback)
 
     options, args = optparser.parse_args(cmdline_args)
     if options.help_types:
