@@ -83,7 +83,7 @@ def pss_run(roots,
         remove_ignored_dirs=[],
         recurse=True,
         type_pattern=None, # for -G
-        include_types=[],
+        include_types=[],  # empty means all known types are included
         exclude_types=[],
         ignore_case=False,
         smart_case=False,

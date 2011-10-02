@@ -124,12 +124,12 @@ class TestDriver(unittest.TestCase):
                         ]))
 
     def test_ignored_dirs(self):
-        maindir = path_to_testdir('ignored_dirs')
+        rootdir = path_to_testdir('ignored_dirs')
 
         # no dirs ignored
         of = MockOutputFormatter('ignored_dirs')
         pss_run(
-            roots=[maindir],
+            roots=[rootdir],
             output_formatter=of,
             pattern='def',
             include_types=['xml'])
@@ -145,7 +145,7 @@ class TestDriver(unittest.TestCase):
         # both dir1 and dir2 ignored
         of = MockOutputFormatter('ignored_dirs')
         pss_run(
-            roots=[maindir],
+            roots=[rootdir],
             output_formatter=of,
             pattern='def',
             add_ignored_dirs=['dir1', 'dir2'],
@@ -158,7 +158,7 @@ class TestDriver(unittest.TestCase):
         # dir1 ignored (dir2 also appears in remove_ignored_dirs)
         of = MockOutputFormatter('ignored_dirs')
         pss_run(
-            roots=[maindir],
+            roots=[rootdir],
             output_formatter=of,
             add_ignored_dirs=['dir1', 'dir2'],
             remove_ignored_dirs=['dir2'],
@@ -208,6 +208,52 @@ class TestDriver(unittest.TestCase):
         binary_match = self.of.output[-1]
         self.assertEqual(binary_match[0], 'BINARY_MATCH')
         self.assertTrue(binary_match[1].find('zb.zzz') > 0)
+
+    def test_include_types(self):
+        rootdir = path_to_testdir('test_types')
+        def outputs(filename):
+            return self._gen_outputs_in_file(
+                        filename, 
+                        [('MATCH', (1, [(0, 3)]))])
+
+        # include only js and java
+        of = MockOutputFormatter('test_types')
+        pss_run(
+            roots=[rootdir],
+            output_formatter=of,
+            pattern='abc',
+            include_types=['js', 'java'])
+
+        self.assertEqual(sorted(of.output), sorted(
+                outputs('test_types/a.java') + 
+                outputs('test_types/a.js')))
+
+        # empty include_types - so include all known types
+        of = MockOutputFormatter('test_types')
+        pss_run(
+            roots=[rootdir],
+            output_formatter=of,
+            pattern='abc',
+            include_types=[])
+
+        self.assertEqual(sorted(of.output), sorted(
+                outputs('test_types/a.java') + 
+                outputs('test_types/a.js') +
+                outputs('test_types/a.lua') +
+                outputs('test_types/a.cmd') +
+                outputs('test_types/a.bat')))
+
+        # empty include_types, but some are excluded
+        of = MockOutputFormatter('test_types')
+        pss_run(
+            roots=[rootdir],
+            output_formatter=of,
+            pattern='abc',
+            exclude_types=['batch', 'js', 'java'],
+            include_types=[])
+
+        self.assertEqual(sorted(of.output), sorted(
+                outputs('test_types/a.lua')))
 
     def _gen_outputs_in_file(self, filename, outputs):
         """ Helper method for constructing a list of output pairs in the format
