@@ -22,7 +22,35 @@ from psslib.driver import pss_run, TYPE_EXTENSION_MAP
 
 
 def main():
-    options, args = parse_cmdline(sys.argv[1:])
+    options, args, optparser = parse_cmdline(sys.argv[1:])
+
+    # find_files_matching_pattern means both find_files and sets
+    # the type_pattern. This is handled here because find_files affects
+    # the verification of len(args) later.
+    #
+    if options.find_files_matching_pattern is not None:
+        options.find_files = True
+        options.type_pattern = options.find_files_matching_pattern
+
+    if options.help_types:
+        print 'types'
+        sys.exit(0)
+    elif (len(args) == 0 and not options.find_files) or options.help:
+        optparser.print_help()
+        sys.exit(0)
+
+    # Unpack args. If roots are not specified, the current directory is the
+    # only root. If options.find_files is True, no pattern was specified and
+    # the whole of 'args' is roots
+    #
+    if options.find_files:
+        pattern = None
+        roots = args
+    else:
+        pattern = args[0]
+        roots = args[1:]
+    if len(roots) == 0:
+        roots = ['.']
 
     # Partition the type list to included types (--<type>) and excluded types
     # (--no<type>)
@@ -35,15 +63,13 @@ def main():
         else:
             include_types.append(typ)
 
-    # Unpack args. If roots are not specified, the current directory is the
-    # only root
+    # If the context option is specified, it overrides both after-context
+    # and before-context
     #
-    pattern = args[0]
-    roots = args[1:]
-    if len(roots) == 0:
-        roots = ['.']
-
-    print options.ignored_dirs
+    ncontext_before = options.before_context
+    ncontext_after = options.after_context
+    if options.context is not None:
+        ncontext_before = ncontext_after = options.context
 
     # Finally, invoke pss_run with the default output formatter
     # 
@@ -61,11 +87,15 @@ def main():
             exclude_types=exclude_types,
             ignore_case=options.ignore_case,
             smart_case=options.smart_case,
-            )
-
-
-    print(include_types)
-    print(exclude_types)
+            invert_match=options.invert_match,
+            whole_words=options.word_regexp,
+            literal_pattern=options.literal,
+            max_match_count=options.max_count,
+            do_colors=options.do_colors,
+            prefix_filename_to_file_matches=options.prefix_filename,
+            show_column_of_first_match=options.show_column,
+            ncontext_before=ncontext_before,
+            ncontext_after=ncontext_after)
 
 
 DESCRIPTION = r'''
@@ -84,8 +114,9 @@ Run with --help-types for more help on how to select file types.
 
 
 def parse_cmdline(cmdline_args):
-    """ Parse the list of command-line options and arguments and return a pair
-        options, args (similar to the pair returned by OptionParser).
+    """ Parse the list of command-line options and arguments and return a
+        triple: options, args, parser -- the first two being the result of
+        OptionParser.parse_args, and the third the parser object itself.`
     """
     optparser = optparse.OptionParser(
         usage='usage: %prog [options] <pattern> [files]',
@@ -125,7 +156,7 @@ def parse_cmdline(cmdline_args):
         action='store', dest='match', metavar='PATTERN',
         help='Specify the search pattern explicitly')
     group_output.add_option('-m', '--max-count',
-        action='store', dest='max_count', metavar='NUM',
+        action='store', dest='max_count', metavar='NUM', default=sys.maxint,
         help='Stop searching in each file after NUM matches')
     group_output.add_option('-H', '--with-filename',
         action='store_true', dest='prefix_filename',
@@ -137,10 +168,10 @@ def parse_cmdline(cmdline_args):
         action='store_true', dest='show_column',
         help='Show the column number of the first match')
     group_output.add_option('-A', '--after-context',
-        action='store', dest='after_context', metavar='NUM',
+        action='store', dest='after_context', metavar='NUM', default=0,
         help='Print NUM lines of context after each match')
     group_output.add_option('-B', '--before-context',
-        action='store', dest='before_context', metavar='NUM',
+        action='store', dest='before_context', metavar='NUM', default=0,
         help='Print NUM lines of context before each match')
     group_output.add_option('-C', '--context',
         action='store', dest='context', metavar='NUM',
@@ -156,9 +187,9 @@ def parse_cmdline(cmdline_args):
     group_filefinding = optparse.OptionGroup(optparser, 'File finding')
     group_filefinding.add_option('-f',
         action='store_true', dest='find_files',
-        help='Only print the files found. The pattern is ignored')
+        help='Only print the files found. The pattern must not be specified')
     group_filefinding.add_option('-g',
-        action='store', dest='find_files_regex', metavar='REGEX',
+        action='store', dest='find_files_matching_pattern', metavar='REGEX',
         help='Same as -f, but only print files matching REGEX')
     optparser.add_option_group(group_filefinding)
 
@@ -208,15 +239,10 @@ def parse_cmdline(cmdline_args):
             callback=type_option_callback)
 
     options, args = optparser.parse_args(cmdline_args)
-    if options.help_types:
-        print 'types'
-        sys.exit(0)
-    elif len(args) == 0 or options.help:
-        optparser.print_help()
-        sys.exit(0)
-    return options, args
+    return options, args, optparser
 
 
+#-------------------------------------------------------------------------------
 if __name__ == '__main__':
     main()
 

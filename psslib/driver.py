@@ -154,17 +154,18 @@ def pss_run(roots,
     # Set up the content matcher
     #
 
-    if (    not ignore_case and 
-            (smart_case and not _pattern_has_uppercase(pattern))):
-        ignore_case = True
+    if not only_find_files:
+        if (    not ignore_case and 
+                (smart_case and not _pattern_has_uppercase(pattern))):
+            ignore_case = True
 
-    matcher = ContentMatcher(
-            pattern=pattern,
-            ignore_case=ignore_case,
-            invert_match=invert_match,
-            whole_words=whole_words,
-            literal_pattern=literal_pattern,
-            max_match_count=max_match_count)
+        matcher = ContentMatcher(
+                pattern=pattern or '',
+                ignore_case=ignore_case,
+                invert_match=invert_match,
+                whole_words=whole_words,
+                literal_pattern=literal_pattern,
+                max_match_count=max_match_count)
 
     # All systems go...
     #
