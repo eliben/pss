@@ -24,13 +24,54 @@ from psslib.driver import pss_run, TYPE_EXTENSION_MAP
 def main():
     options, args = parse_cmdline(sys.argv[1:])
 
-    print options
+    # Partition the type list to included types (--<type>) and excluded types
+    # (--no<type>)
+    #
+    include_types = []
+    exclude_types = []
+    for typ in getattr(options, 'typelist', []):
+        if typ.startswith('no'):
+            exclude_types.append(typ[2:])
+        else:
+            include_types.append(typ)
+
+    # Unpack args. If roots are not specified, the current directory is the
+    # only root
+    #
+    pattern = args[0]
+    roots = args[1:]
+    if len(roots) == 0:
+        roots = ['.']
+
+    print options.ignored_dirs
+
+    # Finally, invoke pss_run with the default output formatter
+    # 
+    pss_run(roots=roots,
+            pattern=pattern,
+            output_formatter=None, # use default
+            only_find_files=options.find_files,
+            search_all_types=options.all_types,
+            search_all_files_and_dirs=options.unrestricted,
+            add_ignored_dirs=options.ignored_dirs or [],
+            remove_ignored_dirs=options.noignored_dirs or [],
+            recurse=options.recurse,
+            type_pattern=options.type_pattern,
+            include_types=include_types,
+            exclude_types=exclude_types,
+            ignore_case=options.ignore_case,
+            smart_case=options.smart_case,
+            )
+
+
+    print(include_types)
+    print(exclude_types)
 
 
 DESCRIPTION = r'''
 Search for the pattern in each source file, starting with the
 current directory and its sub-directories, recursively. If
-[files] is specified, only these files/directories are searched.
+[files] are specified, only these files/directories are searched.
 
 Only files with known extensions are searched, and this can be
 configured by providing --<type> options. For example, --python
@@ -44,7 +85,7 @@ Run with --help-types for more help on how to select file types.
 
 def parse_cmdline(cmdline_args):
     """ Parse the list of command-line options and arguments and return a pair
-        options, args (similar to the pair returned by OptionParser)
+        options, args (similar to the pair returned by OptionParser).
     """
     optparser = optparse.OptionParser(
         usage='usage: %prog [options] <pattern> [files]',
@@ -135,7 +176,7 @@ def parse_cmdline(cmdline_args):
         action='append', dest='noignored_dirs', metavar='name',
         help='Remove directory from the list of ignored dirs')
     group_inclusion.add_option('-r', '-R', '--recurse',
-        action='store_true', dest='recurse',
+        action='store_true', dest='recurse', default=True,
         help='Recurse into subdirectories (default)')
     group_inclusion.add_option('-n', '--no-recurse',
         action='store_false', dest='recurse',

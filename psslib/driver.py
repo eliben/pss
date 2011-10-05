@@ -208,8 +208,8 @@ def pss_run(roots,
                     matches, ncontext_before, ncontext_after)
             # For being able to correctly emit context separators between 
             # non-adjacent chunks of context, these flags are maintained:
-            # prev_was_blank: the previous line was blank
-            # had_context: we already had some context printed before
+            #   prev_was_blank: the previous line was blank
+            #   had_context: we already had some context printed before
             #
             prev_was_blank = False
             had_context = False
