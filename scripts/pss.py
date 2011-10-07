@@ -7,6 +7,7 @@
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
 #-------------------------------------------------------------------------------
+from __future__ import print_function
 import os, sys
 import optparse
 
@@ -33,7 +34,7 @@ def main():
         options.type_pattern = options.find_files_matching_pattern
 
     if options.help_types:
-        print 'types'
+        print('types')
         sys.exit(0)
     elif (len(args) == 0 and not options.find_files) or options.help:
         optparser.print_help()
@@ -156,10 +157,10 @@ def parse_cmdline(cmdline_args):
         action='store', dest='match', metavar='PATTERN',
         help='Specify the search pattern explicitly')
     group_output.add_option('-m', '--max-count',
-        action='store', dest='max_count', metavar='NUM', default=sys.maxint,
+        action='store', dest='max_count', metavar='NUM', default=sys.maxsize,
         help='Stop searching in each file after NUM matches')
     group_output.add_option('-H', '--with-filename',
-        action='store_true', dest='prefix_filename',
+        action='store_true', dest='prefix_filename', default=True,
         help='Print the filename before matches (default)')
     group_output.add_option('-h', '--no-filename',
         action='store_false', dest='prefix_filename',
@@ -177,7 +178,7 @@ def parse_cmdline(cmdline_args):
         action='store', dest='context', metavar='NUM',
         help='Print NUM lines of context before and after each match')
     group_output.add_option('--color',
-        action='store_true', dest='do_colors',
+        action='store_true', dest='do_colors', default=True,
         help='Highlight the matching text')
     group_output.add_option('--nocolor',
         action='store_false', dest='do_colors',
