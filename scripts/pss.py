@@ -135,20 +135,20 @@ def parse_cmdline(cmdline_args):
 
     group_searching = optparse.OptionGroup(optparser, 'Searching')
     group_searching.add_option('-i', '--ignore-case',
-        action='store_true', dest='ignore_case',
+        action='store_true', dest='ignore_case', default=False,
         help='Ignore case distinctions in the pattern')
     group_searching.add_option('--smart-case',
-        action='store_true', dest='smart_case',
+        action='store_true', dest='smart_case', default=False,
         help='Ignore case distinctions in the pattern, only if the pattern '
         'contains no upper case. Ignored if -i is specified')
     group_searching.add_option('-v', '--invert-match',
-        action='store_true', dest='invert_match',
+        action='store_true', dest='invert_match', default=False,
         help='Invert match: show non-matching lines')
     group_searching.add_option('-w', '--word-regexp',
-        action='store_true', dest='word_regexp',
+        action='store_true', dest='word_regexp', default=False,
         help='Force the pattern to match only whole words')
     group_searching.add_option('-Q', '--literal',
-        action='store_true', dest='literal',
+        action='store_true', dest='literal', default=False,
         help='Quote all metacharacters; the pattern is literal')
     optparser.add_option_group(group_searching)
 
