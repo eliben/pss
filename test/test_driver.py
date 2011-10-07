@@ -134,13 +134,16 @@ class TestDriver(unittest.TestCase):
             pattern='def',
             include_types=['xml'])
 
-        self.assertEqual(of.output,
-                self._gen_outputs_in_file(
+        # Comparing as sorted because on different systems the files
+        # returned in a different order
+        #
+        self.assertEqual(sorted(of.output),
+                sorted(self._gen_outputs_in_file(
                     'ignored_dirs/file.xml', [('MATCH', (1, [(3, 6)]))]) +
                 self._gen_outputs_in_file(
                     'ignored_dirs/dir1/file.xml', [('MATCH', (1, [(3, 6)]))]) +
                 self._gen_outputs_in_file(
-                    'ignored_dirs/dir2/file.xml', [('MATCH', (1, [(3, 6)]))]))
+                    'ignored_dirs/dir2/file.xml', [('MATCH', (1, [(3, 6)]))])))
 
         # both dir1 and dir2 ignored
         of = MockOutputFormatter('ignored_dirs')
@@ -165,11 +168,11 @@ class TestDriver(unittest.TestCase):
             pattern='def',
             include_types=['xml'])
 
-        self.assertEqual(of.output,
-                self._gen_outputs_in_file(
+        self.assertEqual(sorted(of.output),
+                sorted(self._gen_outputs_in_file(
                     'ignored_dirs/file.xml', [('MATCH', (1, [(3, 6)]))]) +
                 self._gen_outputs_in_file(
-                    'ignored_dirs/dir2/file.xml', [('MATCH', (1, [(3, 6)]))]))
+                    'ignored_dirs/dir2/file.xml', [('MATCH', (1, [(3, 6)]))])))
 
     def test_only_find_files(self):
         pss_run(
@@ -179,11 +182,12 @@ class TestDriver(unittest.TestCase):
             include_types=['cc'],
             only_find_files=True)
 
-        self.assertEqual(self.of.output,
-                [   ('FOUND_FILENAME', 'testdir1/filea.c'), 
+        self.assertEqual(sorted(self.of.output),
+                sorted(
+                    [('FOUND_FILENAME', 'testdir1/filea.c'), 
                     ('FOUND_FILENAME', 'testdir1/filea.h'),
                     ('FOUND_FILENAME', 'testdir1/subdir1/filey.c'),
-                    ('FOUND_FILENAME', 'testdir1/subdir1/filez.c')])
+                    ('FOUND_FILENAME', 'testdir1/subdir1/filez.c')]))
 
         # now with a pattern
         self.setUp()
