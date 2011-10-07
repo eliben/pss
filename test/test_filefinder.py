@@ -41,8 +41,8 @@ class TestFileFinder(unittest.TestCase):
         """ Compare lists of paths together, normalizing them for portability.
         """
         self.assertEqual(
-                map(os.path.normpath, first),
-                map(os.path.normpath, second))
+                list(map(os.path.normpath, first)),
+                list(map(os.path.normpath, second)))
 
     def test_extensions(self):
         # just the .c files

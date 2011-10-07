@@ -20,7 +20,7 @@ class ContentMatcher(object):
             invert_match=False,
             whole_words=False,
             literal_pattern=False,
-            max_match_count=sys.maxint):
+            max_match_count=sys.maxsize):
         """ Create a new ContentMatcher for matching the pattern in files.
             The parameters are the "matching rules".
 
@@ -55,7 +55,7 @@ class ContentMatcher(object):
         self.invert_match = invert_match
         self.max_match_count = max_match_count
             
-    def match_file(self, fileobj, max_match_count=sys.maxint):
+    def match_file(self, fileobj, max_match_count=sys.maxsize):
         """ Perform matching in the file according to the matching rules. Yield
             MatchResult objects.
 

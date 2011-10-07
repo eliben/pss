@@ -62,7 +62,7 @@ TYPE_EXTENSION_MAP = {
         'yaml':             ['.yaml', '.yml'],
 }
 ALL_KNOWN_EXTENSIONS = set(
-        ext for extensions in TYPE_EXTENSION_MAP.itervalues() 
+        ext for extensions in TYPE_EXTENSION_MAP.values() 
             for ext in extensions)
 
 IGNORED_DIRS = set([   
@@ -90,7 +90,7 @@ def pss_run(roots,
         invert_match=False,
         whole_words=False,
         literal_pattern=False,
-        max_match_count=sys.maxint,
+        max_match_count=sys.maxsize,
         do_colors=True,
         prefix_filename_to_file_matches=True,
         show_column_of_first_match=False,
@@ -133,7 +133,7 @@ def pss_run(roots,
             for typ in include_types:
                 search_extensions.update(TYPE_EXTENSION_MAP[typ])
         else:
-            for ext in TYPE_EXTENSION_MAP.itervalues():
+            for ext in TYPE_EXTENSION_MAP.values():
                 search_extensions.update(ext)
         for typ in exclude_types:
             ignore_extensions.update(TYPE_EXTENSION_MAP[typ])
@@ -181,60 +181,60 @@ def pss_run(roots,
         # files with a match. For other files, we let ContentMatcher do its
         # full work.
         #
-        fileobj = open(filepath)
-        if not _known_file_type(filepath) and not istextfile(fileobj):
+        with open(filepath) as fileobj:
+            if not _known_file_type(filepath) and not istextfile(fileobj):
+                # istextfile does some reading on fileobj, so rewind it
+                fileobj.seek(0)
+                matches = list(matcher.match_file(fileobj, max_match_count=1))
+                if matches:
+                    output_formatter.binary_file_matches(
+                            'Binary file %s matches\n' % filepath)
+                continue
             # istextfile does some reading on fileobj, so rewind it
             fileobj.seek(0)
-            matches = list(matcher.match_file(fileobj, max_match_count=1))
-            if matches:
-                output_formatter.binary_file_matches(
-                        'Binary file %s matches\n' % filepath)
-            continue
-        # istextfile does some reading on fileobj, so rewind it
-        fileobj.seek(0)
-        matches = list(matcher.match_file(fileobj))
-        if not matches:
-            # Nothing to see here... move along
-            continue
-        output_formatter.start_matches_in_file(filepath)
-        if ncontext_before > 0 or ncontext_after > 0:
-            # If context lines should be printed, we have to read in the file 
-            # line by line, marking which lines belong to context, which are
-            # matches, and which aren't interesting.
-            # _build_match_context_dict is used to create a dictionary that
-            # tells us for each line what category it belongs to
-            #
-            fileobj.seek(0)
-            match_context_dict = _build_match_context_dict(
-                    matches, ncontext_before, ncontext_after)
-            # For being able to correctly emit context separators between 
-            # non-adjacent chunks of context, these flags are maintained:
-            #   prev_was_blank: the previous line was blank
-            #   had_context: we already had some context printed before
-            #
-            prev_was_blank = False
-            had_context = False
-            for n, line in enumerate(fileobj):
-                n += 1
-                # Find out whether this line is a match, context or neither,
-                # and act accordingly
-                result, match = match_context_dict.get(n, (None, None))
-                if result is None:
-                    prev_was_blank = True
-                    continue
-                elif result == LINE_MATCH:
-                    output_formatter.matching_line(match)
-                elif result == LINE_CONTEXT:
-                    if prev_was_blank and had_context:
-                        output_formatter.context_separator()
-                    output_formatter.context_line(line, n)
-                    had_context = True
+            matches = list(matcher.match_file(fileobj))
+            if not matches:
+                # Nothing to see here... move along
+                continue
+            output_formatter.start_matches_in_file(filepath)
+            if ncontext_before > 0 or ncontext_after > 0:
+                # If context lines should be printed, we have to read in the
+                # file line by line, marking which lines belong to context,
+                # which are matches, and which aren't interesting.
+                # _build_match_context_dict is used to create a dictionary
+                # that tells us for each line what category it belongs to
+                #
+                fileobj.seek(0)
+                match_context_dict = _build_match_context_dict(
+                        matches, ncontext_before, ncontext_after)
+                # For being able to correctly emit context separators between 
+                # non-adjacent chunks of context, these flags are maintained:
+                #   prev_was_blank: the previous line was blank
+                #   had_context: we already had some context printed before
+                #
                 prev_was_blank = False
-        else:
-            # just show the matches without considering context
-            for match in matches:
-                output_formatter.matching_line(match)
-        output_formatter.end_matches_in_file(filepath)
+                had_context = False
+                for n, line in enumerate(fileobj):
+                    n += 1
+                    # Find out whether this line is a match, context or neither,
+                    # and act accordingly
+                    result, match = match_context_dict.get(n, (None, None))
+                    if result is None:
+                        prev_was_blank = True
+                        continue
+                    elif result == LINE_MATCH:
+                        output_formatter.matching_line(match)
+                    elif result == LINE_CONTEXT:
+                        if prev_was_blank and had_context:
+                            output_formatter.context_separator()
+                        output_formatter.context_line(line, n)
+                        had_context = True
+                    prev_was_blank = False
+            else:
+                # just show the matches without considering context
+                for match in matches:
+                    output_formatter.matching_line(match)
+            output_formatter.end_matches_in_file(filepath)
 
 
 def _known_file_type(filename):
