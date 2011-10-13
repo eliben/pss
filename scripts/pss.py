@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------------------
 # pss: pss.py
 #
-# Top-level script
+# Top-level script. Run without arguments or with -h to see usage help.
 #
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
@@ -20,7 +20,8 @@ except ImportError:
 
 
 from psslib import __version__
-from psslib.driver import pss_run, TYPE_EXTENSION_MAP, IGNORED_DIRS
+from psslib.driver import (pss_run, TYPE_EXTENSION_MAP,
+        IGNORED_DIRS, IGNORED_FILE_PATTERNS)
 
 
 def main():
@@ -35,7 +36,7 @@ def main():
         options.type_pattern = options.find_files_matching_pattern
 
     if options.help_types:
-        print('types')
+        print_help_types()
         sys.exit(0)
     elif (len(args) == 0 and not options.find_files) or options.help:
         optparser.print_help()
@@ -119,10 +120,10 @@ Run with --help-types for more help on how to select file types.
 def _ignored_dirs_as_string():
     s = ['    ']
     for i, dir in enumerate(IGNORED_DIRS):
-        s.append(dir)
+        s.append('%-9s' % dir)
         if i % 4 == 3:
             s.append('\n    ')
-    return '  '.join(s)
+    return ' '.join(s)
 
 
 DESCRIPTION_AFTER_USAGE = r'''
@@ -133,8 +134,16 @@ ignored:
 
 To manually control which directories are ignored, use the --ignore-dir
 and --noignore-dir options. Specify --unrestricted if you don't want any
-directory to be ignored
-''' % (_ignored_dirs_as_string(), )
+directory to be ignored.
+
+Additionally, files matching these (regexp) patterns are ignored:
+
+      %s
+
+pss version %s
+''' % ( _ignored_dirs_as_string(), 
+        '\n      '.join(IGNORED_FILE_PATTERNS),
+        __version__,)
 
 
 def parse_cmdline(cmdline_args):
@@ -264,6 +273,23 @@ def parse_cmdline(cmdline_args):
 
     options, args = optparser.parse_args(cmdline_args)
     return options, args, optparser
+
+
+HELP_TYPES_PREAMBLE = r'''
+The following types are supported. Each type enables searching
+in several file extensions. --<type> includes the type in the
+search and --no<type> excludes it.
+'''.lstrip()
+
+
+def print_help_types():
+    print(HELP_TYPES_PREAMBLE)
+
+    for typ in sorted(TYPE_EXTENSION_MAP.keys()):
+        typestr = '--[no]%s' % typ
+        print('    %-21s' % typestr, end='')
+        print(' '.join(TYPE_EXTENSION_MAP[typ]))
+    print()
 
 
 #-------------------------------------------------------------------------------

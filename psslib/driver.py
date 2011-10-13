@@ -66,7 +66,7 @@ ALL_KNOWN_EXTENSIONS = set(
             for ext in extensions)
 
 IGNORED_DIRS = set([   
-    'autom4te.cache', 'blib', '_build', '.bzr', '.cdv', 'cover_db',
+    'blib', '_build', '.bzr', '.cdv', 'cover_db',
     'CVS', '_darcs', '~.dep', '~.dot', '.git', '.hg', '~.nib', 
     '.pc', '~.plst', 'RCS', 'SCCS', '_sgbak', '.svn'])
 
