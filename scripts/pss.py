@@ -11,12 +11,13 @@ from __future__ import print_function
 import os, sys
 import optparse
 
-# Make sure we can import psslib, even if run from the source distribution
-# root or its scripts/ dir
+# Make sure we can import psslib, even if run from a different location
 try:
     import psslib
 except ImportError:
-    sys.path.extend(['.', '..'])
+    pss_root_dir = os.path.join(os.path.dirname(sys.argv[0]), '..')
+    sys.path.extend(['.', '..', pss_root_dir])
+
 
 from psslib import __version__
 from psslib.driver import pss_run, TYPE_EXTENSION_MAP
