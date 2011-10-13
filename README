@@ -1,8 +1,17 @@
 Introduction: what is pss?
 --------------------------
 
-You can think of ``pss`` as an enhanced ``grep`` designed to search inside source code files.
-``pss`` is very similar to the Perl ``ack`` tool.
+You can think of **pss** as an enhanced **grep** designed to search inside source code files.
+**pss** is very similar to the Perl **ack** tool.
+
+How to use it?
+--------------
+
+**pss** is meant to be executed from the command line. Running it with no arguments or with
+``-h`` will print a detailed usage message. 
+
+For some detailed usage examples, check out the 
+`Usage <https://bitbucket.org/eliben/pss/wiki/Usage>_` wiki page.
 
 
 
