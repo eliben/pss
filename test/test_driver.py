@@ -182,12 +182,14 @@ class TestDriver(unittest.TestCase):
             include_types=['cc'],
             only_find_files=True)
 
+        def _build_found_list(filenames):
+            return sorted(
+                ('FOUND_FILENAME', os.path.normpath(f)) for f in filenames)
+
         self.assertEqual(sorted(self.of.output),
-                sorted(
-                    [('FOUND_FILENAME', 'testdir1/filea.c'), 
-                    ('FOUND_FILENAME', 'testdir1/filea.h'),
-                    ('FOUND_FILENAME', 'testdir1/subdir1/filey.c'),
-                    ('FOUND_FILENAME', 'testdir1/subdir1/filez.c')]))
+            _build_found_list([
+                'testdir1/filea.c', 'testdir1/filea.h',
+                'testdir1/subdir1/filey.c', 'testdir1/subdir1/filez.c']))
 
         # now with a pattern
         self.setUp()
@@ -200,7 +202,7 @@ class TestDriver(unittest.TestCase):
             only_find_files=True)
 
         self.assertEqual(self.of.output,
-                [('FOUND_FILENAME', 'testdir1/subdir1/filey.c')])
+            _build_found_list(['testdir1/subdir1/filey.c']))
 
     def test_binary_matches(self):
         pss_run(
