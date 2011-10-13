@@ -1,0 +1,8 @@
+Introduction: what is pss?
+--------------------------
+
+You can think of ``pss`` as an enhanced ``grep`` designed to search inside source code files.
+``pss`` is very similar to the Perl ``ack`` tool.
+
+
+
