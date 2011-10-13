@@ -20,7 +20,7 @@ except ImportError:
 
 
 from psslib import __version__
-from psslib.driver import pss_run, TYPE_EXTENSION_MAP
+from psslib.driver import pss_run, TYPE_EXTENSION_MAP, IGNORED_DIRS
 
 
 def main():
@@ -39,6 +39,7 @@ def main():
         sys.exit(0)
     elif (len(args) == 0 and not options.find_files) or options.help:
         optparser.print_help()
+        print(DESCRIPTION_AFTER_USAGE)
         sys.exit(0)
 
     # Unpack args. If roots are not specified, the current directory is the
@@ -113,6 +114,27 @@ are searched.
 
 Run with --help-types for more help on how to select file types.
 '''.lstrip()
+
+
+def _ignored_dirs_as_string():
+    s = ['    ']
+    for i, dir in enumerate(IGNORED_DIRS):
+        s.append(dir)
+        if i % 4 == 3:
+            s.append('\n    ')
+    return '  '.join(s)
+
+
+DESCRIPTION_AFTER_USAGE = r'''
+By default, the following directories and everything below them is
+ignored:
+
+%s
+
+To manually control which directories are ignored, use the --ignore-dir
+and --noignore-dir options. Specify --unrestricted if you don't want any
+directory to be ignored
+''' % (_ignored_dirs_as_string(), )
 
 
 def parse_cmdline(cmdline_args):
