@@ -1,0 +1,12 @@
+
+New version
+-----------
+
+* Update psslib/__init__.py
+* Update setup.py
+
+Distribution
+------------
+
+python setup.py build upload
+
