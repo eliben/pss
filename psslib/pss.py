@@ -1,8 +1,8 @@
-#!/usr/bin/env python
 #-------------------------------------------------------------------------------
 # pss: pss.py
 #
 # Top-level script. Run without arguments or with -h to see usage help.
+# To actually run it, import and invoke 'main' from a runnable script
 #
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
@@ -10,13 +10,6 @@
 from __future__ import print_function
 import os, sys
 import optparse
-
-# Make sure we can import psslib, even if run from a different location
-try:
-    import psslib
-except ImportError:
-    pss_root_dir = os.path.join(os.path.dirname(sys.argv[0]), '..')
-    sys.path.extend(['.', '..', pss_root_dir])
 
 
 from psslib import __version__
