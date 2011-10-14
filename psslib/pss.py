@@ -203,8 +203,8 @@ def parse_cmdline(cmdline_args):
         action='store', dest='context', metavar='NUM', type='int',
         help='Print NUM lines of context before and after each match')
     group_output.add_option('--color',
-        action='store_true', dest='do_colors', default=True,
-        help='Highlight the matching text')
+        action='store_true', dest='do_colors', default=sys.stdout.isatty(),
+        help='Highlight the matching text (on unless output is redirected')
     group_output.add_option('--nocolor',
         action='store_false', dest='do_colors',
         help='Do not highlight the matching text')
