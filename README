@@ -5,12 +5,23 @@ You can think of **pss** as an enhanced **grep** designed to search inside sourc
 **pss** is very similar to the Perl **ack** tool (see
 https://bitbucket.org/eliben/pss/wiki/PssAndAck).
 
+Pre-requisites
+--------------
+
+**pss** needs only Python to run. It works with with Python versions 2.6, 2.7 and 3.2 on
+Linux and Windows (though I don't see a reason it shouldn't work on other platforms as
+well).
+
 Installing
 ----------
 
 When you unzip the source distribution, run::
 
     > python setup.py install
+
+Alternatively, **pss** can be installed from PyPi (Python package index)::
+
+    > pip install pss
 
 How to use it?
 --------------
@@ -21,9 +32,3 @@ How to use it?
 For some detailed usage examples, check out the 
 Usage wiki page - https://bitbucket.org/eliben/pss/wiki/Usage.
 
-Pre-requisites
---------------
-
-**pss** needs only Python to run. It works with with Python versions 2.6, 2.7 and 3.2 on
-Linux and Windows (though I don't see a reason it shouldn't work on other platforms as
-well).

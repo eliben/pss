@@ -1,4 +1,7 @@
 syntax: glob
 
 *.pyc
+MANIFEST
+dist
+
 

@@ -1,0 +1,10 @@
+recursive-include test *.py
+recursive-include psslib *.py *.cfg
+recursive-include scripts *.py pss
+include *.py
+include README
+include LICENSE
+include setup.*
+exclude z.py
+
+
