@@ -1,5 +1,4 @@
-pss is in the public domain. I have also pasted the license text it in the
-end of this file.
+pss is in the public domain (see below if you need more details).
 
 pss uses the colorama library for coloring terminal output. colorama is 
 packaged in psslib/colorama, with a license file of its own. Its license is

@@ -190,7 +190,7 @@ def parse_cmdline(cmdline_args):
         help='Specify the search pattern explicitly')
     group_output.add_option('-m', '--max-count',
         action='store', dest='max_count', metavar='NUM', default=sys.maxsize,
-        help='Stop searching in each file after NUM matches')
+        type='int', help='Stop searching in each file after NUM matches')
     group_output.add_option('-H', '--with-filename',
         action='store_true', dest='prefix_filename', default=True,
         help='Print the filename before matches (default)')
@@ -202,12 +202,12 @@ def parse_cmdline(cmdline_args):
         help='Show the column number of the first match')
     group_output.add_option('-A', '--after-context',
         action='store', dest='after_context', metavar='NUM', default=0,
-        help='Print NUM lines of context after each match')
+        type='int', help='Print NUM lines of context after each match')
     group_output.add_option('-B', '--before-context',
         action='store', dest='before_context', metavar='NUM', default=0,
-        help='Print NUM lines of context before each match')
+        type='int', help='Print NUM lines of context before each match')
     group_output.add_option('-C', '--context',
-        action='store', dest='context', metavar='NUM',
+        action='store', dest='context', metavar='NUM', type='int',
         help='Print NUM lines of context before and after each match')
     group_output.add_option('--color',
         action='store_true', dest='do_colors', default=True,
