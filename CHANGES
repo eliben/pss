@@ -1,0 +1,19 @@
+Changelog
+=========
+
++ Version 0.33 (??.10.2011)
+
+  - Issue #2: pss will now ignore broken symlinks (won't list them or try to
+    read them).
+  - Issue #5: when the output of pss is redirected, by default it colors won't
+    be applied (unless forced with --color)
+
++ Version 0.32 (14.10.2011)
+
+  - Move pss.py from scripts/ to psslib/, leaving just a wrapper call to 
+    pss.py's main() in scripts/pss.py and scripts/pss. This is better than
+    the previous solution of having a symlink in scripts/ because pip on
+    Python 2.6 doesn't handle symlinks too well.
+
++ Version 0.31 - Initial public release (14.10.2011)
+

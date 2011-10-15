@@ -4,15 +4,12 @@ New version
 
 * Update psslib/__init__.py
 * Update setup.py
+* Update CHANGES
+* Tag in hg
 
 Distribution
 ------------
 
 python setup.py build upload
 
-Fixes since last version
-------------------------
-
-* Issue #2: pss shouldn't "find" broken symlinks and choke on them
-* Issue #5: by default don't use terminal color when output is redirected
 
