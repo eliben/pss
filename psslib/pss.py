@@ -204,10 +204,10 @@ def parse_cmdline(cmdline_args):
         help='Print NUM lines of context before and after each match')
     group_output.add_option('--color',
         action='store_true', dest='do_colors', default=sys.stdout.isatty(),
-        help='Highlight the matching text (on unless output is redirected')
+        help='Highlight the matching text')
     group_output.add_option('--nocolor',
         action='store_false', dest='do_colors',
-        help='Do not highlight the matching text')
+        help='Do not highlight the matching text (this is the default when output is redirected)')
     optparser.add_option_group(group_output)
 
     group_filefinding = optparse.OptionGroup(optparser, 'File finding')
