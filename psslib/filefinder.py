@@ -76,7 +76,9 @@ class FileFinder(object):
                         continue
                     for filename in files:
                         if self._file_is_found(filename):
-                            yield os.path.join(dirpath, filename)
+                            fullpath = os.path.join(dirpath, filename)
+                            if os.path.exists(fullpath):
+                                yield fullpath
                     if not self.recurse:
                         break
 
