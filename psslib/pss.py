@@ -70,29 +70,33 @@ def main():
 
     # Finally, invoke pss_run with the default output formatter
     # 
-    pss_run(roots=roots,
-            pattern=pattern,
-            output_formatter=None, # use default
-            only_find_files=options.find_files,
-            search_all_types=options.all_types,
-            search_all_files_and_dirs=options.unrestricted,
-            add_ignored_dirs=options.ignored_dirs or [],
-            remove_ignored_dirs=options.noignored_dirs or [],
-            recurse=options.recurse,
-            type_pattern=options.type_pattern,
-            include_types=include_types,
-            exclude_types=exclude_types,
-            ignore_case=options.ignore_case,
-            smart_case=options.smart_case,
-            invert_match=options.invert_match,
-            whole_words=options.word_regexp,
-            literal_pattern=options.literal,
-            max_match_count=options.max_count,
-            do_colors=options.do_colors,
-            prefix_filename_to_file_matches=options.prefix_filename,
-            show_column_of_first_match=options.show_column,
-            ncontext_before=ncontext_before,
-            ncontext_after=ncontext_after)
+    try:
+        pss_run(roots=roots,
+                pattern=pattern,
+                output_formatter=None, # use default
+                only_find_files=options.find_files,
+                search_all_types=options.all_types,
+                search_all_files_and_dirs=options.unrestricted,
+                add_ignored_dirs=options.ignored_dirs or [],
+                remove_ignored_dirs=options.noignored_dirs or [],
+                recurse=options.recurse,
+                type_pattern=options.type_pattern,
+                include_types=include_types,
+                exclude_types=exclude_types,
+                ignore_case=options.ignore_case,
+                smart_case=options.smart_case,
+                invert_match=options.invert_match,
+                whole_words=options.word_regexp,
+                literal_pattern=options.literal,
+                max_match_count=options.max_count,
+                do_colors=options.do_colors,
+                prefix_filename_to_file_matches=options.prefix_filename,
+                show_column_of_first_match=options.show_column,
+                ncontext_before=ncontext_before,
+                ncontext_after=ncontext_after)
+    except KeyboardInterrupt:
+        print('<<interrupted - exiting>>')
+        sys.exit(0)
 
 
 DESCRIPTION = r'''
