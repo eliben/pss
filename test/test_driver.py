@@ -3,7 +3,7 @@ import unittest
 
 sys.path.insert(0, '.')
 sys.path.insert(0, '..')
-from psslib.driver import pss_run
+from psslib.driver import pss_run, PssOnlyFindFilesOption
 from psslib.outputformatter import OutputFormatter
 from test.utils import path_to_testdir, path_relative_to_dir
 
@@ -177,17 +177,12 @@ class TestDriver(unittest.TestCase):
     def test_only_find_files(self):
         pss_run(
             roots=[self.testdir1],
-            pattern='abc',
             output_formatter=self.of,
             include_types=['cc'],
             only_find_files=True)
 
-        def _build_found_list(filenames):
-            return sorted(
-                ('FOUND_FILENAME', os.path.normpath(f)) for f in filenames)
-
         self.assertEqual(sorted(self.of.output),
-            _build_found_list([
+            self._build_found_list([
                 'testdir1/filea.c', 'testdir1/filea.h',
                 'testdir1/subdir1/filey.c', 'testdir1/subdir1/filez.c']))
 
@@ -202,8 +197,34 @@ class TestDriver(unittest.TestCase):
             only_find_files=True)
 
         self.assertEqual(self.of.output,
-            _build_found_list(['testdir1/subdir1/filey.c']))
+            self._build_found_list(['testdir1/subdir1/filey.c']))
 
+    def test_only_find_files_with_matches(self):
+        pss_run(
+            roots=[self.testdir1],
+            output_formatter=self.of,
+            include_types=['cc'],
+            pattern='abc',
+            only_find_files=True,
+            only_find_files_option=PssOnlyFindFilesOption.FILES_WITH_MATCHES)
+
+        self.assertEqual(sorted(self.of.output),
+            self._build_found_list([
+                'testdir1/filea.c', 'testdir1/filea.h']))
+
+    def test_only_find_files_without_matches(self):
+        pss_run(
+            roots=[self.testdir1],
+            output_formatter=self.of,
+            include_types=['cc'],
+            pattern='abc',
+            only_find_files=True,
+            only_find_files_option=PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES)
+
+        self.assertEqual(sorted(self.of.output),
+            self._build_found_list([
+                'testdir1/subdir1/filey.c', 'testdir1/subdir1/filez.c']))
+        
     def test_binary_matches(self):
         pss_run(
             roots=[self.testdir1],
@@ -260,6 +281,12 @@ class TestDriver(unittest.TestCase):
 
         self.assertEqual(sorted(of.output), sorted(
                 outputs('test_types/a.lua')))
+
+    def _build_found_list(self, filenames):
+        """ Helper for only_find_files methods
+        """
+        return sorted(
+            ('FOUND_FILENAME', os.path.normpath(f)) for f in filenames)
 
     def _gen_outputs_in_file(self, filename, outputs):
         """ Helper method for constructing a list of output pairs in the format

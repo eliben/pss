@@ -14,33 +14,43 @@ import optparse
 
 from psslib import __version__
 from psslib.driver import (pss_run, TYPE_EXTENSION_MAP,
-        IGNORED_DIRS, IGNORED_FILE_PATTERNS)
+        IGNORED_DIRS, IGNORED_FILE_PATTERNS, PssOnlyFindFilesOption)
 
 
 def main():
     options, args, optparser = parse_cmdline(sys.argv[1:])
 
-    # find_files_matching_pattern means both find_files and sets
-    # the type_pattern. This is handled here because find_files affects
-    # the verification of len(args) later.
+    # Handle the various "only find files" options.
     #
-    if options.find_files_matching_pattern is not None:
-        options.find_files = True
-        options.type_pattern = options.find_files_matching_pattern
+    only_find_files = False
+    only_find_files_option = PssOnlyFindFilesOption.ALL_FILES
+    search_pattern_expected = True
+
+    if options.find_files:
+        only_find_files = True
+        search_pattern_expected = False
+    elif options.find_files_matching_pattern is not None:
+        only_find_files = True
+        search_pattern_expected = False
+    elif options.find_files_with_matches:
+        only_find_files = True
+        only_find_files_option = PssOnlyFindFilesOption.FILES_WITH_MATCHES
+    elif options.find_files_without_matches:
+        only_find_files = True
+        only_find_files_option = PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES
 
     if options.help_types:
         print_help_types()
         sys.exit(0)
-    elif (len(args) == 0 and not options.find_files) or options.help:
+    elif (len(args) == 0 and search_pattern_expected) or options.help:
         optparser.print_help()
         print(DESCRIPTION_AFTER_USAGE)
         sys.exit(0)
 
     # Unpack args. If roots are not specified, the current directory is the
-    # only root. If options.find_files is True, no pattern was specified and
-    # the whole of 'args' is roots
+    # only root. If no search pattern is expected, the whole of 'args' is roots
     #
-    if options.find_files:
+    if not search_pattern_expected:
         pattern = None
         roots = args
     else:
@@ -74,7 +84,8 @@ def main():
         pss_run(roots=roots,
                 pattern=pattern,
                 output_formatter=None, # use default
-                only_find_files=options.find_files,
+                only_find_files=only_find_files,
+                only_find_files_option=only_find_files_option,
                 search_all_types=options.all_types,
                 search_all_files_and_dirs=options.unrestricted,
                 add_ignored_dirs=options.ignored_dirs or [],
@@ -217,10 +228,16 @@ def parse_cmdline(cmdline_args):
     group_filefinding = optparse.OptionGroup(optparser, 'File finding')
     group_filefinding.add_option('-f',
         action='store_true', dest='find_files',
-        help='Only print the files found. The pattern must not be specified')
+        help='Only print the names of found files. The pattern must not be specified')
     group_filefinding.add_option('-g',
         action='store', dest='find_files_matching_pattern', metavar='REGEX',
         help='Same as -f, but only print files matching REGEX')
+    group_filefinding.add_option('-l', '--files-with-matches',
+        action='store_true', dest='find_files_with_matches',
+        help='Only print the names of found files that have matches for the pattern')
+    group_filefinding.add_option('-L', '--files-without-matches',
+        action='store_true', dest='find_files_without_matches',
+        help='Only print the names of found files that have no matches for the pattern')
     optparser.add_option_group(group_filefinding)
 
     group_inclusion = optparse.OptionGroup(optparser, 'File inclusion/exclusion')

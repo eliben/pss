@@ -6,7 +6,9 @@ Changelog
   - Issue #2: pss will now ignore broken symlinks (won't list them or try to
     read them).
   - Issue #5: when the output of pss is redirected, by default it colors won't
-    be applied (unless forced with --color)
+    be applied (unless forced with --color).
+  - Issue #8: When Ctrl+C is hit, print a succinct error message instead of 
+    the full stack trace.
 
 + Version 0.32 (14.10.2011)
 

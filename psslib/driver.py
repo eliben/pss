@@ -73,10 +73,17 @@ IGNORED_DIRS = set([
 IGNORED_FILE_PATTERNS = set([r'~$', r'#.+#$', r'[._].*\.swp$', r'core\.\d+$'])
 
 
+class PssOnlyFindFilesOption:
+    """ Option to specify how to "only find files"
+    """
+    ALL_FILES, FILES_WITH_MATCHES, FILES_WITHOUT_MATCHES = range(3)
+
+
 def pss_run(roots,
         pattern=None,
         output_formatter=None,
         only_find_files=False,
+        only_find_files_option=PssOnlyFindFilesOption.ALL_FILES,
         search_all_types=False,
         search_all_files_and_dirs=False,
         add_ignored_dirs=[],
@@ -154,24 +161,28 @@ def pss_run(roots,
     # Set up the content matcher
     #
 
-    if not only_find_files:
-        if (    not ignore_case and 
-                (smart_case and not _pattern_has_uppercase(pattern))):
-            ignore_case = True
+    if pattern is None:
+        pattern = ''
 
-        matcher = ContentMatcher(
-                pattern=pattern or '',
-                ignore_case=ignore_case,
-                invert_match=invert_match,
-                whole_words=whole_words,
-                literal_pattern=literal_pattern,
-                max_match_count=max_match_count)
+    if (    not ignore_case and 
+            (smart_case and not _pattern_has_uppercase(pattern))):
+        ignore_case = True
+
+    matcher = ContentMatcher(
+            pattern=pattern or '',
+            ignore_case=ignore_case,
+            invert_match=invert_match,
+            whole_words=whole_words,
+            literal_pattern=literal_pattern,
+            max_match_count=max_match_count)
 
     # All systems go...
     #
     for filepath in filefinder.files():
-        # If only_find_files is requested, this is kind of 'find -name'
-        if only_find_files:
+        # If only_find_files is requested and no special option provided,
+        # this is kind of 'find -name'
+        if (    only_find_files and 
+                only_find_files_option == PssOnlyFindFilesOption.ALL_FILES):
             output_formatter.found_filename(filepath)
             continue
         # The main path: do matching inside the file.
@@ -192,7 +203,23 @@ def pss_run(roots,
                 continue
             # istextfile does some reading on fileobj, so rewind it
             fileobj.seek(0)
+            # run, my little matcher, run!
             matches = list(matcher.match_file(fileobj))
+
+            # If only files are to be found either with or without matches...
+            if only_find_files:
+                found = (
+                    (   matches and 
+                        only_find_files_option == PssOnlyFindFilesOption.FILES_WITH_MATCHES)
+                    or
+                    (   not matches and 
+                        only_find_files_option == PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES))
+                if found:
+                    output_formatter.found_filename(filepath)
+                continue
+
+            # This is the "normal path" when we examine and display the matches
+            # inside the file.
             if not matches:
                 # Nothing to see here... move along
                 continue
