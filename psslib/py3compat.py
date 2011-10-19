@@ -10,7 +10,8 @@ import sys
 PY3 = sys.version_info[0] == 3
 
 
-# str2bytes -- converts a given string to bytes
+# str2bytes -- converts a given string (which we know not to contain 
+# unicode chars) to bytes.
 #
 # int2byte -- takes an integer in the 8-bit range and returns
 # a single-character byte object in py3 / a single-character string
