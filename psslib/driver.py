@@ -15,6 +15,7 @@ from .contentmatcher import ContentMatcher
 from .matchresult import MatchResult
 from .defaultpssoutputformatter import DefaultPssOutputFormatter
 from .utils import istextfile
+from .py3compat import str2bytes
 
 
 TYPE_EXTENSION_MAP = {
@@ -162,14 +163,16 @@ def pss_run(roots,
     #
 
     if pattern is None:
-        pattern = ''
+        pattern = b''
+    else:
+        pattern = str2bytes(pattern)
 
     if (    not ignore_case and 
             (smart_case and not _pattern_has_uppercase(pattern))):
         ignore_case = True
 
     matcher = ContentMatcher(
-            pattern=pattern or '',
+            pattern=pattern,
             ignore_case=ignore_case,
             invert_match=invert_match,
             whole_words=whole_words,
@@ -192,7 +195,7 @@ def pss_run(roots,
         # files with a match. For other files, we let ContentMatcher do its
         # full work.
         #
-        with open(filepath) as fileobj:
+        with open(filepath, 'rb') as fileobj:
             if not _known_file_type(filepath) and not istextfile(fileobj):
                 # istextfile does some reading on fileobj, so rewind it
                 fileobj.seek(0)

@@ -5,8 +5,9 @@ Changelog
 
   - Issue #2: pss will now ignore broken symlinks (won't list them or try to
     read them).
-  - Issue #5: when the output of pss is redirected, by default it colors won't
+  - Issue #5: When the output of pss is redirected, by default it colors won't
     be applied (unless forced with --color).
+  - Issue #6: Support -l and -L options (only show files with/without matches)
   - Issue #8: When Ctrl+C is hit, print a succinct error message instead of 
     the full stack trace.
 

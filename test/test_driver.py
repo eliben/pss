@@ -236,6 +236,16 @@ class TestDriver(unittest.TestCase):
         self.assertEqual(binary_match[0], 'BINARY_MATCH')
         self.assertTrue(binary_match[1].find('zb.zzz') > 0)
 
+    def test_weird_chars(self):
+        # .rb files have some weird characters in them - this is a sanity
+        # test that shows that pss won't crash while decoding these files
+        #
+        pss_run(
+            roots=[self.testdir1],
+            pattern='ttt',
+            output_formatter=self.of,
+            include_types=['ruby'])
+
     def test_include_types(self):
         rootdir = path_to_testdir('test_types')
         def outputs(filename):
