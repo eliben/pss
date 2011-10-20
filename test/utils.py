@@ -7,6 +7,7 @@
 # This code is in the public domain
 #-------------------------------------------------------------------------------
 import os
+import platform
 
 
 def path_to_testdir(testdir_name):
@@ -34,4 +35,13 @@ def path_relative_to_dir(path, dir):
             raise RuntimeError('no dir in path')
         path = head
     return os.path.join(*reversed(partial_path_elems))
+
+
+def filter_out_path(path):
+    """ Some paths have to be filtered out to successully compare to pss's
+        output.
+    """
+    if 'file_bad_symlink' in path and platform.system() == 'Windows':
+        return True
+    return False
 

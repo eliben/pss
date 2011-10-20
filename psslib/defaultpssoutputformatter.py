@@ -9,6 +9,7 @@
 import sys
 
 from .outputformatter import OutputFormatter
+from .py3compat import tostring
 from . import colorama
 
 
@@ -81,7 +82,7 @@ class DefaultPssOutputFormatter(OutputFormatter):
     def _emit(self, str):
         """ Write the string to the stream.
         """
-        self.stream.write(str)
+        self.stream.write(tostring(str))
 
     def _emit_colored(self, str, style):
         """ Emit the given string with the given colorama style.

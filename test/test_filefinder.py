@@ -5,7 +5,7 @@ import unittest
 sys.path.insert(0, '.')
 sys.path.insert(0, '..')
 from psslib.filefinder import FileFinder
-from test.utils import path_to_testdir, path_relative_to_dir
+from test.utils import path_to_testdir, path_relative_to_dir, filter_out_path
 
 
 class TestFileFinder(unittest.TestCase):
@@ -35,7 +35,8 @@ class TestFileFinder(unittest.TestCase):
         """
         ff = FileFinder(roots, **kwargs)
         return sorted(list(path_relative_to_dir(path, 'simple_filefinder')
-                                for path in ff.files()))
+                                for path in ff.files()
+                                if not filter_out_path(path)))
 
     def assertPathsEqual(self, first, second):
         """ Compare lists of paths together, normalizing them for portability.

@@ -5,7 +5,7 @@ sys.path.insert(0, '.')
 sys.path.insert(0, '..')
 from psslib.driver import pss_run, PssOnlyFindFilesOption
 from psslib.outputformatter import OutputFormatter
-from test.utils import path_to_testdir, path_relative_to_dir
+from test.utils import path_to_testdir, path_relative_to_dir, filter_out_path
 
 
 class MockOutputFormatter(OutputFormatter):
@@ -181,7 +181,8 @@ class TestDriver(unittest.TestCase):
             include_types=['cc'],
             only_find_files=True)
 
-        self.assertEqual(sorted(self.of.output),
+        self.assertEqual(sorted(e for e in self.of.output 
+                                  if not filter_out_path(e[1])),
             self._build_found_list([
                 'testdir1/filea.c', 'testdir1/filea.h',
                 'testdir1/subdir1/filey.c', 'testdir1/subdir1/filez.c']))
@@ -221,7 +222,8 @@ class TestDriver(unittest.TestCase):
             only_find_files=True,
             only_find_files_option=PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES)
 
-        self.assertEqual(sorted(self.of.output),
+        self.assertEqual(sorted(e for e in self.of.output 
+                                  if not filter_out_path(e[1])),
             self._build_found_list([
                 'testdir1/subdir1/filey.c', 'testdir1/subdir1/filez.c']))
         
