@@ -197,7 +197,7 @@ def pss_run(roots,
         # full work.
         #
         with open(filepath, 'rb') as fileobj:
-            if not _known_file_type(filepath) and not istextfile(fileobj):
+            if not istextfile(fileobj):
                 # istextfile does some reading on fileobj, so rewind it
                 fileobj.seek(0)
                 matches = list(matcher.match_file(fileobj, max_match_count=1))
