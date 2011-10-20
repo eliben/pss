@@ -74,13 +74,14 @@ class ContentMatcher(object):
                 for mo in self.regex.finditer(line):
                     col_ranges.append(mo.span())
                 if len(col_ranges) > 0:
+                    nmatch += 1
                     yield MatchResult(line, lineno, col_ranges)
             else:
                 # invert match: only return lines that don't match the
                 # pattern anywhere
                 if not self.regex.search(line):
+                    nmatch += 1
                     yield MatchResult(line, lineno, [])
-            nmatch += 1
             if nmatch >= max_match_count:
                 break
 

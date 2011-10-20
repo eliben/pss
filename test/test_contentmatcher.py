@@ -34,6 +34,7 @@ class TestContentMatcher(unittest.TestCase):
         # exp_matches is a list of pairs: lineno, list of column ranges
         matches = list(cm.match_file(StringIO(text)))
         textlines = text.split('\n')
+        self.assertEqual(len(matches), len(exp_matches))
         for n, exp_match in enumerate(exp_matches):
             exp_matchresult = MatchResult(
                     textlines[exp_match[0] - 1] + '\n',
@@ -74,6 +75,10 @@ class TestContentMatcher(unittest.TestCase):
         cm = ContentMatcher('line', max_match_count=2)
         self.assertMatches(cm, text1, 
                 [(1, [(5, 9)]), (2, [(8, 12)])])
+
+        cm = ContentMatcher('a', max_match_count=1)
+        self.assertMatches(cm, text1,
+                [(2, [(0, 1)])])
     
     def test_whole_words(self):
         cm = ContentMatcher('pie', whole_words=True)
