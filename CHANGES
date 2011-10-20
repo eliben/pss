@@ -3,6 +3,7 @@ Changelog
 
 + Version 0.33 (??.10.2011)
 
+  - Fixed a problem with the max-count option that was broken in some cases.
   - Fixed some encoding issues, and better handling of non-ASCII files when
     running on Python 3 (also reported in Issues #10 and #12). 
   - Issue #2: pss will now ignore broken symlinks (won't list them or try to
