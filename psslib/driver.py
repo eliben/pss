@@ -90,7 +90,7 @@ def pss_run(roots,
         add_ignored_dirs=[],
         remove_ignored_dirs=[],
         recurse=True,
-        type_pattern=None, # for -G
+        type_pattern=None, # for -G and -g
         include_types=[],  # empty means all known types are included
         exclude_types=[],
         ignore_case=False,
@@ -135,7 +135,8 @@ def pss_run(roots,
 
     if type_pattern is not None:
         search_file_patterns.add(type_pattern)
-    elif not search_all_files_and_dirs and not search_all_types:
+
+    if not search_all_files_and_dirs and not search_all_types:
         if include_types:
             search_extensions.clear()
             for typ in include_types:

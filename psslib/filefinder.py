@@ -75,10 +75,10 @@ class FileFinder(object):
                         del subdirs[:]
                         continue
                     for filename in files:
-                        if self._file_is_found(filename):
-                            fullpath = os.path.join(dirpath, filename)
-                            if os.path.exists(fullpath):
-                                yield fullpath
+                        fullpath = os.path.join(dirpath, filename)
+                        if (    self._file_is_found(fullpath) and 
+                                os.path.exists(fullpath)):
+                            yield fullpath
                     if not self.recurse:
                         break
 
@@ -100,20 +100,15 @@ class FileFinder(object):
             if ext not in self.search_extensions:
                 return False
 
-        # Split the filename to have the suffix (the part after any '/')
-        # available
-        #
-        path_prefix, path_suffix = os.path.split(filename)
-
         for ignored_pattern in self.ignore_file_patterns:
-            if ignored_pattern.search(path_suffix):
+            if ignored_pattern.search(filename):
                 return False
 
         # If search_file_patterns is non-empty, the file has to match at least
         # one of the patterns.
         #
         if (len(self.search_file_patterns) > 0 and
-            not any(p.search(path_suffix) for p in self.search_file_patterns)
+            not any(p.search(filename) for p in self.search_file_patterns)
             ):
             return False
 

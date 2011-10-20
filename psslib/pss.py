@@ -32,6 +32,7 @@ def main():
     elif options.find_files_matching_pattern is not None:
         only_find_files = True
         search_pattern_expected = False
+        options.type_pattern = options.find_files_matching_pattern
     elif options.find_files_with_matches:
         only_find_files = True
         only_find_files_option = PssOnlyFindFilesOption.FILES_WITH_MATCHES

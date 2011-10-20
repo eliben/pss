@@ -236,7 +236,7 @@ class TestDriver(unittest.TestCase):
         
         binary_match = self.of.output[-1]
         self.assertEqual(binary_match[0], 'BINARY_MATCH')
-        self.assertTrue(binary_match[1].find('zb.zzz') > 0)
+        self.assertTrue(binary_match[1].find('zb.erl') > 0)
 
     def test_weird_chars(self):
         # .rb files have some weird characters in them - this is a sanity
