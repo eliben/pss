@@ -9,8 +9,7 @@ Pre-requisites
 --------------
 
 **pss** needs only Python to run. It works with with Python versions 2.6, 2.7 and 3.2 on
-Linux and Windows (though I don't see a reason it shouldn't work on other platforms as
-well).
+Linux and Windows. Some testing was done on on Mac OS X and FreeBSD as well.
 
 Installing
 ----------
@@ -22,6 +21,21 @@ When you unzip the source distribution, run::
 Alternatively, **pss** can be installed from PyPi (Python package index)::
 
     > pip install pss
+
+Running without installing
+--------------------------
+
+**pss** supports direct invocation even without installing it. This may
+be useful if you're on a machine without administrator rights, or want to
+experiment with a source distribution of **pss**.
+
+Just unzip the **pss** distribution into some directory. Let's assume its full
+path is ``/path/to/pss``. You can now run::
+
+    > /path/to/python /path/to/pss
+
+And this will invoke **pss** as expected. This command can also be tied to an
+alias or placed in a shell (or batch) script for convenience.
 
 How to use it?
 --------------

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-+ Version 0.33 (??.10.2011)
++ Version 0.33 (21.10.2011)
 
   - Fixed a problem with the max-count option that was broken in some cases.
   - Fixed some encoding issues, and better handling of non-ASCII files when
