@@ -17,8 +17,17 @@ from psslib.driver import (pss_run, TYPE_EXTENSION_MAP,
         IGNORED_DIRS, IGNORED_FILE_PATTERNS, PssOnlyFindFilesOption)
 
 
-def main():
-    options, args, optparser = parse_cmdline(sys.argv[1:])
+def main(argv=sys.argv, output_formatter=None):
+    """ Main pss
+
+        argv:
+            Program arguments, similar to sys.argv
+
+        output_formatter:
+            An OutputFormatter object to emit output to. Set to None for
+            the default.
+    """
+    options, args, optparser = parse_cmdline(argv[1:])
 
     # Handle the various "only find files" options.
     #
@@ -84,7 +93,7 @@ def main():
     try:
         pss_run(roots=roots,
                 pattern=pattern,
-                output_formatter=None, # use default
+                output_formatter=output_formatter,
                 only_find_files=only_find_files,
                 only_find_files_option=only_find_files_option,
                 search_all_types=options.all_types,
