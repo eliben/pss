@@ -3,6 +3,7 @@ recursive-include scripts *.py pss
 prune test
 include README
 include LICENSE
+include CHANGES
 
 
 
