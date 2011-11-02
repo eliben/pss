@@ -62,9 +62,6 @@ TYPE_EXTENSION_MAP = {
         'xml':              ['.xml', '.dtd', '.xslt', '.ent'],
         'yaml':             ['.yaml', '.yml'],
 }
-ALL_KNOWN_EXTENSIONS = set(
-        ext for extensions in TYPE_EXTENSION_MAP.values() 
-            for ext in extensions)
 
 IGNORED_DIRS = set([   
     'blib', '_build', '.bzr', '.cdv', 'cover_db',
@@ -266,16 +263,6 @@ def pss_run(roots,
                 for match in matches:
                     output_formatter.matching_line(match)
             output_formatter.end_matches_in_file(filepath)
-
-
-def _known_file_type(filename):
-    """ Is the given file something we know about?
-        Judges solely based on the file name and extension.
-    """
-    if os.path.splitext(filename)[1] in ALL_KNOWN_EXTENSIONS:
-        return True
-    else:
-        return False
 
 
 def _pattern_has_uppercase(pattern):

@@ -9,12 +9,15 @@
 import os
 import re
 
+from .utils import istextfile
+
 
 class FileFinder(object):
     def __init__(self,
             roots,
             recurse=True,
             ignore_dirs=[],
+            find_only_text_files=False,
             search_extensions=[],
             ignore_extensions=[],
             search_file_patterns=[],
@@ -31,6 +34,12 @@ class FileFinder(object):
             ignore_dirs:
                 Iterable of directory names that will be ignored during the
                 search
+
+            find_only_text_files:
+                If True, uses a heuristic to determine which files are text
+                and which are binary, and ignores the binary files.
+                Warning: this option makes FileFinder actually open the files
+                and read a portion from them, so it is quite slow.
 
             search_extensions:
                 If non-empty, only files with extensions listed here will be
@@ -54,6 +63,7 @@ class FileFinder(object):
         self.search_extensions = set(search_extensions)
         self.ignore_extensions = set(ignore_extensions)
         self.ignore_dirs = set(ignore_dirs)
+        self.find_only_text_files = find_only_text_files
         self.search_file_patterns = [re.compile(p) for p in search_file_patterns]
         self.ignore_file_patterns = [re.compile(p) for p in ignore_file_patterns]
 
@@ -71,7 +81,6 @@ class FileFinder(object):
                     if dirname in self.ignore_dirs:
                         # This dir should be ignored, so remove all its subdirs
                         # from the walk and go to next dir.
-                        #
                         del subdirs[:]
                         continue
                     for filename in files:
@@ -87,7 +96,6 @@ class FileFinder(object):
         """
         # Tries to eliminate the file by all the given search rules. If the 
         # file survives until the end, it's found
-        #
         root, ext = os.path.splitext(filename)
 
         if ext in self.ignore_extensions:
@@ -96,7 +104,6 @@ class FileFinder(object):
         if len(self.search_extensions) > 0:
             # If search_extensions is non-empty, only files with extensions
             # listed there can be found
-            #
             if ext not in self.search_extensions:
                 return False
 
@@ -106,11 +113,22 @@ class FileFinder(object):
 
         # If search_file_patterns is non-empty, the file has to match at least
         # one of the patterns.
-        #
         if (len(self.search_file_patterns) > 0 and
             not any(p.search(filename) for p in self.search_file_patterns)
             ):
             return False
+
+        # If find_only_text_files, open the file and try to determine whether
+        # it's text or binary.
+        if self.find_only_text_files:
+            try:
+                with open(filename, 'rb') as f:
+                    if not istextfile(f):
+                        return False
+            except OSError:
+                # If there's a problem opening or reading the file, don't, we
+                # don't need it.
+                return False
 
         return True
 

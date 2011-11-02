@@ -85,6 +85,26 @@ class TestFileFinder(unittest.TestCase):
                 [   'simple_filefinder/a.c',
                     'simple_filefinder/c.c'])
 
+    def test_text_only(self):
+        # all .F90 files
+        self.assertPathsEqual(
+                self._find_files(
+                    [self.testdir_simple],
+                    search_extensions=['.F90'],
+                    find_only_text_files=False),
+                [   'simple_filefinder/truesubdir/bin1.F90',
+                    'simple_filefinder/truesubdir/txt1.F90',
+                    'simple_filefinder/truesubdir/txt2.F90'])
+
+        # text .F90 files
+        self.assertPathsEqual(
+                self._find_files(
+                    [self.testdir_simple],
+                    search_extensions=['.F90'],
+                    find_only_text_files=True),
+                [   'simple_filefinder/truesubdir/txt1.F90',
+                    'simple_filefinder/truesubdir/txt2.F90'])
+
     def test_ignore_dirs(self):
         self.assertPathsEqual(
                 self._find_files(
@@ -95,19 +115,19 @@ class TestFileFinder(unittest.TestCase):
                     'simple_filefinder/c.c'])
 
     def test_file_patterns(self):
-        # search ignoring .c and .cpp on purpose, to get a small amount of 
+        # search ignoring known extensions on purpose, to get a small amount of 
         # results
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
-                    ignore_extensions=['.c', '.cpp'],
+                    ignore_extensions=['.c', '.cpp', '.F90'],
                     ignore_file_patterns=['~$']),
                 ['simple_filefinder/#z.c#'])
 
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
-                    ignore_extensions=['.c', '.cpp'],
+                    ignore_extensions=['.c', '.cpp', '.F90'],
                     ignore_file_patterns=['~$', '#.+#$']),
                 [])
 
