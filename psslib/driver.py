@@ -30,7 +30,7 @@ TYPE_EXTENSION_MAP = {
         'css':              ['.css'],
         'elisp':            ['.elisp'],
         'erlang':           ['.erl', '.hrl'],
-        'fortran':          ['.f', '.f77', '.f90', '.f95', '.f03', '.for', '.ftn', '.fpp'],
+        'fortran':          ['.f', '.f77', '.f90', '.F90', '.f95', '.F95', '.f03', '.for', '.ftn', '.fpp'],
         'haskell':          ['.hs', '.lhs'],
         'hh':               ['.h'],
         'html':             ['.htm', '.html', '.shtml', '.xhtml'],

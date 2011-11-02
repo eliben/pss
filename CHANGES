@@ -1,14 +1,20 @@
 Changelog
 =========
 
++ Version 0.34 (??)
+
+  - Issue #16: Add F90 and F95 extensions for Fortran
+
 + Version 0.33 (21.10.2011)
 
+  - Issue #7: allow simple invocation of pss without installing, by directly
+    passing the source directory to a Python interpreter.
   - Fixed a problem with the max-count option that was broken in some cases.
   - Fixed some encoding issues, and better handling of non-ASCII files when
     running on Python 3 (also reported in Issues #10 and #12). 
   - Issue #2: pss will now ignore broken symlinks (won't list them or try to
     read them).
-  - Issue #5: When the output of pss is redirected, by default it colors won't
+  - Issue #5: When the output of pss is redirected, by default colors won't
     be applied (unless forced with --color).
   - Issue #6: Support -l and -L options (only show files with/without matches)
   - Issue #8: When Ctrl+C is hit, print a succinct error message instead of 
