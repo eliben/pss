@@ -13,7 +13,7 @@ import optparse
 
 
 from psslib import __version__
-from psslib.driver import (pss_run, TYPE_EXTENSION_MAP,
+from psslib.driver import (pss_run, TYPE_MAP,
         IGNORED_DIRS, IGNORED_FILE_PATTERNS, PssOnlyFindFilesOption)
 
 
@@ -285,7 +285,7 @@ def parse_cmdline(cmdline_args):
         else:
             parser.values.typelist = [optname]
 
-    for t in TYPE_EXTENSION_MAP:
+    for t in TYPE_MAP:
         optparser.add_option('--' + t,
             help=optparse.SUPPRESS_HELP,
             action='callback',
@@ -309,10 +309,10 @@ search and --no<type> excludes it.
 def print_help_types():
     print(HELP_TYPES_PREAMBLE)
 
-    for typ in sorted(TYPE_EXTENSION_MAP.keys()):
+    for typ in sorted(TYPE_MAP.keys()):
         typestr = '--[no]%s' % typ
         print('    %-21s' % typestr, end='')
-        print(' '.join(TYPE_EXTENSION_MAP[typ]))
+        print(' '.join(TYPE_MAP[typ].value))
     print()
 
 

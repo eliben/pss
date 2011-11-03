@@ -120,14 +120,14 @@ class TestFileFinder(unittest.TestCase):
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
-                    ignore_extensions=['.c', '.cpp', '.F90'],
+                    ignore_extensions=['.c', '.cpp', '.F90', '.scala', '.bonkers'],
                     ignore_file_patterns=['~$']),
                 ['simple_filefinder/#z.c#'])
 
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
-                    ignore_extensions=['.c', '.cpp', '.F90'],
+                    ignore_extensions=['.c', '.cpp', '.F90', '.scala', '.bonkers'],
                     ignore_file_patterns=['~$', '#.+#$']),
                 [])
 
