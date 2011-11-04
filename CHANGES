@@ -3,10 +3,11 @@ Changelog
 
 + Version 0.34 (??.11.2011)
 
-  - Issue #20: Make -g cooperate with -a as expected
-  - Issue #16: Add F90 and F95 extensions for Fortran
+  - Added __pycache__ to the list of directories ignored by default.
+  - Issue #20: Make -g cooperate with -a as expected.
+  - Issue #16: Add F90 and F95 extensions for Fortran.
   - Issue #3: Allow specifying file types using patterns, not just extensions.
-    Also adds new types: make, rake, cmake
+    Also adds new types: make, rake, cmake.
 
 + Version 0.33 (21.10.2011)
 
