@@ -201,12 +201,12 @@ def pss_run(roots,
         for typ in exclude_types:
             if TYPE_MAP[typ].kind == TypeValue.PATTERN:
                 ignore_file_patterns.update(TYPE_MAP[typ].value)
-            
-        if type_pattern is not None:
-            search_file_patterns.add(type_pattern)
     else:
         # all files are searched
         pass
+
+    if type_pattern is not None:
+        search_file_patterns.add(type_pattern)
 
     if not search_all_files_and_dirs and not search_all_types:
         if include_types:

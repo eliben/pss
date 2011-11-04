@@ -126,7 +126,7 @@ class FileFinder(object):
                     if not istextfile(f):
                         return False
             except OSError:
-                # If there's a problem opening or reading the file, don't, we
+                # If there's a problem opening or reading the file, we
                 # don't need it.
                 return False
 

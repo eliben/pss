@@ -120,10 +120,12 @@ class TestPssMain(unittest.TestCase):
                 ['testdir1/filea.c', 'testdir1/filea.h',
                 'testdir1/subdir1/filey.c', 'testdir1/subdir1/filez.c'])
 
+        self.of = MockOutputFormatter('testdir1')
         self._run_main(['--make', '-f'])
         self.assertFoundFiles(self.of,
                 ['testdir1/Makefile', 'testdir1/subdir1/Makefile'])
 
+        self.of = MockOutputFormatter('testdir1')
         self._run_main(['--cmake', '-f'])
         self.assertFoundFiles(self.of,
                 ['testdir1/CMakeLists.txt'])
@@ -132,6 +134,15 @@ class TestPssMain(unittest.TestCase):
         self._run_main(['--cc', '-g', r'.*y\.'])
         self.assertFoundFiles(self.of,
                 ['testdir1/subdir1/filey.c'])
+
+        self.of = MockOutputFormatter('testdir1')
+        self._run_main(['-g', r'\.qqq'])
+        self.assertFoundFiles(self.of, [])
+
+        self.of = MockOutputFormatter('testdir1')
+        self._run_main(['-a', '-g', r'\.qqq'])
+        self.assertFoundFiles(self.of, 
+                ['testdir1/subdir1/ppp.qqq'])
 
     def test_only_find_files_l(self):
         self._run_main(['--cc', 'abc', '-l'])
