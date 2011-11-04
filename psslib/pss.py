@@ -280,7 +280,8 @@ def parse_cmdline(cmdline_args):
         help='Do not recurse into subdirectories')
     group_inclusion.add_option('-t', '--textonly', '--nobinary',
         action='store_true', dest='textonly', default=False,
-        help='Restrict the search to only textual files')
+        help='''Restrict the search to only textual files.
+        Warning: with this option the search is likely to run much slower''')
     group_inclusion.add_option('-G',
         action='store', dest='type_pattern', metavar='REGEX',
         help='Only search files that match REGEX')
