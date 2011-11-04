@@ -111,6 +111,8 @@ def main(argv=sys.argv, output_formatter=None):
                 literal_pattern=options.literal,
                 max_match_count=options.max_count,
                 do_colors=options.do_colors,
+                match_color_str=options.color_match,
+                filename_color_str=options.color_filename,
                 prefix_filename_to_file_matches=options.prefix_filename,
                 show_column_of_first_match=options.show_column,
                 ncontext_before=ncontext_before,
@@ -233,6 +235,12 @@ def parse_cmdline(cmdline_args):
     group_output.add_option('--nocolor',
         action='store_false', dest='do_colors',
         help='Do not highlight the matching text (this is the default when output is redirected)')
+    group_output.add_option('--color-match', metavar='FORE,BACK,STYLE',
+        action='store', dest='color_match',
+        help='Set the color for matches')
+    group_output.add_option('--color-filename', metavar='FORE,BACK,STYLE',
+        action='store', dest='color_filename',
+        help='Set the color for emitted filenames')
     optparser.add_option_group(group_output)
 
     group_filefinding = optparse.OptionGroup(optparser, 'File finding')

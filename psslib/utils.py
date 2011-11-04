@@ -7,6 +7,7 @@
 # This code is in the public domain
 #-------------------------------------------------------------------------------
 from .py3compat import int2byte
+from . import colorama
 
 
 _text_characters = (
@@ -31,4 +32,42 @@ def istextfile(fileobj, blocksize=512):
     # occurrences of _text_characters from the block
     nontext = block.translate(None, _text_characters)
     return float(len(nontext)) / len(block) <= 0.30
+
+
+def decode_colorama_color(color_str):
+    """ Decode a Colorama color encoded in a string in the following format:
+        FORE,BACK,STYLE
+
+        FORE: foreground color (one of colorama.Fore)
+        BACK: background color (one of colorama.Back)
+        STYLE: style (one of colorama.Style)
+
+        For example, for CYAN text on GREEN background with a DIM style
+        (pretty, aye?) the input should be: CYAN,GREEN,DIM
+
+        BACK and STYLE are optional. If STYLE is not specified, the default is
+        colorama.Style.NORMAL. If BACK is not specified, the default is
+        colorama.Back.BLACK.
+
+        Return the colorama color, or None if there's a problem decoding.
+    """
+    if not color_str:
+        return None
+
+    # Split the input and add defaults. After this, parts is a 3-element list
+    parts = color_str.split(',')
+    if len(parts) == 1:
+        parts.append('RESET')
+    if len(parts) == 2:
+        parts.append('NORMAL')
+
+    try:
+        c_fore = getattr(colorama.Fore, parts[0])
+        c_back = getattr(colorama.Back, parts[1])
+        c_style = getattr(colorama.Style, parts[2])
+        return c_fore + c_back + c_style
+    except AttributeError:
+        return None
+
+
 

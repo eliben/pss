@@ -10,22 +10,34 @@ import sys
 
 from .outputformatter import OutputFormatter
 from .py3compat import tostring
+from .utils import decode_colorama_color
 from . import colorama
 
 
 class DefaultPssOutputFormatter(OutputFormatter):
     """ The default output formatter used by pss.
+
+        do_colors: Should colors be used?
+
+        match_color_str/filename_color_str:
+            Color strings in the format expected by decode_colorama_color
+            for matches and filenames. If None, default colors will be used.
     """
     def __init__(self,
             do_colors=True,
+            match_color_str=None,
+            filename_color_str=None,
             prefix_filename_to_file_matches=True,
             show_column_of_first_match=False,
             stream=None):
         self.do_colors = do_colors
         self.prefix_filename_to_file_matches = prefix_filename_to_file_matches
         self.show_column_of_first_match = show_column_of_first_match
-        self.style_filename = colorama.Fore.MAGENTA + colorama.Style.BRIGHT
-        self.style_match = colorama.Fore.BLACK + colorama.Back.YELLOW
+
+        self.style_match = (decode_colorama_color(match_color_str) or
+                            colorama.Fore.BLACK + colorama.Back.YELLOW)
+        self.style_filename = (decode_colorama_color(filename_color_str) or
+                               colorama.Fore.MAGENTA + colorama.Style.BRIGHT)
 
         colorama.init()
 

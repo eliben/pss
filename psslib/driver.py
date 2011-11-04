@@ -153,6 +153,8 @@ def pss_run(roots,
         literal_pattern=False,
         max_match_count=sys.maxsize,
         do_colors=True,
+        match_color_str=None,
+        filename_color_str=None,
         prefix_filename_to_file_matches=True,
         show_column_of_first_match=False,
         ncontext_before=0,
@@ -168,9 +170,11 @@ def pss_run(roots,
     #
     if output_formatter is None:
         output_formatter = DefaultPssOutputFormatter(
-            do_colors,
-            prefix_filename_to_file_matches,
-            show_column_of_first_match)
+            do_colors=do_colors,
+            match_color_str=match_color_str,
+            filename_color_str=filename_color_str,
+            prefix_filename_to_file_matches=prefix_filename_to_file_matches,
+            show_column_of_first_match=show_column_of_first_match)
 
     # Set up the FileFinder
     #
