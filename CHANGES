@@ -3,6 +3,7 @@ Changelog
 
 + Version 0.34 (??.11.2011)
 
+  - Issue #23: added 'txt' type for '.txt' and '.text' extensions
   - Added 'rst' type for '.rst' and '.rest' extensions (Restructured Text)
   - Issue #17: customize the colors used by pss for matches and filenames.
   - Added __pycache__ to the list of directories ignored by default.

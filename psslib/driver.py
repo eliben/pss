@@ -111,6 +111,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.tex', '.cls', '.sty']),
     'tt':
         TypeValue(TypeValue.EXTENSION, ['.tt', '.tt2', '.ttml']),
+    'txt':
+        TypeValue(TypeValue.EXTENSION, ['.txt', '.text']),
     'vb':
         TypeValue(TypeValue.EXTENSION, ['.bas', '.cls', '.frm', '.ctl', '.vb', '.resx']),
     'vim':

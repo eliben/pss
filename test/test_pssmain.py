@@ -18,6 +18,7 @@ from test.utils import (
 
 class TestPssMain(unittest.TestCase):
     testdir1 = path_to_testdir('testdir1')
+    testdir2 = path_to_testdir('testdir2')
     of = None
 
     def setUp(self):
@@ -129,6 +130,11 @@ class TestPssMain(unittest.TestCase):
         self._run_main(['--cmake', '-f'])
         self.assertFoundFiles(self.of,
                 ['testdir1/CMakeLists.txt'])
+
+        self.of = MockOutputFormatter('testdir2')
+        self._run_main(['--txt', '-f'], dir=self.testdir2)
+        self.assertFoundFiles(self.of,
+                ['testdir2/sometext.txt', 'testdir2/othertext.txt'])
 
     def test_only_find_files_g(self):
         self._run_main(['--cc', '-g', r'.*y\.'])
