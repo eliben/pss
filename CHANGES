@@ -3,6 +3,8 @@ Changelog
 
 + Version 0.34 (??.11.2011)
 
+  - Issue #13: added the '-t/--textonly/--nobinary' option to restrict the
+    search to textual files.
   - Issue #23: added 'txt' type for '.txt' and '.text' extensions
   - Added 'rst' type for '.rst' and '.rest' extensions (Restructured Text)
   - Issue #17: customize the colors used by pss for matches and filenames.

@@ -147,6 +147,7 @@ def pss_run(roots,
         add_ignored_dirs=[],
         remove_ignored_dirs=[],
         recurse=True,
+        textonly=False,
         type_pattern=None, # for -G and -g
         include_types=[],  # empty means all known types are included
         exclude_types=[],
@@ -236,6 +237,7 @@ def pss_run(roots,
     filefinder = FileFinder(
             roots=roots,
             recurse=recurse,
+            find_only_text_files=textonly,
             ignore_dirs=ignore_dirs,
             search_extensions=search_extensions,
             ignore_extensions=ignore_extensions,

@@ -101,6 +101,7 @@ def main(argv=sys.argv, output_formatter=None):
                 add_ignored_dirs=options.ignored_dirs or [],
                 remove_ignored_dirs=options.noignored_dirs or [],
                 recurse=options.recurse,
+                textonly=options.textonly,
                 type_pattern=options.type_pattern,
                 include_types=include_types,
                 exclude_types=exclude_types,
@@ -277,6 +278,9 @@ def parse_cmdline(cmdline_args):
     group_inclusion.add_option('-n', '--no-recurse',
         action='store_false', dest='recurse',
         help='Do not recurse into subdirectories')
+    group_inclusion.add_option('-t', '--textonly', '--nobinary',
+        action='store_true', dest='textonly', default=False,
+        help='Restrict the search to only textual files')
     group_inclusion.add_option('-G',
         action='store', dest='type_pattern', metavar='REGEX',
         help='Only search files that match REGEX')
