@@ -91,6 +91,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.py']),
     'rake':
         TypeValue(TypeValue.PATTERN, ['[Rr]akefile']),
+    'rst':
+        TypeValue(TypeValue.EXTENSION, ['.rst', '.rest']),
     'ruby':
         TypeValue(TypeValue.EXTENSION, ['.rb', '.rhtml', '.rjs', '.rxml', '.erb', '.rake']),
     'scala':

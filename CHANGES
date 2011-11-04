@@ -3,6 +3,8 @@ Changelog
 
 + Version 0.34 (??.11.2011)
 
+  - Added 'rst' type for '.rst' and '.rest' extensions (Restructured Text)
+  - Issue #17: customize the colors used by pss for matches and filenames.
   - Added __pycache__ to the list of directories ignored by default.
   - Issue #20: Make -g cooperate with -a as expected.
   - Issue #16: Add F90 and F95 extensions for Fortran.
