@@ -160,6 +160,7 @@ def pss_run(roots,
         do_colors=True,
         match_color_str=None,
         filename_color_str=None,
+        do_break=True,
         prefix_filename_to_file_matches=True,
         show_column_of_first_match=False,
         ncontext_before=0,
@@ -349,7 +350,9 @@ def pss_run(roots,
                 # just show the matches without considering context
                 for match in matches:
                     output_formatter.matching_line(match)
-            output_formatter.end_matches_in_file(filepath)
+
+            if do_break:
+                output_formatter.end_matches_in_file(filepath)
 
 
 def _pattern_has_uppercase(pattern):

@@ -40,6 +40,16 @@ class TestPssMain(unittest.TestCase):
                     [   ('MATCH', (4, [(18, 21)])),
                         ('MATCH', (14, [(15, 18)]))]))
 
+    def test_no_break(self):
+        # same test as above but with --nobreak
+        self._run_main(['abc', '--ada', '--nobreak'])
+        self.assertEqual(self.of.output,
+                self._gen_outputs_in_file(
+                    'testdir1/subdir1/someada.adb',
+                    [   ('MATCH', (4, [(18, 21)])),
+                        ('MATCH', (14, [(15, 18)]))])
+                        [:-1]) # strip off END_MATCHES
+
     def test_context_separate(self):
         # context set to +/-3, so it's not "merged" between the two matches
         # and stays separate, with a context separator
