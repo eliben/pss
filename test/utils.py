@@ -68,11 +68,11 @@ class MockOutputFormatter(OutputFormatter):
         self.output.append(
             ('END_MATCHES', os.path.normpath(relpath)))
         
-    def matching_line(self, matchresult):
+    def matching_line(self, matchresult, filename):
         self.output.append(('MATCH',
             (matchresult.matching_lineno, matchresult.matching_column_ranges)))
 
-    def context_line(self, line, lineno):
+    def context_line(self, line, lineno, filename):
         self.output.append(('CONTEXT', lineno))
 
     def context_separator(self):

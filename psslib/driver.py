@@ -161,6 +161,7 @@ def pss_run(roots,
         match_color_str=None,
         filename_color_str=None,
         do_break=True,
+        do_heading=True,
         prefix_filename_to_file_matches=True,
         show_column_of_first_match=False,
         ncontext_before=0,
@@ -179,6 +180,7 @@ def pss_run(roots,
             do_colors=do_colors,
             match_color_str=match_color_str,
             filename_color_str=filename_color_str,
+            do_heading=do_heading,
             prefix_filename_to_file_matches=prefix_filename_to_file_matches,
             show_column_of_first_match=show_column_of_first_match)
 
@@ -339,17 +341,17 @@ def pss_run(roots,
                         prev_was_blank = True
                         continue
                     elif result == LINE_MATCH:
-                        output_formatter.matching_line(match)
+                        output_formatter.matching_line(match, filepath)
                     elif result == LINE_CONTEXT:
                         if prev_was_blank and had_context:
                             output_formatter.context_separator()
-                        output_formatter.context_line(line, n)
+                        output_formatter.context_line(line, n, filepath)
                         had_context = True
                     prev_was_blank = False
             else:
                 # just show the matches without considering context
                 for match in matches:
-                    output_formatter.matching_line(match)
+                    output_formatter.matching_line(match, filepath)
 
             if do_break:
                 output_formatter.end_matches_in_file(filepath)

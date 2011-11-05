@@ -27,11 +27,15 @@ class DefaultPssOutputFormatter(OutputFormatter):
             do_colors=True,
             match_color_str=None,
             filename_color_str=None,
+            do_heading=True,
             prefix_filename_to_file_matches=True,
             show_column_of_first_match=False,
             stream=None):
         self.do_colors = do_colors
         self.prefix_filename_to_file_matches = prefix_filename_to_file_matches
+        self.do_heading = do_heading
+        self.inline_filename = (True if prefix_filename_to_file_matches and not do_heading
+                                else False)
         self.show_column_of_first_match = show_column_of_first_match
 
         self.style_match = (decode_colorama_color(match_color_str) or
@@ -48,14 +52,16 @@ class DefaultPssOutputFormatter(OutputFormatter):
         self.stream = stream or sys.stdout
 
     def start_matches_in_file(self, filename):
-        if self.prefix_filename_to_file_matches:
+        if self.prefix_filename_to_file_matches and self.do_heading:
             self._emit_colored(filename, self.style_filename)
             self._emitline()
 
     def end_matches_in_file(self, filename):
         self._emitline()
 
-    def matching_line(self, matchresult):
+    def matching_line(self, matchresult, filepath):
+        if self.inline_filename:
+            self._emit('%s:' % filepath)
         self._emit('%s:' % matchresult.matching_lineno)
         first_match_range = matchresult.matching_column_ranges[0]
         if self.show_column_of_first_match:
@@ -76,7 +82,9 @@ class DefaultPssOutputFormatter(OutputFormatter):
                 chunk = line[match_end:next_start]
             self._emit(chunk)
 
-    def context_line(self, line, lineno):
+    def context_line(self, line, lineno, filepath):
+        if self.inline_filename:
+            self._emit('%s-' % filepath)
         self._emit('%s-' % lineno)
         if self.show_column_of_first_match:
             self._emit('1-')

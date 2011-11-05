@@ -115,6 +115,7 @@ def main(argv=sys.argv, output_formatter=None):
                 match_color_str=options.color_match,
                 filename_color_str=options.color_filename,
                 do_break=options.do_break,
+                do_heading=options.do_heading,
                 prefix_filename_to_file_matches=options.prefix_filename,
                 show_column_of_first_match=options.show_column,
                 ncontext_before=ncontext_before,
@@ -246,6 +247,9 @@ def parse_cmdline(cmdline_args):
     group_output.add_option('--nobreak',
         action='store_false', dest='do_break', default=True,
         help='Print no break between results from different files')
+    group_output.add_option('--noheading',
+        action='store_false', dest='do_heading', default=True,
+        help="Print no file name heading above each file's results")
     optparser.add_option_group(group_output)
 
     group_filefinding = optparse.OptionGroup(optparser, 'File finding')
