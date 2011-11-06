@@ -47,8 +47,8 @@ class TestPssMain(unittest.TestCase):
                 self._gen_outputs_in_file(
                     'testdir1/subdir1/someada.adb',
                     [   ('MATCH', (4, [(18, 21)])),
-                        ('MATCH', (14, [(15, 18)]))])
-                        [:-1]) # strip off END_MATCHES
+                        ('MATCH', (14, [(15, 18)]))],
+                    add_end=False))
 
     def test_context_separate(self):
         # context set to +/-3, so it's not "merged" between the two matches
@@ -230,7 +230,7 @@ class TestPssMain(unittest.TestCase):
             argv=[''] + args + [dir or self.testdir1],
             output_formatter=output_formatter or self.of)
         
-    def _gen_outputs_in_file(self, filename, outputs):
+    def _gen_outputs_in_file(self, filename, outputs, add_end=True):
         """ Helper method for constructing a list of output pairs in the format
             of MockOutputFormatter, delimited from both ends with START_MATCHES
             and END_MATCHES for the given filename.
@@ -238,7 +238,8 @@ class TestPssMain(unittest.TestCase):
         seq = []
         seq.append(('START_MATCHES', os.path.normpath(filename)))
         seq.extend(outputs)
-        seq.append(('END_MATCHES', os.path.normpath(filename)))
+        if add_end:
+            seq.append(('END_MATCHES', os.path.normpath(filename)))
         return seq
 
     def _build_found_list(self, filenames):

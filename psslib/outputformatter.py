@@ -30,13 +30,13 @@ class OutputFormatter(object):
         """
         pass
 
-    def matching_line(self, matchresult):
+    def matching_line(self, matchresult, filename):
         """ Called to emit a matching line, with a matchresult.MatchResult 
             object.
         """
         raise NotImplementedError()
 
-    def context_line(self, line, lineno):
+    def context_line(self, line, lineno, filename):
         """ Called to emit a context line.
         """
         pass

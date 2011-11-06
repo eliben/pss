@@ -3,6 +3,8 @@ Changelog
 
 + Version 0.34 (??.11.2011)
 
+  - Added --noheading and --nobreak options (pull request #4 by Bernhard
+    Leiner).
   - Issue #13: added the '-t/--textonly/--nobinary' option to restrict the
     search to textual files.
   - Issue #23: added 'txt' type for '.txt' and '.text' extensions
@@ -24,7 +26,7 @@ Changelog
   - Issue #2: pss will now ignore broken symlinks (won't list them or try to
     read them).
   - Issue #5: When the output of pss is redirected, by default colors won't
-    be applied (unless forced with --color).
+    be applied (unless forced with --color). Pull request #2 by Pekka Klärck.
   - Issue #6: Support -l and -L options (only show files with/without matches)
   - Issue #8: When Ctrl+C is hit, print a succinct error message instead of 
     the full stack trace.

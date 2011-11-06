@@ -216,7 +216,10 @@ def parse_cmdline(cmdline_args):
         type='int', help='Stop searching in each file after NUM matches')
     group_output.add_option('-H', '--with-filename',
         action='store_true', dest='prefix_filename', default=True,
-        help='Print the filename before matches (default)')
+        help=' '.join(r'''Print the filename before matches (default). If
+        --noheading is specified, the filename will be prepended to each
+        matching line. Otherwise it is printed once for all the matches
+        in the file.'''.split()))
     group_output.add_option('-h', '--no-filename',
         action='store_false', dest='prefix_filename',
         help='Suppress printing the filename before matches')

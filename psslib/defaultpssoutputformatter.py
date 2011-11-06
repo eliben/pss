@@ -59,9 +59,10 @@ class DefaultPssOutputFormatter(OutputFormatter):
     def end_matches_in_file(self, filename):
         self._emitline()
 
-    def matching_line(self, matchresult, filepath):
+    def matching_line(self, matchresult, filename):
         if self.inline_filename:
-            self._emit('%s:' % filepath)
+            self._emit_colored('%s' % filename, self.style_filename)
+            self._emit(':')
         self._emit('%s:' % matchresult.matching_lineno)
         first_match_range = matchresult.matching_column_ranges[0]
         if self.show_column_of_first_match:
@@ -82,9 +83,10 @@ class DefaultPssOutputFormatter(OutputFormatter):
                 chunk = line[match_end:next_start]
             self._emit(chunk)
 
-    def context_line(self, line, lineno, filepath):
+    def context_line(self, line, lineno, filename):
         if self.inline_filename:
-            self._emit('%s-' % filepath)
+            self._emit_colored('%s' % filename, self.style_filename)
+            self._emit('-')
         self._emit('%s-' % lineno)
         if self.show_column_of_first_match:
             self._emit('1-')
