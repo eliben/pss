@@ -12,4 +12,9 @@ Distribution
 
 python setup.py build upload
 
+Validating a new release
+------------------------
+
+* Run all tests with Python 2 & 3 before packaging
+* Make sure new version was updated everywhere appropriate
 

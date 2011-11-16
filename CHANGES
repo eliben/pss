@@ -1,7 +1,7 @@
 Changelog
 =========
 
-+ Version 0.34 (??.11.2011)
++ Version 0.34 (16.11.2011)
 
   - Added --noheading and --nobreak options (pull request #4 by Bernhard
     Leiner).
