@@ -251,7 +251,8 @@ def parse_cmdline(cmdline_args):
         action='store_false', dest='do_break', default=True,
         help='Print no break between results from different files')
     group_output.add_option('--noheading',
-        action='store_false', dest='do_heading', default=True,
+        action='store_false', dest='do_heading',
+        default=sys.stdout.isatty(),
         help="Print no file name heading above each file's results")
     optparser.add_option_group(group_output)
 
