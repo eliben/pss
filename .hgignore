@@ -3,5 +3,8 @@ syntax: glob
 *.pyc
 MANIFEST
 dist
+build
+*.orig
+
 
 

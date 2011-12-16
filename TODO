@@ -30,5 +30,6 @@ Preparing a new release
 * Now build with upload to send it to PyPi
 * Test with pip install from some new virtualenv
 * Test on Windows with pip install
-
+* If everything is OK, upload the distribution to BitBucket as well
+* The older download can be kept alive for a couple of days
 

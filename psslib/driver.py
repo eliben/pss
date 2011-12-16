@@ -283,79 +283,82 @@ def pss_run(roots,
         # files with a match. For other files, we let ContentMatcher do its
         # full work.
         #
-        with open(filepath, 'rb') as fileobj:
-            if not istextfile(fileobj):
+        try:
+            with open(filepath, 'rb') as fileobj:
+                if not istextfile(fileobj):
+                    # istextfile does some reading on fileobj, so rewind it
+                    fileobj.seek(0)
+                    matches = list(matcher.match_file(fileobj, max_match_count=1))
+                    if matches:
+                        output_formatter.binary_file_matches(
+                                'Binary file %s matches\n' % filepath)
+                    continue
                 # istextfile does some reading on fileobj, so rewind it
                 fileobj.seek(0)
-                matches = list(matcher.match_file(fileobj, max_match_count=1))
-                if matches:
-                    output_formatter.binary_file_matches(
-                            'Binary file %s matches\n' % filepath)
-                continue
-            # istextfile does some reading on fileobj, so rewind it
-            fileobj.seek(0)
-            # run, my little matcher, run!
-            matches = list(matcher.match_file(fileobj))
+                # run, my little matcher, run!
+                matches = list(matcher.match_file(fileobj))
 
-            # If only files are to be found either with or without matches...
-            if only_find_files:
-                found = (
-                    (   matches and 
-                        only_find_files_option == PssOnlyFindFilesOption.FILES_WITH_MATCHES)
-                    or
-                    (   not matches and 
-                        only_find_files_option == PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES))
-                if found:
-                    output_formatter.found_filename(filepath)
-                continue
+                # If only files are to be found either with or without matches...
+                if only_find_files:
+                    found = (
+                        (   matches and 
+                            only_find_files_option == PssOnlyFindFilesOption.FILES_WITH_MATCHES)
+                        or
+                        (   not matches and 
+                            only_find_files_option == PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES))
+                    if found:
+                        output_formatter.found_filename(filepath)
+                    continue
 
-            # This is the "normal path" when we examine and display the matches
-            # inside the file.
-            if not matches:
-                # Nothing to see here... move along
-                continue
-            output_formatter.start_matches_in_file(filepath)
-            if ncontext_before > 0 or ncontext_after > 0:
-                # If context lines should be printed, we have to read in the
-                # file line by line, marking which lines belong to context,
-                # which are matches, and which aren't interesting.
-                # _build_match_context_dict is used to create a dictionary
-                # that tells us for each line what category it belongs to
-                #
-                fileobj.seek(0)
-                match_context_dict = _build_match_context_dict(
-                        matches, ncontext_before, ncontext_after)
-                # For being able to correctly emit context separators between 
-                # non-adjacent chunks of context, these flags are maintained:
-                #   prev_was_blank: the previous line was blank
-                #   had_context: we already had some context printed before
-                #
-                prev_was_blank = False
-                had_context = False
-                for n, line in enumerate(fileobj):
-                    n += 1
-                    # Find out whether this line is a match, context or neither,
-                    # and act accordingly
-                    result, match = match_context_dict.get(n, (None, None))
-                    if result is None:
-                        prev_was_blank = True
-                        continue
-                    elif result == LINE_MATCH:
-                        output_formatter.matching_line(match, filepath)
-                    elif result == LINE_CONTEXT:
-                        if prev_was_blank and had_context:
-                            output_formatter.context_separator()
-                        output_formatter.context_line(line, n, filepath)
-                        had_context = True
+                # This is the "normal path" when we examine and display the matches
+                # inside the file.
+                if not matches:
+                    # Nothing to see here... move along
+                    continue
+                output_formatter.start_matches_in_file(filepath)
+                if ncontext_before > 0 or ncontext_after > 0:
+                    # If context lines should be printed, we have to read in the
+                    # file line by line, marking which lines belong to context,
+                    # which are matches, and which aren't interesting.
+                    # _build_match_context_dict is used to create a dictionary
+                    # that tells us for each line what category it belongs to
+                    #
+                    fileobj.seek(0)
+                    match_context_dict = _build_match_context_dict(
+                            matches, ncontext_before, ncontext_after)
+                    # For being able to correctly emit context separators between 
+                    # non-adjacent chunks of context, these flags are maintained:
+                    #   prev_was_blank: the previous line was blank
+                    #   had_context: we already had some context printed before
+                    #
                     prev_was_blank = False
-            else:
-                # just show the matches without considering context
-                for match in matches:
-                    output_formatter.matching_line(match, filepath)
+                    had_context = False
+                    for n, line in enumerate(fileobj):
+                        n += 1
+                        # Find out whether this line is a match, context or neither,
+                        # and act accordingly
+                        result, match = match_context_dict.get(n, (None, None))
+                        if result is None:
+                            prev_was_blank = True
+                            continue
+                        elif result == LINE_MATCH:
+                            output_formatter.matching_line(match, filepath)
+                        elif result == LINE_CONTEXT:
+                            if prev_was_blank and had_context:
+                                output_formatter.context_separator()
+                            output_formatter.context_line(line, n, filepath)
+                            had_context = True
+                        prev_was_blank = False
+                else:
+                    # just show the matches without considering context
+                    for match in matches:
+                        output_formatter.matching_line(match, filepath)
 
-            if do_break:
-                output_formatter.end_matches_in_file(filepath)
-
+                if do_break:
+                    output_formatter.end_matches_in_file(filepath)
+        except (OSError, IOError):
+            # There was a problem opening or reading the file, so ignore it.
+            pass
 
 def _pattern_has_uppercase(pattern):
     """ Check whether the given regex pattern has uppercase letters to match
