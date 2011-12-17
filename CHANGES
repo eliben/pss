@@ -1,6 +1,12 @@
 Changelog
 =========
 
++ Version 0.34 (??)
+
+  - Issue #25: fix crash when attempting to read a file without
+    read permissions.
+  - Issue #26: additional patterns for CMake searches
+
 + Version 0.34 (16.11.2011)
 
   - Added --noheading and --nobreak options (pull request #4 by Bernhard
