@@ -40,7 +40,7 @@ TYPE_MAP = {
     'cfmx':
         TypeValue(TypeValue.EXTENSION, ['.cfc', '.cfm', '.cfml']),
     'cmake':
-        TypeValue(TypeValue.PATTERN, ['CMakeLists.txt']),
+        TypeValue(TypeValue.PATTERN, ['(CMake(Lists|Funcs).txt|\.cmake$)']),
     'cpp':
         TypeValue(TypeValue.EXTENSION, ['.cpp', '.cc', '.cxx', '.m', '.hpp', '.hh', '.h', '.hxx']),
     'csharp':

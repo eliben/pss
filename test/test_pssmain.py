@@ -139,7 +139,10 @@ class TestPssMain(unittest.TestCase):
         self.of = MockOutputFormatter('testdir1')
         self._run_main(['--cmake', '-f'])
         self.assertFoundFiles(self.of,
-                ['testdir1/CMakeLists.txt'])
+                [   'testdir1/CMakeLists.txt',
+                    'testdir1/subdir1/CMakeFuncs.txt',
+                    'testdir1/subdir1/joe.cmake',
+                    'testdir1/subdir1/joe2.cmake'])
 
         self.of = MockOutputFormatter('testdir2')
         self._run_main(['--txt', '-f'], dir=self.testdir2)
