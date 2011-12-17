@@ -5,6 +5,8 @@ MANIFEST
 dist
 build
 *.orig
+tags
+
 
 
 
