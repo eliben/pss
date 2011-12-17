@@ -42,7 +42,6 @@ class DefaultPssOutputFormatter(OutputFormatter):
                             colorama.Fore.BLACK + colorama.Back.YELLOW)
         self.style_filename = (decode_colorama_color(filename_color_str) or
                                colorama.Fore.MAGENTA + colorama.Style.BRIGHT)
-        self.isatty = sys.stdout.isatty()
         colorama.init()
 
         # It's important to take sys.stdout after the call to colorama.init(),
@@ -57,8 +56,7 @@ class DefaultPssOutputFormatter(OutputFormatter):
             self._emitline()
 
     def end_matches_in_file(self, filename):
-        if self.isatty:
-            self._emitline()
+        self._emitline()
 
     def matching_line(self, matchresult, filename):
         if self.inline_filename:

@@ -248,11 +248,10 @@ def parse_cmdline(cmdline_args):
         action='store', dest='color_filename',
         help='Set the color for emitted filenames')
     group_output.add_option('--nobreak',
-        action='store_false', dest='do_break', default=True,
+        action='store_false', dest='do_break', default=sys.stdout.isatty(),
         help='Print no break between results from different files')
     group_output.add_option('--noheading',
-        action='store_false', dest='do_heading',
-        default=sys.stdout.isatty(),
+        action='store_false', dest='do_heading', default=sys.stdout.isatty(),
         help="Print no file name heading above each file's results")
     optparser.add_option_group(group_output)
 
