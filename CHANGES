@@ -3,7 +3,8 @@ Changelog
 
 + Version 0.35 (??)
 
-  - Issue #24: implicit --noheading for non-tty output
+  - Set --noheading and --nobreak for non-tty output. This aids using pss
+    instead of grep in editor plugins. Addresses Issue #25.
   - Issue #25: fix crash when attempting to read a file without
     read permissions.
   - Issue #26: additional patterns for CMake searches
