@@ -25,7 +25,7 @@ class FileFinder(object):
         """ Create a new FileFinder. The parameters are the "search rules"
             that dictate which files are found.
 
-            roots: 
+            roots:
                 Root files/directories from which the search will start
 
             recurse:
@@ -85,7 +85,7 @@ class FileFinder(object):
                         continue
                     for filename in files:
                         fullpath = os.path.join(dirpath, filename)
-                        if (    self._file_is_found(fullpath) and 
+                        if (    self._file_is_found(fullpath) and
                                 os.path.exists(fullpath)):
                             yield fullpath
                     if not self.recurse:
@@ -94,26 +94,24 @@ class FileFinder(object):
     def _file_is_found(self, filename):
         """ Should this file be "found" according to the search rules?
         """
-        # Tries to eliminate the file by all the given search rules. If the 
+        # Tries to eliminate the file by all the given search rules. If the
         # file survives until the end, it's found
         root, ext = os.path.splitext(filename)
 
         if ext in self.ignore_extensions:
             return False
 
-        if len(self.search_extensions) > 0:
+        if self.search_extensions and ext not in self.search_extensions:
             # If search_extensions is non-empty, only files with extensions
             # listed there can be found
-            if ext not in self.search_extensions:
-                return False
+            return False
 
-        for ignored_pattern in self.ignore_file_patterns:
-            if ignored_pattern.search(filename):
-                return False
+        if any(ignored_pattern.search(filename) for ignored_pattern in self.ignore_file_patterns):
+            return False
 
         # If search_file_patterns is non-empty, the file has to match at least
         # one of the patterns.
-        if (len(self.search_file_patterns) > 0 and
+        if (self.search_file_patterns and
             not any(p.search(filename) for p in self.search_file_patterns)
             ):
             return False

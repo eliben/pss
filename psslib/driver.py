@@ -27,7 +27,7 @@ class TypeValue(object):
 
 
 TYPE_MAP = {
-    'actionscript':     
+    'actionscript':
         TypeValue(TypeValue.EXTENSION, ['.as', '.mxml']),
     'ada':
         TypeValue(TypeValue.EXTENSION, ['.ada', '.adb', '.ads']),
@@ -123,9 +123,9 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.yaml', '.yml']),
 }
 
-IGNORED_DIRS = set([   
+IGNORED_DIRS = set([
     'blib', '_build', '.bzr', '.cdv', 'cover_db', '__pycache__',
-    'CVS', '_darcs', '~.dep', '~.dot', '.git', '.hg', '~.nib', 
+    'CVS', '_darcs', '~.dep', '~.dot', '.git', '.hg', '~.nib',
     '.pc', '~.plst', 'RCS', 'SCCS', '_sgbak', '.svn'])
 
 IGNORED_FILE_PATTERNS = set([r'~$', r'#.+#$', r'[._].*\.swp$', r'core\.\d+$'])
@@ -198,9 +198,9 @@ def pss_run(roots,
     search_file_patterns = set()
     ignore_file_patterns = set()
 
-    # Populate the *pattern and *extensions sets separately. Although the 
+    # Populate the *pattern and *extensions sets separately. Although the
     # conditions are similar, this results in simpler code at the cost of a bit
-    # of duplication. Merging all together results in an undreadable soup of 
+    # of duplication. Merging all together results in an undreadable soup of
     # IFs
     if not search_all_files_and_dirs and not search_all_types:
         ignore_file_patterns = IGNORED_FILE_PATTERNS
@@ -255,7 +255,7 @@ def pss_run(roots,
     else:
         pattern = str2bytes(pattern)
 
-    if (    not ignore_case and 
+    if (    not ignore_case and
             (smart_case and not _pattern_has_uppercase(pattern))):
         ignore_case = True
 
@@ -272,13 +272,13 @@ def pss_run(roots,
     for filepath in filefinder.files():
         # If only_find_files is requested and no special option provided,
         # this is kind of 'find -name'
-        if (    only_find_files and 
+        if (    only_find_files and
                 only_find_files_option == PssOnlyFindFilesOption.ALL_FILES):
             output_formatter.found_filename(filepath)
             continue
         # The main path: do matching inside the file.
         # Some files appear to be binary - they are not of a known file type
-        # and the heuristic istextfile says they're binary. For these files 
+        # and the heuristic istextfile says they're binary. For these files
         # we try to find a single match and then simply report they're binary
         # files with a match. For other files, we let ContentMatcher do its
         # full work.
@@ -301,10 +301,10 @@ def pss_run(roots,
                 # If only files are to be found either with or without matches...
                 if only_find_files:
                     found = (
-                        (   matches and 
+                        (   matches and
                             only_find_files_option == PssOnlyFindFilesOption.FILES_WITH_MATCHES)
                         or
-                        (   not matches and 
+                        (   not matches and
                             only_find_files_option == PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES))
                     if found:
                         output_formatter.found_filename(filepath)
@@ -326,15 +326,14 @@ def pss_run(roots,
                     fileobj.seek(0)
                     match_context_dict = _build_match_context_dict(
                             matches, ncontext_before, ncontext_after)
-                    # For being able to correctly emit context separators between 
+                    # For being able to correctly emit context separators between
                     # non-adjacent chunks of context, these flags are maintained:
                     #   prev_was_blank: the previous line was blank
                     #   had_context: we already had some context printed before
                     #
                     prev_was_blank = False
                     had_context = False
-                    for n, line in enumerate(fileobj):
-                        n += 1
+                    for n, line in enumerate(fileobj, 1):
                         # Find out whether this line is a match, context or neither,
                         # and act accordingly
                         result, match = match_context_dict.get(n, (None, None))
@@ -363,14 +362,14 @@ def pss_run(roots,
 def _pattern_has_uppercase(pattern):
     """ Check whether the given regex pattern has uppercase letters to match
     """
-    # Somewhat rough - check for uppercase chars not following an escape 
+    # Somewhat rough - check for uppercase chars not following an escape
     # char (which may mean valid regex flags like \A or \B)
     skipnext = False
     for c in pattern:
         if skipnext:
             skipnext = False
             continue
-        elif c == '\\': 
+        elif c == '\\':
             skipnext = True
         else:
             if c >= 'A' and c <= 'Z':
@@ -380,10 +379,10 @@ def _pattern_has_uppercase(pattern):
 
 LINE_MATCH, LINE_CONTEXT = range(2)
 
-    
+
 def _build_match_context_dict(matches, ncontext_before, ncontext_after):
     """ Given a list of MatchResult objects and number of context lines before
-        and after a match, build a dictionary that maps line numbers to 
+        and after a match, build a dictionary that maps line numbers to
         (line_kind, data) pairs. line_kind is either LINE_MATCH or LINE_CONTEXT
         and data holds the match object for LINE_MATCH.
     """
