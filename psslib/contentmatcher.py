@@ -56,9 +56,11 @@ class ContentMatcher(object):
             self.match_file = self.inverted_matcher
         else:
             self.match_file = self.matcher
-        self.finditer = self.regex.finditer
-        self.search = self.regex.search
         self.max_match_count = max_match_count
+
+        # Cache frequently used attributes for faster access
+        self._finditer = self.regex.finditer
+        self._search = self.regex.search
 
     def matcher(self, fileobj, max_match_count=sys.maxsize):
         """ Perform matching in the file according to the matching rules. Yield
@@ -72,7 +74,7 @@ class ContentMatcher(object):
         for lineno, line in enumerate(fileobj, 1):
             # Iterate over all matches of the pattern in the line,
             # noting each matching column range.
-            col_ranges = [mo.span() for mo in self.finditer(line) if mo]
+            col_ranges = [mo.span() for mo in self._finditer(line) if mo]
             if col_ranges:
                 yield MatchResult(line, lineno, col_ranges)
                 nmatch += 1
@@ -89,9 +91,9 @@ class ContentMatcher(object):
         nmatch = 0
         max_match_count = min(max_match_count, self.max_match_count)
         for lineno, line in enumerate(fileobj, 1):
-            # invert match: only return lines that don't match the
+            # Invert match: only return lines that don't match the
             # pattern anywhere
-            if not self.search(line):
+            if not self._search(line):
                 yield MatchResult(line, lineno, [])
                 nmatch += 1
                 if nmatch >= max_match_count:
