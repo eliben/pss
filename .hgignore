@@ -6,7 +6,5 @@ dist
 build
 *.orig
 tags
-
-
-
+.tox
 
