@@ -7,9 +7,12 @@ Changelog
     Chintomby)
   - Set --noheading and --nobreak for non-tty output. This aids using pss
     instead of grep in editor plugins. Addresses Issue #25.
+  - Added --py and --rb command line type synonyms for Python and Ruby,
+    respectively.
+  - Added --cfg command line type for configuration files.
   - Issue #25: fix crash when attempting to read a file without
     read permissions.
-  - Issue #26: additional patterns for CMake searches
+  - Issue #26: additional patterns for CMake searches.
 
 + Version 0.34 (16.11.2011)
 

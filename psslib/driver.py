@@ -37,6 +37,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.asm', '.s']),
     'cc':
         TypeValue(TypeValue.EXTENSION, ['.c', '.h', '.xs']),
+    'cfg':
+        TypeValue(TypeValue.EXTENSION, ['.cfg', '.conf', '.config']),
     'cfmx':
         TypeValue(TypeValue.EXTENSION, ['.cfc', '.cfm', '.cfml']),
     'cmake':
