@@ -87,12 +87,16 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.php', '.phpt', '.php3', '.php4', '.php5', '.phtml']),
     'plone':
         TypeValue(TypeValue.EXTENSION, ['.pt', '.cpt', '.metadata', '.cpy', '.py']),
+    'py':
+        TypeValue(TypeValue.EXTENSION, ['.py']),
     'python':
         TypeValue(TypeValue.EXTENSION, ['.py']),
     'rake':
         TypeValue(TypeValue.PATTERN, ['[Rr]akefile']),
     'rst':
         TypeValue(TypeValue.EXTENSION, ['.rst', '.rest']),
+    'rb':
+        TypeValue(TypeValue.EXTENSION, ['.rb']),
     'ruby':
         TypeValue(TypeValue.EXTENSION, ['.rb', '.rhtml', '.rjs', '.rxml', '.erb', '.rake']),
     'scala':

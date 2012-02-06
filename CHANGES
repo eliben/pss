@@ -3,6 +3,8 @@ Changelog
 
 + Version 0.35 (??)
 
+  - Speedup (~20%) for matching file contents (pull request #7 by Neil
+    Chintomby)
   - Set --noheading and --nobreak for non-tty output. This aids using pss
     instead of grep in editor plugins. Addresses Issue #25.
   - Issue #25: fix crash when attempting to read a file without
