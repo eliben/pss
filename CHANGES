@@ -1,6 +1,10 @@
 Changelog
 =========
 
++ Version ?? (??)
+
+  - Issue #28: additional patterns for Makefile searches
+
 + Version 0.35 (09.03.2012)
 
   - Speedup (~20%) for matching file contents (pull request #7 by Neil
