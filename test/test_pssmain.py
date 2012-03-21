@@ -134,7 +134,7 @@ class TestPssMain(unittest.TestCase):
         self.of = MockOutputFormatter('testdir1')
         self._run_main(['--make', '-f'])
         self.assertFoundFiles(self.of,
-                ['testdir1/Makefile', 'testdir1/subdir1/Makefile'])
+                ['testdir1/Makefile', 'testdir1/subdir1/Makefile', 'testdir1/zappos.mk'])
 
         self.of = MockOutputFormatter('testdir1')
         self._run_main(['--cmake', '-f'])

@@ -72,7 +72,7 @@ TYPE_MAP = {
     'lua':
         TypeValue(TypeValue.EXTENSION, ['.lua']),
     'make':
-        TypeValue(TypeValue.PATTERN, ['[Mm]akefile']),
+        TypeValue(TypeValue.PATTERN, ['([Mm]akefile|.mk$)']),
     'mason':
         TypeValue(TypeValue.EXTENSION, ['.mas', '.mthml', '.mpl', '.mtxt']),
     'objc':
