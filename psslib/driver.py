@@ -69,6 +69,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.jsp']),
     'lisp':
         TypeValue(TypeValue.EXTENSION, ['.lisp', '.lsp', '.cl']),
+    'llvm':
+        TypeValue(TypeValue.EXTENSION, ['.ll']),
     'lua':
         TypeValue(TypeValue.EXTENSION, ['.lua']),
     'make':
