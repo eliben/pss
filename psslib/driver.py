@@ -65,6 +65,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.java', '.properties']),
     'js':
         TypeValue(TypeValue.EXTENSION, ['.js']),
+    'json':
+        TypeValue(TypeValue.EXTENSION, ['.json']),
     'jsp':
         TypeValue(TypeValue.EXTENSION, ['.jsp']),
     'lisp':
