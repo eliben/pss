@@ -4,7 +4,7 @@ Changelog
 + Version 0.36 (??)
 
   - Issue #28: additional patterns for Makefile searches
-  - Pattern for searching within LLVM IR files
+  - Added patterns for searching within LLVM IR files, and within JSON files
 
 + Version 0.35 (09.03.2012)
 
