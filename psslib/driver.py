@@ -34,7 +34,7 @@ TYPE_MAP = {
     'batch':
         TypeValue(TypeValue.EXTENSION, ['.bat', '.cmd']),
     'asm':
-        TypeValue(TypeValue.EXTENSION, ['.asm', '.s']),
+        TypeValue(TypeValue.EXTENSION, ['.asm', '.s', '.S']),
     'cc':
         TypeValue(TypeValue.EXTENSION, ['.c', '.h', '.xs']),
     'cfg':
