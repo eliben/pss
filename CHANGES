@@ -5,7 +5,7 @@ Changelog
 
   - Issue #28: additional patterns for Makefile searches
   - Additional pattern for assembly searches (.S)
-  - Added patterns for searching within LLVM IR files, and within JSON files
+  - Added patterns for searching within LLVM IR, SCons, and JSON files
 
 + Version 0.35 (09.03.2012)
 

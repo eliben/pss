@@ -109,6 +109,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.scala']),
     'scheme':
         TypeValue(TypeValue.EXTENSION, ['.scm', '.ss']),
+    'scons':
+        TypeValue(TypeValue.PATTERN, ['(SConstruct|.scons$)']),
     'shell':
         TypeValue(TypeValue.EXTENSION, ['.sh', '.bash', '.csh', '.tcsh', '.ksh', '.zsh']),
     'smalltalk':
