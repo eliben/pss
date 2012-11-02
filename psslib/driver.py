@@ -117,6 +117,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.st']),
     'sql':
         TypeValue(TypeValue.EXTENSION, ['.sql', '.ctl']),
+    'tablegen':
+        TypeValue(TypeValue.EXTENSION, ['.td']),
     'tcl':
         TypeValue(TypeValue.EXTENSION, ['.tck', '.itcl', '.itk']),
     'tex':
