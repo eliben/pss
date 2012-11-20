@@ -61,6 +61,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.h']),
     'html':
         TypeValue(TypeValue.EXTENSION, ['.htm', '.html', '.shtml', '.xhtml']),
+    'inc':
+        TypeValue(TypeValue.EXTENSION, ['.inc', '.inl']),
     'java':
         TypeValue(TypeValue.EXTENSION, ['.java', '.properties']),
     'js':
