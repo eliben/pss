@@ -11,7 +11,7 @@ from distutils.core import setup
 
 
 try:
-    with open('README', 'rt') as readme:
+    with open('README.rst', 'rt') as readme:
         description = '\n' + readme.read()
 except IOError:
     # maybe running setup.py from some other dir
