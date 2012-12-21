@@ -24,11 +24,11 @@ class TestDriver(unittest.TestCase):
             output_formatter=self.of,
             include_types=['cc'])
 
-        self.assertEqual(self.of.output,
-                self._gen_outputs_in_file(
+        self.assertEqual(sorted(self.of.output),
+                sorted(self._gen_outputs_in_file(
                     'testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]) +
                 self._gen_outputs_in_file(
-                    'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))]))
+                    'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])))
 
     def _gen_outputs_in_file(self, filename, outputs):
         """ Helper method for constructing a list of output pairs in the format

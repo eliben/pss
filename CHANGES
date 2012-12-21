@@ -4,9 +4,9 @@ Changelog
 + Version 0.36 (??)
 
   - Issue #28: additional patterns for Makefile searches
-  - Additional pattern for assembly searches (.S)
+  - Issue #30: added option to search in files without extensions
   - Added patterns for searching within LLVM IR, Tablegen, SCons, separated
-    include and inline files (.inc, .inl), and JSON files.
+    include and inline files (.inc, .inl), .S assembly and JSON files.
 
 + Version 0.35 (09.03.2012)
 

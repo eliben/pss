@@ -133,6 +133,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.bas', '.cls', '.frm', '.ctl', '.vb', '.resx']),
     'vim':
         TypeValue(TypeValue.EXTENSION, ['.vim']),
+    'withoutext':
+        TypeValue(TypeValue.EXTENSION, ['']),
     'xml':
         TypeValue(TypeValue.EXTENSION, ['.xml', '.dtd', '.xslt', '.ent']),
     'yaml':

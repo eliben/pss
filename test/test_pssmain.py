@@ -26,11 +26,11 @@ class TestPssMain(unittest.TestCase):
 
     def test_basic(self):
         self._run_main(['abc', '--cc'])
-        self.assertEqual(self.of.output,
-                self._gen_outputs_in_file(
+        self.assertEqual(sorted(self.of.output),
+                sorted(self._gen_outputs_in_file(
                     'testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]) +
                 self._gen_outputs_in_file(
-                    'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))]))
+                    'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])))
 
     def test_two_matches(self):
         self._run_main(['abc', '--ada'])
@@ -148,6 +148,11 @@ class TestPssMain(unittest.TestCase):
         self._run_main(['--txt', '-f'], dir=self.testdir2)
         self.assertFoundFiles(self.of,
                 ['testdir2/sometext.txt', 'testdir2/othertext.txt'])
+
+        self.of = MockOutputFormatter('testdir2')
+        self._run_main(['--withoutext', '-f'], dir=self.testdir2)
+        self.assertFoundFiles(self.of,
+                ['testdir2/somescript'])
 
     def test_only_find_files_g(self):
         self._run_main(['--cc', '-g', r'.*y\.'])
