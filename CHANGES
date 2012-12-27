@@ -3,10 +3,11 @@ Changelog
 
 + Version 0.36 (??)
 
-  - Issue #28: additional patterns for Makefile searches
-  - Issue #30: added option to search in files without extensions
+  - Issue #28: additional patterns for Makefile searches.
+  - Issue #30: added option to search in files without extensions.
   - Added patterns for searching within LLVM IR, Tablegen, SCons, separated
     include and inline files (.inc, .inl), .S assembly and JSON files.
+  - Issue #32: handle path separators in --ignore-dir.
 
 + Version 0.35 (09.03.2012)
 
