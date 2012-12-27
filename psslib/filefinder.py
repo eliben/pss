@@ -62,7 +62,17 @@ class FileFinder(object):
         self.recurse = recurse
         self.search_extensions = set(search_extensions)
         self.ignore_extensions = set(ignore_extensions)
-        self.ignore_dirs = set(ignore_dirs)
+
+        # Distinguish between dirs (like "foo") and paths (like "foo/bar")
+        # to ignore.
+        self.ignore_dirs = set()
+        self.ignore_paths = set()
+        for d in ignore_dirs:
+            if os.sep in d:
+                self.ignore_paths.add(d)
+            else:
+                self.ignore_dirs.add(d)
+
         self.find_only_text_files = find_only_text_files
         self.search_file_patterns = [re.compile(p) for p in search_file_patterns]
         self.ignore_file_patterns = [re.compile(p) for p in ignore_file_patterns]
@@ -77,8 +87,7 @@ class FileFinder(object):
                     yield root
             else: # dir
                 for dirpath, subdirs, files in os.walk(root):
-                    prefix, dirname = os.path.split(dirpath)
-                    if dirname in self.ignore_dirs:
+                    if self._should_ignore_dir(dirpath):
                         # This dir should be ignored, so remove all its subdirs
                         # from the walk and go to next dir.
                         del subdirs[:]
@@ -90,6 +99,21 @@ class FileFinder(object):
                             yield fullpath
                     if not self.recurse:
                         break
+
+    def _should_ignore_dir(self, dirpath):
+        """ Should the given directory be ignored?
+        """
+        if os.path.split(dirpath)[1] in self.ignore_dirs:
+            return True
+        elif len(self.ignore_paths) > 0:
+            # If we have paths to ignore, things are more difficult...
+            for ignored_path in self.ignore_paths:
+                found_i = dirpath.rfind(ignored_path)
+                if (    found_i == 0 or (
+                        found_i > 0 and dirpath[found_i - 1] == os.sep)):
+                    print('ignoring')
+                    return True
+        return False
 
     def _file_is_found(self, filename):
         """ Should this file be "found" according to the search rules?

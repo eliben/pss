@@ -15,6 +15,8 @@ class TestFileFinder(unittest.TestCase):
             'simple_filefinder/.bzr/hgc.c',
             'simple_filefinder/a.c',
             'simple_filefinder/anothersubdir/a.c',
+            'simple_filefinder/partialignored/thisoneisignored/notfound.c',
+            'simple_filefinder/partialignored/found.c',
             'simple_filefinder/c.c']
     
     all_cpp_files = [
@@ -39,11 +41,12 @@ class TestFileFinder(unittest.TestCase):
                                 if not filter_out_path(path)))
 
     def assertPathsEqual(self, first, second):
-        """ Compare lists of paths together, normalizing them for portability.
+        """ Compare lists of paths together, normalizing them for portability
+            and sorting.
         """
         self.assertEqual(
-                list(map(os.path.normpath, first)),
-                list(map(os.path.normpath, second)))
+                list(sorted(map(os.path.normpath, first))),
+                list(sorted(map(os.path.normpath, second))))
 
     def test_extensions(self):
         # just the .c files
@@ -110,9 +113,11 @@ class TestFileFinder(unittest.TestCase):
                 self._find_files(
                     [self.testdir_simple],
                     search_extensions=['.c'],
-                    ignore_dirs=['anothersubdir', '.bzr']),
+                    ignore_dirs=['anothersubdir', '.bzr',
+                                 'partialignored/thisoneisignored']),
                 [   'simple_filefinder/a.c',
-                    'simple_filefinder/c.c'])
+                    'simple_filefinder/c.c',
+                    'simple_filefinder/partialignored/found.c'])
 
     def test_file_patterns(self):
         # search ignoring known extensions on purpose, to get a small amount of 
@@ -136,7 +141,7 @@ class TestFileFinder(unittest.TestCase):
                 self._find_files(
                     [self.testdir_simple],
                     ignore_file_patterns=['~$', '#.+#$'],
-                    search_file_patterns=[r't[^./\\]*\.c']),
+                    search_file_patterns=[r't[^./\\]*\.cp']),
                 [   'simple_filefinder/.bzr/ttc.cpp',
                     'simple_filefinder/anothersubdir/deep/t.cpp',
                     'simple_filefinder/anothersubdir/deep/tt.cpp'])

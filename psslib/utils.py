@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # pss: utils.py
 #
-# Some utilities
+# Some miscellaneous utilities for pss.
 #
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
