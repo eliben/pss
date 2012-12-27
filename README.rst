@@ -20,13 +20,13 @@ as well.
 Installing
 ----------
 
-When you unzip the source distribution, run::
-
-    > python setup.py install
-
-Alternatively, **pss** can be installed from PyPi (Python package index)::
+**pss** can be installed from PyPi (Python package index)::
 
     > pip install pss
+
+Alternatively, you can download the source distribution. Go to the *Downloads* tab on the `pss project page <https://bitbucket.org/eliben/pss>`_ and pick the version you're interested in from *Tags*. When you unzip the source distribution, run::
+
+    > python setup.py install
 
 Running without installing
 --------------------------
