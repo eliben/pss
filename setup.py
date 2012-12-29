@@ -24,7 +24,7 @@ setup(
     description='Tool for grepping through source code',
     long_description=description,
     license='Public domain',
-    version='0.37',
+    version='0.36',
     author='Eli Bendersky',
     maintainer='Eli Bendersky',
     author_email='eliben@gmail.com',
