@@ -1,7 +1,7 @@
 Changelog
 =========
 
-+ Version 0.36 (??)
++ Version 0.36 (27.12.2012)
 
   - Issue #28: additional patterns for Makefile searches.
   - Issue #30: added option to search in files without extensions.
