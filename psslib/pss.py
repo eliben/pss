@@ -324,9 +324,9 @@ def parse_cmdline(cmdline_args):
 
 
 HELP_TYPES_PREAMBLE = r'''
-The following types are supported. Each type enables searching
-in several file extensions. --<type> includes the type in the
-search and --no<type> excludes it.
+The following types are supported.  Each type enables searching
+in several file extensions or name regexps.  --<type> includes
+the type in search and --no<type> excludes it.
 '''.lstrip()
 
 
