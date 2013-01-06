@@ -1,6 +1,11 @@
 Changelog
 =========
 
++ Version 0.37 (??)
+
+  - Fixed the output of --help-types to describe file patterns more faithfully.
+  - Added '.tox' to the set of directories ignored by default.
+
 + Version 0.36 (27.12.2012)
 
   - Issue #28: additional patterns for Makefile searches.

@@ -144,7 +144,7 @@ TYPE_MAP = {
 IGNORED_DIRS = set([
     'blib', '_build', '.bzr', '.cdv', 'cover_db', '__pycache__',
     'CVS', '_darcs', '~.dep', '~.dot', '.git', '.hg', '~.nib',
-    '.pc', '~.plst', 'RCS', 'SCCS', '_sgbak', '.svn'])
+    '.pc', '~.plst', 'RCS', 'SCCS', '_sgbak', '.svn', '.tox'])
 
 IGNORED_FILE_PATTERNS = set([r'~$', r'#.+#$', r'[._].*\.swp$', r'core\.\d+$'])
 
