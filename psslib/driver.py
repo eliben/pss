@@ -52,7 +52,7 @@ TYPE_MAP = {
     'cython':
         TypeValue(TypeValue.EXTENSION, ['.pyx', '.pxd', '.pyxbld']),
     'elisp':
-        TypeValue(TypeValue.EXTENSION, ['.elisp']),
+        TypeValue(TypeValue.EXTENSION, ['.el', '.elisp']),
     'erlang':
         TypeValue(TypeValue.EXTENSION, ['.erl', '.hrl']),
     'fortran':

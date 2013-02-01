@@ -7,6 +7,7 @@ Changelog
   - Issue #35: Fix the -w option to work properly on Python 3
   - Added '.tox' to the set of directories ignored by default.
   - Issue #34: Support for --cython
+  - Added support for the .el extension for Emacs Lisp
 
 + Version 0.36 (27.12.2012)
 
