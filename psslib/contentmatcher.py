@@ -28,7 +28,8 @@ class ContentMatcher(object):
             for various files.
 
             pattern:
-                The pattern (regular expression) to match, as a string
+                The pattern (regular expression) to match, as a string or bytes
+                object (should match the stream passed to the match method).
 
             ignore_case:
                 If True, the pattern will ignore case when matching
@@ -109,8 +110,8 @@ class ContentMatcher(object):
         if literal_pattern:
             pattern = re.escape(pattern)
         if whole_words:
-            # zzz: does it always make sense to surround with \b like this?
-            pattern = r'\b' + pattern + r'\b'
+            b = r'\b' if isinstance(pattern, str) else br'\b'
+            pattern = b + pattern + b
         regex = re.compile(pattern, re.I if ignore_case else 0)
         return regex
 

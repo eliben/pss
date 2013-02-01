@@ -40,6 +40,24 @@ class TestPssMain(unittest.TestCase):
                     [   ('MATCH', (4, [(18, 21)])),
                         ('MATCH', (14, [(15, 18)]))]))
 
+    def test_whole_words(self):
+        # without whole word matching
+        of = MockOutputFormatter('testdir1')
+        self._run_main(['xaxo', '--ada'], output_formatter=of)
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'testdir1/subdir1/wholewords.adb',
+                    [   ('MATCH', (1, [(5, 9)])),
+                        ('MATCH', (2, [(4, 8)]))]))
+
+        # now with whole word matching
+        of = MockOutputFormatter('testdir1')
+        self._run_main(['xaxo', '--ada', '-w'], output_formatter=of)
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'testdir1/subdir1/wholewords.adb',
+                    [('MATCH', (1, [(5, 9)]))]))
+
     def test_no_break(self):
         # same test as above but with --nobreak
         self._run_main(['abc', '--ada', '--nobreak'])
@@ -63,7 +81,7 @@ class TestPssMain(unittest.TestCase):
                         ('CONTEXT_SEP', None),
                         ('CONTEXT', 11), ('CONTEXT', 12), ('CONTEXT', 13),
                         ('MATCH', (14, [(15, 18)])),
-                        ('CONTEXT', 15), ('CONTEXT', 16), ('CONTEXT', 17), 
+                        ('CONTEXT', 15), ('CONTEXT', 16), ('CONTEXT', 17),
                         ]))
 
     def test_context_merged(self):
@@ -78,7 +96,7 @@ class TestPssMain(unittest.TestCase):
                         ('CONTEXT', 8), ('CONTEXT', 9), ('CONTEXT', 10),
                         ('CONTEXT', 11), ('CONTEXT', 12), ('CONTEXT', 13),
                         ('MATCH', (14, [(15, 18)])),
-                        ('CONTEXT', 15), ('CONTEXT', 16), ('CONTEXT', 17), 
+                        ('CONTEXT', 15), ('CONTEXT', 16), ('CONTEXT', 17),
                         ('CONTEXT', 18), ('CONTEXT', 19), ('CONTEXT', 20),
                         ]))
 
@@ -165,14 +183,14 @@ class TestPssMain(unittest.TestCase):
 
         self.of = MockOutputFormatter('testdir1')
         self._run_main(['-a', '-g', r'\.qqq'])
-        self.assertFoundFiles(self.of, 
+        self.assertFoundFiles(self.of,
                 ['testdir1/subdir1/ppp.qqq'])
 
     def test_only_find_files_l(self):
         self._run_main(['--cc', 'abc', '-l'])
         self.assertFoundFiles(self.of,
                 ['testdir1/filea.c', 'testdir1/filea.h'])
-        
+
     def test_only_find_files_L(self):
         self._run_main(['--cc', 'abc', '-L'])
         self.assertFoundFiles(self.of,
@@ -195,7 +213,7 @@ class TestPssMain(unittest.TestCase):
         rootdir = path_to_testdir('test_types')
         def outputs(filename):
             return self._gen_outputs_in_file(
-                        filename, 
+                        filename,
                         [('MATCH', (1, [(0, 3)]))])
 
         # include only js and java
@@ -206,7 +224,7 @@ class TestPssMain(unittest.TestCase):
             dir=rootdir)
 
         self.assertEqual(sorted(of.output), sorted(
-                outputs('test_types/a.java') + 
+                outputs('test_types/a.java') +
                 outputs('test_types/a.js')))
 
         # empty include_types - so include all known types
@@ -217,7 +235,7 @@ class TestPssMain(unittest.TestCase):
             dir=rootdir)
 
         self.assertEqual(sorted(of.output), sorted(
-                outputs('test_types/a.java') + 
+                outputs('test_types/a.java') +
                 outputs('test_types/a.js') +
                 outputs('test_types/a.lua') +
                 outputs('test_types/a.cmd') +
@@ -237,7 +255,7 @@ class TestPssMain(unittest.TestCase):
         main(
             argv=[''] + args + [dir or self.testdir1],
             output_formatter=output_formatter or self.of)
-        
+
     def _gen_outputs_in_file(self, filename, outputs, add_end=True):
         """ Helper method for constructing a list of output pairs in the format
             of MockOutputFormatter, delimited from both ends with START_MATCHES

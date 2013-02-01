@@ -41,7 +41,7 @@ class TestContentMatcher(unittest.TestCase):
                     exp_match[0],
                     exp_match[1])
             self.assertEqual(exp_matchresult, matches[n])
-        
+
     def test_defaults(self):
         cm = ContentMatcher('line')
         self.assertMatches(cm, text1, [
@@ -73,19 +73,19 @@ class TestContentMatcher(unittest.TestCase):
         self.assertMatches(cm, text1, [(1, [(5, 9)])])
 
         cm = ContentMatcher('line', max_match_count=2)
-        self.assertMatches(cm, text1, 
+        self.assertMatches(cm, text1,
                 [(1, [(5, 9)]), (2, [(8, 12)])])
 
         cm = ContentMatcher('a', max_match_count=1)
         self.assertMatches(cm, text1,
                 [(2, [(0, 1)])])
-    
+
     def test_whole_words(self):
         cm = ContentMatcher('pie', whole_words=True)
         self.assertMatches(cm, text2, [
                 (2, [(6, 9), (19, 22)]),
                 (4, [(24, 27)])])
-                
+
         cm = ContentMatcher('.*n', literal_pattern=True)
         self.assertMatches(cm, text2, [(4, [(5, 8)])])
 

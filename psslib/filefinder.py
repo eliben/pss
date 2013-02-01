@@ -111,7 +111,6 @@ class FileFinder(object):
                 found_i = dirpath.rfind(ignored_path)
                 if (    found_i == 0 or (
                         found_i > 0 and dirpath[found_i - 1] == os.sep)):
-                    print('ignoring')
                     return True
         return False
 

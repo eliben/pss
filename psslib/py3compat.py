@@ -12,7 +12,7 @@ PY3 = sys.version_info[0] == 3
 
 identity_func = lambda x: x
 
-# str2bytes -- converts a given string (which we know not to contain 
+# str2bytes -- converts a given string (which we know not to contain
 # unicode chars) to bytes.
 #
 # bytes2str -- converts a bytes object to a string
