@@ -49,6 +49,8 @@ TYPE_MAP = {
         TypeValue(TypeValue.EXTENSION, ['.cs']),
     'css':
         TypeValue(TypeValue.EXTENSION, ['.css']),
+    'cython':
+        TypeValue(TypeValue.EXTENSION, ['.pyx', '.pxd', '.pyxbld']),
     'elisp':
         TypeValue(TypeValue.EXTENSION, ['.elisp']),
     'erlang':
