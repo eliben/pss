@@ -39,4 +39,3 @@ setup(
     scripts=['scripts/pss.py', 'scripts/pss'],
 )
 
-    

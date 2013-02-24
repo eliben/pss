@@ -89,7 +89,7 @@ def main(argv=sys.argv, output_formatter=None):
         ncontext_before = ncontext_after = options.context
 
     # Finally, invoke pss_run with the default output formatter
-    # 
+    #
     try:
         pss_run(roots=roots,
                 pattern=pattern,
@@ -134,7 +134,7 @@ Only files with known extensions are searched, and this can be
 configured by providing --<type> options. For example, --python
 will search all Python files, and "--lisp --scheme" will search
 all Lisp and all Scheme files. By default, all known file types
-are searched. 
+are searched.
 
 Run with --help-types for more help on how to select file types.
 '''.lstrip()
@@ -164,7 +164,7 @@ Additionally, files matching these (regexp) patterns are ignored:
       %s
 
 pss version %s
-''' % ( _ignored_dirs_as_string(), 
+''' % ( _ignored_dirs_as_string(),
         '\n      '.join(IGNORED_FILE_PATTERNS),
         __version__,)
 
@@ -208,7 +208,7 @@ def parse_cmdline(cmdline_args):
     optparser.add_option_group(group_searching)
 
     group_output = optparse.OptionGroup(optparser, 'Search output')
-    group_output.add_option('--match', 
+    group_output.add_option('--match',
         action='store', dest='match', metavar='PATTERN',
         help='Specify the search pattern explicitly')
     group_output.add_option('-m', '--max-count',
