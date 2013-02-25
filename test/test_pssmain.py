@@ -251,6 +251,14 @@ class TestPssMain(unittest.TestCase):
         self.assertEqual(sorted(of.output), sorted(
                 outputs('test_types/a.lua')))
 
+    def test_basic_match_option(self):
+        self._run_main(['--cc', '--match=abc'])
+        self.assertEqual(sorted(self.of.output),
+                sorted(self._gen_outputs_in_file(
+                    'testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]) +
+                self._gen_outputs_in_file(
+                    'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])))
+
     def _run_main(self, args, dir=None, output_formatter=None):
         main(
             argv=[''] + args + [dir or self.testdir1],

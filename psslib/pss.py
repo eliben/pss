@@ -49,6 +49,13 @@ def main(argv=sys.argv, output_formatter=None):
         only_find_files = True
         only_find_files_option = PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES
 
+    # The --match option sets the pattern explicitly, so it's not expected
+    # as an argument.
+    if options.match:
+        search_pattern_expected = False
+
+    # Handle the various --help options, or just print help if pss is called
+    # without arguments.
     if options.help_types:
         print_help_types()
         sys.exit(0)
@@ -58,10 +65,10 @@ def main(argv=sys.argv, output_formatter=None):
         sys.exit(0)
 
     # Unpack args. If roots are not specified, the current directory is the
-    # only root. If no search pattern is expected, the whole of 'args' is roots
+    # only root. If no search pattern is expected, the whole of 'args' is roots.
     #
     if not search_pattern_expected:
-        pattern = None
+        pattern = options.match or None
         roots = args
     else:
         pattern = args[0]
