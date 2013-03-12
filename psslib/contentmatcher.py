@@ -10,17 +10,18 @@
 import re
 import sys
 
+from .py3compat import tostring
 from .matchresult import MatchResult
 
 
 class ContentMatcher(object):
     def __init__(self,
-            pattern,
-            ignore_case=False,
-            invert_match=False,
-            whole_words=False,
-            literal_pattern=False,
-            max_match_count=sys.maxsize):
+                 pattern,
+                 ignore_case=False,
+                 invert_match=False,
+                 whole_words=False,
+                 literal_pattern=False,
+                 max_match_count=sys.maxsize):
         """ Create a new ContentMatcher for matching the pattern in files.
             The parameters are the "matching rules".
 
@@ -63,6 +64,12 @@ class ContentMatcher(object):
         self._finditer = self.regex.finditer
         self._search = self.regex.search
 
+        self._findstr = None
+        if (    not ignore_case and not whole_words and
+                self._pattern_is_simple(pattern)):
+            self._findstr = pattern
+            self._findstrlen = len(self._findstr)
+
     def matcher(self, fileobj, max_match_count=sys.maxsize):
         """ Perform matching in the file according to the matching rules. Yield
             MatchResult objects.
@@ -75,7 +82,17 @@ class ContentMatcher(object):
         for lineno, line in enumerate(fileobj, 1):
             # Iterate over all matches of the pattern in the line,
             # noting each matching column range.
-            col_ranges = [mo.span() for mo in self._finditer(line) if mo]
+            if self._findstr:
+                col_ranges = []
+                startnext = 0
+                while True:
+                    i = line.find(self._findstr, startnext)
+                    if i == -1:
+                        break
+                    startnext = i + self._findstrlen
+                    col_ranges.append((i, startnext))
+            else:
+                col_ranges = [mo.span() for mo in self._finditer(line) if mo]
             if col_ranges:
                 yield MatchResult(line, lineno, col_ranges)
                 nmatch += 1
@@ -99,6 +116,12 @@ class ContentMatcher(object):
                 nmatch += 1
                 if nmatch >= max_match_count:
                     break
+
+    def _pattern_is_simple(self, pattern):
+        """ A "simple" pattern that can be matched with str.find and doesn't
+            require a regex engine.
+        """
+        return bool(re.match('\w+', tostring(pattern)))
 
     def _create_regex(self,
             pattern,
