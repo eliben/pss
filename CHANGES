@@ -9,6 +9,7 @@ Changelog
   - Issue #34: Support for --cython
   - Added support for the .el extension for Emacs Lisp
   - Issue #36: Fixed the --match option.
+  - Issue #37: Allow comma-separated lists in --ignore-dirs
 
 + Version 0.36 (27.12.2012)
 

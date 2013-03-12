@@ -129,6 +129,17 @@ class TestPssMain(unittest.TestCase):
                 self._gen_outputs_in_file(
                     'ignored_dirs/file.xml', [('MATCH', (1, [(3, 6)]))]))
 
+        # both dir1 and dir2 ignored in the same --ignore-dir list
+        of = MockOutputFormatter('ignored_dirs')
+        self._run_main(
+            ['def', '--xml', '--ignore-dir=dir1,dir2'],
+            dir=rootdir,
+            output_formatter=of)
+
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'ignored_dirs/file.xml', [('MATCH', (1, [(3, 6)]))]))
+
         # dir1 ignored (dir2 also appears in remove_ignored_dirs)
         of = MockOutputFormatter('ignored_dirs')
         self._run_main(

@@ -95,6 +95,9 @@ def main(argv=sys.argv, output_formatter=None):
     if options.context is not None:
         ncontext_before = ncontext_after = options.context
 
+    add_ignored_dirs = _splice_comma_names(options.ignored_dirs or [])
+    remove_ignored_dirs = _splice_comma_names(options.noignored_dirs or [])
+
     # Finally, invoke pss_run with the default output formatter
     #
     try:
@@ -105,8 +108,8 @@ def main(argv=sys.argv, output_formatter=None):
                 only_find_files_option=only_find_files_option,
                 search_all_types=options.all_types,
                 search_all_files_and_dirs=options.unrestricted,
-                add_ignored_dirs=options.ignored_dirs or [],
-                remove_ignored_dirs=options.noignored_dirs or [],
+                add_ignored_dirs=add_ignored_dirs,
+                remove_ignored_dirs=remove_ignored_dirs,
                 recurse=options.recurse,
                 textonly=options.textonly,
                 type_pattern=options.type_pattern,
@@ -346,5 +349,18 @@ def print_help_types():
         print(' '.join(TYPE_MAP[typ].value))
     print()
 
+
+def _splice_comma_names(namelist):
+    """ Given a list of names, some of the names can be comma-separated lists.
+        Return a new list of single names (names in comma-separated lists are
+        spliced into the list).
+    """
+    newlist = []
+    for name in namelist:
+        if ',' in name:
+            newlist.extend(name.split(','))
+        else:
+            newlist.append(name)
+    return newlist
 
 
