@@ -315,11 +315,10 @@ def pss_run(roots,
                     continue
                 # istextfile does some reading on fileobj, so rewind it
                 fileobj.seek(0)
-                # run, my little matcher, run!
-                matches = list(matcher.match_file(fileobj))
 
                 # If only files are to be found either with or without matches...
                 if only_find_files:
+                    matches = list(matcher.match_file(fileobj, max_match_count=1))
                     found = (
                         (   matches and
                             only_find_files_option == PssOnlyFindFilesOption.FILES_WITH_MATCHES)
@@ -332,6 +331,7 @@ def pss_run(roots,
 
                 # This is the "normal path" when we examine and display the matches
                 # inside the file.
+                matches = list(matcher.match_file(fileobj))
                 if not matches:
                     # Nothing to see here... move along
                     continue

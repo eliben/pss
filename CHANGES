@@ -10,6 +10,8 @@ Changelog
   - Added support for the .el extension for Emacs Lisp
   - Issue #36: Fixed the --match option.
   - Issue #37: Allow comma-separated lists in --ignore-dirs
+  - Optimize the files-with-matches option by looking for a single match within
+    a file instead of all matches.
 
 + Version 0.36 (27.12.2012)
 
