@@ -45,7 +45,7 @@ class DefaultPssOutputFormatter(OutputFormatter):
         colorama.init()
 
         # It's important to take sys.stdout after the call to colorama.init(),
-        # because colorama.init() assigns a wrapped stream to sys.stdout and 
+        # because colorama.init() assigns a wrapped stream to sys.stdout and
         # we need this wrapped stream to have colors
         #
         self.stream = stream or sys.stdout
@@ -99,7 +99,7 @@ class DefaultPssOutputFormatter(OutputFormatter):
 
     def binary_file_matches(self, msg):
         self._emitline(msg)
-        
+
     def _emit(self, str):
         """ Write the string to the stream.
         """
@@ -116,5 +116,5 @@ class DefaultPssOutputFormatter(OutputFormatter):
 
     def _emitline(self, line=''):
         self._emit(line + '\n')
-        
+
 

@@ -329,8 +329,8 @@ def pss_run(roots,
                         output_formatter.found_filename(filepath)
                     continue
 
-                # This is the "normal path" when we examine and display the matches
-                # inside the file.
+                # This is the "normal path" when we examine and display the
+                # matches inside the file.
                 matches = list(matcher.match_file(fileobj))
                 if not matches:
                     # Nothing to see here... move along
@@ -354,8 +354,8 @@ def pss_run(roots,
                     prev_was_blank = False
                     had_context = False
                     for n, line in enumerate(fileobj, 1):
-                        # Find out whether this line is a match, context or neither,
-                        # and act accordingly
+                        # Find out whether this line is a match, context or
+                        # neither, and act accordingly
                         result, match = match_context_dict.get(n, (None, None))
                         if result is None:
                             prev_was_blank = True

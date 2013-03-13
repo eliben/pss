@@ -64,6 +64,9 @@ class ContentMatcher(object):
         self._finditer = self.regex.finditer
         self._search = self.regex.search
 
+        # Optimize a common case: searching for a simple non-regex string.
+        # In this case, we don't need regex matching - using str.find is
+        # faster.
         self._findstr = None
         if (    not ignore_case and not whole_words and
                 self._pattern_is_simple(pattern)):

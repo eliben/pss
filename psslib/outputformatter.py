@@ -16,7 +16,7 @@ class OutputFormatter(object):
         NotImplementedError)
 
         The pss driver expects an object adhering to this interface to do its
-        output. 
+        output.
     """
     def start_matches_in_file(self, filename):
         """ Called when a sequences of matches from some file is about to be
@@ -31,7 +31,7 @@ class OutputFormatter(object):
         pass
 
     def matching_line(self, matchresult, filename):
-        """ Called to emit a matching line, with a matchresult.MatchResult 
+        """ Called to emit a matching line, with a matchresult.MatchResult
             object.
         """
         raise NotImplementedError()
@@ -42,7 +42,7 @@ class OutputFormatter(object):
         pass
 
     def context_separator(self):
-        """ Called to emit a "context separator" - line between non-adjacent 
+        """ Called to emit a "context separator" - line between non-adjacent
             context lines.
         """
         pass
