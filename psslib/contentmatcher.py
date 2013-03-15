@@ -86,14 +86,16 @@ class ContentMatcher(object):
             # Iterate over all matches of the pattern in the line,
             # noting each matching column range.
             if self._findstr:
+                # Make the common case faster: there's no match in this line, so
+                # bail out ASAP.
+                i = line.find(self._findstr, 0)
+                if i == -1:
+                    continue
                 col_ranges = []
-                startnext = 0
-                while True:
-                    i = line.find(self._findstr, startnext)
-                    if i == -1:
-                        break
+                while i >= 0:
                     startnext = i + self._findstrlen
                     col_ranges.append((i, startnext))
+                    i = line.find(self._findstr, startnext)
             else:
                 col_ranges = [mo.span() for mo in self._finditer(line) if mo]
             if col_ranges:

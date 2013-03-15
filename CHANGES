@@ -12,6 +12,8 @@ Changelog
   - Issue #37: Allow comma-separated lists in --ignore-dirs
   - Optimize the files-with-matches option by looking for a single match within
     a file instead of all matches.
+  - Issue #38: Optimize matching of non-regex patterns, which is very common.
+    Measured speedup of 10-20%.
 
 + Version 0.36 (27.12.2012)
 
