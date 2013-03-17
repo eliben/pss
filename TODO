@@ -1,4 +1,3 @@
-
 New version
 -----------
 
@@ -15,10 +14,9 @@ python setup.py build sdist upload
 Preparing a new release
 -----------------------
 
-* Run all tests with Python 2 & 3 before packaging, on Windows & Linux
+* Run all tests with Python 2 & 3 before packaging, on Windows & Linux (tox)
 * Make sure new version was updated everywhere appropriate
-* Packaging done on Linux
-* Run ``python setup.py build sdist`` (no 'upload' yet)
+* Packaging done on Linux - run ``python setup.py build sdist`` (no 'upload' yet)
 * Untar the created ``dist/pss-x.y.tar.gz`` and make sure everything looks ok
 * Create a virtual env for Python 2: 
   (``virtualenv -p /usr/bin/python2 ~/test/venv/ZZZ``)
@@ -30,6 +28,4 @@ Preparing a new release
 * Now build with upload to send it to PyPi
 * Test with pip install from some new virtualenv
 * Test on Windows with pip install
-* If everything is OK, upload the distribution to BitBucket as well
-* The older download can be kept alive for a couple of days
 

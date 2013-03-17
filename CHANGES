@@ -1,7 +1,7 @@
 Changelog
 =========
 
-+ Version 0.37 (??)
++ Version 1.37 (??)
 
   - Fixed the output of --help-types to describe file patterns more faithfully.
   - Issue #35: Fix the -w option to work properly on Python 3
