@@ -54,6 +54,9 @@ class TestContentMatcher(unittest.TestCase):
         cm = ContentMatcher('Line')
         self.assertMatches(cm, text1, [(5, [(10, 14)])])
 
+        cm = ContentMatcher('L[ix]ne')
+        self.assertMatches(cm, text1, [(5, [(10, 14)])])
+
         cm = ContentMatcher('upper')
         self.assertMatches(cm, text1, [])
 

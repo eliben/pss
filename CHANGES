@@ -1,6 +1,11 @@
 Changelog
 =========
 
++ Version 1.38 (??)
+
+  - Issue #39: Fix regex matching which was broken by the non-regex optimization
+    in v1.37
+
 + Version 1.37 (21.03.2013)
 
   - Fixed the output of --help-types to describe file patterns more faithfully.
