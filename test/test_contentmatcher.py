@@ -13,13 +13,13 @@ sys.path.extend(['.', '..'])
 from psslib.contentmatcher import ContentMatcher, MatchResult
 
 
-text1 = r'''some line
+text1 = r'''some line vector<int>
 another line here
 this has line and then 'line' again
-and here we have none
+and here we have none vector <int>
 Uppercase Line yes?
          line start
-many lines and linen too! even a spline
+many lines and linen too! even a spline yess
 '''
 
 text2 = r'''creampie
@@ -30,11 +30,15 @@ dptr .*n and again some pie
 
 
 class TestContentMatcher(unittest.TestCase):
+    def assertNumMatches(self, cm, text, num_expected):
+        matches = list(cm.match_file(StringIO(text)))
+        self.assertEqual(len(matches), num_expected)
+
     def assertMatches(self, cm, text, exp_matches):
         # exp_matches is a list of pairs: lineno, list of column ranges
         matches = list(cm.match_file(StringIO(text)))
-        textlines = text.split('\n')
         self.assertEqual(len(matches), len(exp_matches))
+        textlines = text.split('\n')
         for n, exp_match in enumerate(exp_matches):
             exp_matchresult = MatchResult(
                     textlines[exp_match[0] - 1] + '\n',
@@ -59,6 +63,24 @@ class TestContentMatcher(unittest.TestCase):
 
         cm = ContentMatcher('upper')
         self.assertMatches(cm, text1, [])
+
+    def test_regex_match(self):
+        # literal "yes?" matches once
+        cm = ContentMatcher(r"yes\?")
+        self.assertNumMatches(cm, text1, 1)
+
+        # regex matching ye(s|) - twice
+        cm = ContentMatcher(r"yes?")
+        self.assertNumMatches(cm, text1, 2)
+
+        cm = ContentMatcher('vector')
+        self.assertNumMatches(cm, text1, 2)
+
+        cm = ContentMatcher('vector *<')
+        self.assertNumMatches(cm, text1, 2)
+
+        cm = ContentMatcher('vector +<')
+        self.assertNumMatches(cm, text1, 1)
 
     def test_ignore_case(self):
         cm = ContentMatcher('upper', ignore_case=True)
