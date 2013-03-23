@@ -30,9 +30,12 @@ dptr .*n and again some pie
 
 
 class TestContentMatcher(unittest.TestCase):
-    def assertNumMatches(self, cm, text, num_expected):
-        matches = list(cm.match_file(StringIO(text)))
-        self.assertEqual(len(matches), num_expected)
+    def num_matches(self, pattern, text, **kwargs):
+        """ Number of matching lines for the pattern in the text. kwargs are
+            passed to ContentMatcher.
+        """
+        cm = ContentMatcher(pattern, **kwargs)
+        return len(list(cm.match_file(StringIO(text))))
 
     def assertMatches(self, cm, text, exp_matches):
         # exp_matches is a list of pairs: lineno, list of column ranges
@@ -66,21 +69,23 @@ class TestContentMatcher(unittest.TestCase):
 
     def test_regex_match(self):
         # literal "yes?" matches once
-        cm = ContentMatcher(r"yes\?")
-        self.assertNumMatches(cm, text1, 1)
-
+        self.assertEqual(self.num_matches(r'yes\?', text1), 1)
         # regex matching ye(s|) - twice
-        cm = ContentMatcher(r"yes?")
-        self.assertNumMatches(cm, text1, 2)
+        self.assertEqual(self.num_matches(r'yes?', text1), 2)
 
-        cm = ContentMatcher('vector')
-        self.assertNumMatches(cm, text1, 2)
+        self.assertEqual(self.num_matches(r'vector', text1), 2)
+        self.assertEqual(self.num_matches(r'vector *<', text1), 2)
+        self.assertEqual(self.num_matches(r'vector +<', text1), 1)
 
-        cm = ContentMatcher('vector *<')
-        self.assertNumMatches(cm, text1, 2)
+    def test_id_regex_match_detailed(self):
+        t1 = 'some line with id_4 and vec8f too'
+        self.assertEqual(self.num_matches(r'id_4', t1), 1)
+        self.assertEqual(self.num_matches(r'8f', t1), 1)
+        self.assertEqual(self.num_matches(r'[0-9]f', t1), 1)
 
-        cm = ContentMatcher('vector +<')
-        self.assertNumMatches(cm, text1, 1)
+        self.assertEqual(self.num_matches('8F', t1, ignore_case=True), 1)
+        self.assertEqual(self.num_matches('84', t1, ignore_case=True), 0)
+        self.assertEqual(self.num_matches('84', t1, invert_match=True), 1)
 
     def test_ignore_case(self):
         cm = ContentMatcher('upper', ignore_case=True)

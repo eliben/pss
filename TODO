@@ -1,5 +1,3 @@
---> More contentmatcher tests regex vs. non-regex
-
 
 New version
 -----------
@@ -21,7 +19,7 @@ Preparing a new release
 * Make sure new version was updated everywhere appropriate
 * Packaging done on Linux - run ``python setup.py build sdist`` (no 'upload' yet)
 * Untar the created ``dist/pss-x.y.tar.gz`` and make sure everything looks ok
-* Create a virtual env for Python 2: 
+* Create a virtual env for Python 2:
   (``virtualenv -p /usr/bin/python2 ~/test/venv/ZZZ``)
 * Use that virtual env executable to install the source tarball
 * Run ``~/test/venv/bin/pss`` and see it's OK
