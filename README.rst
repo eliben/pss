@@ -8,7 +8,7 @@ you wouldn't want to search in (for example ``.svn`` or ``.git``), colors
 its output in a helpful way, and does much more.
 
 If you're familiar with the **ack** tool, then you will find **pss** very
-similar (see https://bitbucket.org/eliben/pss/wiki/PssAndAck).
+similar (see https://github.com/eliben/pss/wiki/pss-and-ack).
 
 Pre-requisites
 --------------
@@ -53,7 +53,7 @@ How to use it?
 arguments or with ``-h`` will print a detailed usage message. 
 
 For some detailed usage examples, check out the 
-Usage wiki page - https://bitbucket.org/eliben/pss/wiki/Usage.
+Usage wiki page - https://github.com/eliben/pss/wiki/Usage-samples
 
 License
 -------
