@@ -18,7 +18,7 @@ class TestFileFinder(unittest.TestCase):
             'simple_filefinder/partialignored/thisoneisignored/notfound.c',
             'simple_filefinder/partialignored/found.c',
             'simple_filefinder/c.c']
-    
+
     all_cpp_files = [
             'simple_filefinder/.bzr/ttc.cpp',
             'simple_filefinder/anothersubdir/CVS/r.cpp',
@@ -120,40 +120,73 @@ class TestFileFinder(unittest.TestCase):
                     'simple_filefinder/partialignored/found.c'])
 
     def test_file_patterns(self):
-        # search ignoring known extensions on purpose, to get a small amount of 
+        # search ignoring known extensions on purpose, to get a small amount of
         # results
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
                     ignore_extensions=['.c', '.cpp', '.F90', '.scala', '.bonkers'],
-                    ignore_file_patterns=['~$']),
+                    filter_exclude_patterns=['~$']),
                 ['simple_filefinder/#z.c#'])
 
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
                     ignore_extensions=['.c', '.cpp', '.F90', '.scala', '.bonkers'],
-                    ignore_file_patterns=['~$', '#.+#$']),
+                    filter_exclude_patterns=['~$', '#.+#$']),
                 [])
 
-        # use search_file_patterns
+        # use search_patterns
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
-                    ignore_file_patterns=['~$', '#.+#$'],
-                    search_file_patterns=[r't[^./\\]*\.cp']),
+                    filter_exclude_patterns=['~$', '#.+#$'],
+                    search_patterns=[r't[^./\\]*\.cp']),
                 [   'simple_filefinder/.bzr/ttc.cpp',
                     'simple_filefinder/anothersubdir/deep/t.cpp',
                     'simple_filefinder/anothersubdir/deep/tt.cpp'])
 
-        # use search_file_patterns and ignore_file_patterns together
+        # mix search patterns with extensions
+        self.assertPathsEqual(
+                self._find_files(
+                    [self.testdir_simple],
+                    ignore_dirs=['CVS'],
+                    search_patterns=[r'\.bonkers$'],
+                    search_extensions=['.scala']),
+                ['simple_filefinder/truesubdir/btesxt.bonkers',
+                 'simple_filefinder/truesubdir/sbin.scala',
+                 'simple_filefinder/truesubdir/stext.scala'])
+
+        self.assertPathsEqual(
+                self._find_files(
+                    [self.testdir_simple],
+                    ignore_dirs=['CVS'],
+                    search_patterns=[r'\.bonkers$', r'r\.cp'],
+                    search_extensions=['.scala']),
+                ['simple_filefinder/truesubdir/btesxt.bonkers',
+                 'simple_filefinder/truesubdir/r.cpp',
+                 'simple_filefinder/truesubdir/sbin.scala',
+                 'simple_filefinder/truesubdir/stext.scala'])
+
+        # now also add include filtering
+        self.assertPathsEqual(
+                self._find_files(
+                    [self.testdir_simple],
+                    ignore_dirs=['CVS'],
+                    filter_include_patterns=[r'a$'],
+                    search_patterns=[r'\.bonkers$', r'r\.cp'],
+                    search_extensions=['.scala']),
+                ['simple_filefinder/truesubdir/sbin.scala',
+                 'simple_filefinder/truesubdir/stext.scala'])
+
+        # use search_patterns and filter_exclude_patterns together
         # exclude file names with at least 3 alphanumeric chars before
         # the dot
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
-                    ignore_file_patterns=['~$', '#.+#$', '\w{3}\.'],
-                    search_file_patterns=[r't[^./\\]*\.c']),
+                    filter_exclude_patterns=['~$', '#.+#$', '\w{3}\.'],
+                    search_patterns=[r't[^./\\]*\.c']),
                 [   'simple_filefinder/anothersubdir/deep/t.cpp',
                     'simple_filefinder/anothersubdir/deep/tt.cpp'])
 

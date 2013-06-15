@@ -20,8 +20,10 @@ class FileFinder(object):
             find_only_text_files=False,
             search_extensions=[],
             ignore_extensions=[],
-            search_file_patterns=[],
-            ignore_file_patterns=[]):
+            search_patterns=[],
+            ignore_patterns=[],
+            filter_include_patterns=[],
+            filter_exclude_patterns=[]):
         """ Create a new FileFinder. The parameters are the "search rules"
             that dictate which files are found.
 
@@ -42,26 +44,39 @@ class FileFinder(object):
                 and read a portion from them, so it is quite slow.
 
             search_extensions:
-                If non-empty, only files with extensions listed here will be
-                found. If empty, files with all extensions will be found
+            search_patterns:
+                We look for either known extensions (sequences of strings) or
+                matching patterns (sequence of regexes).
+                If neither of these is specified, all extensions & patterns can
+                be found (assuming they're not filtered out by other criteria).
+                If either is specified, then the file name should match either
+                one of the extensions or one of the patterns.
 
             ignore_extensions:
-                Files with extensions listed here will never be found.
-                Overrides "search_*" rules
+            ignore_patterns:
+                Extensions and patterns to ignore. Take precedence over search_
+                parameters.
 
-            search_file_patterns:
+            filter_include_patterns:
+                Filtering: applied as logical AND with the search criteria.
                 If non-empty, only files with names matching these pattens will
-                be found. If empty, no pattern restriction is applied
+                be found. If empty, no pattern restriction is applied.
 
-            ignore_file_patterns:
+            filter_exclude_patterns:
                 Files with names matching these patterns will never be found.
-                Overrides "search_*" rules
+                Overrides all include rules.
         """
         # Prepare internal data structures from the parameters
         self.roots = roots
         self.recurse = recurse
         self.search_extensions = set(search_extensions)
         self.ignore_extensions = set(ignore_extensions)
+        self.search_patterns = [re.compile(p) for p in search_patterns]
+        self.ignore_patterns = [re.compile(p) for p in ignore_patterns]
+        self.filter_include_patterns = [
+            re.compile(p) for p in filter_include_patterns]
+        self.filter_exclude_patterns = [
+            re.compile(p) for p in filter_exclude_patterns]
 
         # Distinguish between dirs (like "foo") and paths (like "foo/bar")
         # to ignore.
@@ -74,8 +89,6 @@ class FileFinder(object):
                 self.ignore_dirs.add(d)
 
         self.find_only_text_files = find_only_text_files
-        self.search_file_patterns = [re.compile(p) for p in search_file_patterns]
-        self.ignore_file_patterns = [re.compile(p) for p in ignore_file_patterns]
 
     def files(self):
         """ Generate files according to the search rules. Yield
@@ -121,21 +134,37 @@ class FileFinder(object):
         # file survives until the end, it's found
         root, ext = os.path.splitext(filename)
 
+        # The ignores take precedence.
+        # TODO: optimize all pattern searches to a single regex
         if ext in self.ignore_extensions:
             return False
-
-        if self.search_extensions and ext not in self.search_extensions:
-            # If search_extensions is non-empty, only files with extensions
-            # listed there can be found
+        if any(pat.search(filename) for pat in self.ignore_patterns):
             return False
 
-        if any(ignored_pattern.search(filename) for ignored_pattern in self.ignore_file_patterns):
+        # Try to find a match either in search_extensions OR search_patterns.
+        # If neither is specified, we have a match by definition.
+        have_match = False
+        if not self.search_extensions and not self.search_patterns:
+            # Both empty: means all extensions and patterns are interesting.
+            have_match = True
+        if self.search_extensions and ext in self.search_extensions:
+            have_match = True
+        if (self.search_patterns and (
+                any(pat.search(filename) for pat in self.search_patterns))
+            ):
+           have_match = True
+
+        if not have_match:
             return False
 
-        # If search_file_patterns is non-empty, the file has to match at least
-        # one of the patterns.
-        if (self.search_file_patterns and
-            not any(p.search(filename) for p in self.search_file_patterns)
+        # Now onto filters. Only files matches that don't trigger the exclude
+        # filters and do trigger the include filters (if any exists) go through.
+        if any(pat.search(filename) for pat in self.filter_exclude_patterns):
+            return False
+
+        if (self.filter_include_patterns and
+            not any(pat.search(filename)
+                    for pat in self.filter_include_patterns)
             ):
             return False
 

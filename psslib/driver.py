@@ -215,30 +215,33 @@ def pss_run(roots,
 
     search_extensions = set()
     ignore_extensions = set()
-    search_file_patterns = set()
-    ignore_file_patterns = set()
+    search_patterns = set()
+    ignore_patterns = set()
+    filter_include_patterns = set()
+    filter_exclude_patterns = set()
 
     # Populate the *pattern and *extensions sets separately. Although the
     # conditions are similar, this results in simpler code at the cost of a bit
     # of duplication. Merging all together results in an undreadable soup of
     # IFs
     if not search_all_files_and_dirs and not search_all_types:
-        ignore_file_patterns = IGNORED_FILE_PATTERNS
+        filter_exclude_patterns = IGNORED_FILE_PATTERNS
 
         if include_types:
             for typ in include_types:
                 if TYPE_MAP[typ].kind == TypeValue.PATTERN:
-                    search_file_patterns.update(TYPE_MAP[typ].value)
+                    search_patterns.update(TYPE_MAP[typ].value)
 
         for typ in exclude_types:
             if TYPE_MAP[typ].kind == TypeValue.PATTERN:
-                ignore_file_patterns.update(TYPE_MAP[typ].value)
+                ignore_patterns.update(TYPE_MAP[typ].value)
     else:
         # all files are searched
         pass
 
+    # type_pattern (-g/-G) is an AND filter to the search criteria
     if type_pattern is not None:
-        search_file_patterns.add(type_pattern)
+        filter_include_patterns.add(type_pattern)
 
     if not search_all_files_and_dirs and not search_all_types:
         if include_types:
@@ -250,6 +253,8 @@ def pss_run(roots,
             for typeval in TYPE_MAP.values():
                 if typeval.kind == TypeValue.EXTENSION:
                     search_extensions.update(typeval.value)
+                else:
+                    search_patterns.update(typeval.value)
         for typ in exclude_types:
             if TYPE_MAP[typ].kind == TypeValue.EXTENSION:
                 ignore_extensions.update(TYPE_MAP[typ].value)
@@ -264,8 +269,10 @@ def pss_run(roots,
             ignore_dirs=ignore_dirs,
             search_extensions=search_extensions,
             ignore_extensions=ignore_extensions,
-            search_file_patterns=search_file_patterns,
-            ignore_file_patterns=ignore_file_patterns)
+            search_patterns=search_patterns,
+            ignore_patterns=ignore_patterns,
+            filter_include_patterns=filter_include_patterns,
+            filter_exclude_patterns=filter_exclude_patterns)
 
     # Set up the content matcher
     #

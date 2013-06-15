@@ -247,6 +247,7 @@ class TestPssMain(unittest.TestCase):
 
         self.assertEqual(sorted(of.output), sorted(
                 outputs('test_types/a.java') +
+                outputs('test_types/a.scons') +
                 outputs('test_types/a.js') +
                 outputs('test_types/a.lua') +
                 outputs('test_types/a.cmd') +
@@ -255,7 +256,7 @@ class TestPssMain(unittest.TestCase):
         # empty include_types, but some are excluded
         of = MockOutputFormatter('test_types')
         self._run_main(
-            ['abc', '--nojs', '--nojava', '--nobatch'],
+            ['abc', '--nojs', '--nojava', '--nobatch', '--noscons'],
             output_formatter=of,
             dir=rootdir)
 
