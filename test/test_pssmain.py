@@ -204,6 +204,56 @@ class TestPssMain(unittest.TestCase):
         self.assertFoundFiles(self.of,
                 ['test_types/a.lua'])
 
+        # all known types
+        self.of = MockOutputFormatter('test_types')
+        self._run_main(['-f'], dir=self.test_types)
+        self.assertFoundFiles(self.of,
+                [   'test_types/a.scons',
+                    'test_types/a.lua',
+                    'test_types/a.js',
+                    'test_types/a.java',
+                    'test_types/a.bat',
+                    'test_types/a.cmd',
+                    ])
+
+        # all known types with extension type exclusion
+        self.of = MockOutputFormatter('test_types')
+        self._run_main(['-f', '--nobatch', '--nojava'], dir=self.test_types)
+        self.assertFoundFiles(self.of,
+                [   'test_types/a.scons',
+                    'test_types/a.lua',
+                    'test_types/a.js',
+                    ])
+
+        # all known types with pattern type exclusion
+        self.of = MockOutputFormatter('test_types')
+        self._run_main(['-f', '--noscons'], dir=self.test_types)
+        self.assertFoundFiles(self.of,
+                [   'test_types/a.java',
+                    'test_types/a.lua',
+                    'test_types/a.bat',
+                    'test_types/a.cmd',
+                    'test_types/a.js',
+                    ])
+
+        # all known types with pattern type exclusion and filter inclusion
+        self.of = MockOutputFormatter('test_types')
+        self._run_main(['-g', '(lua|java)', '--noscons'], dir=self.test_types)
+        self.assertFoundFiles(self.of,
+                [   'test_types/a.java',
+                    'test_types/a.lua',
+                    ])
+
+        # all known types with extension and pattern type exclusion
+        self.of = MockOutputFormatter('test_types')
+        self._run_main(['-f', '--noscons', '--nojs'], dir=self.test_types)
+        self.assertFoundFiles(self.of,
+                [   'test_types/a.java',
+                    'test_types/a.lua',
+                    'test_types/a.bat',
+                    'test_types/a.cmd',
+                    ])
+
     def test_only_find_files_g(self):
         self._run_main(['--cc', '-g', r'.*y\.'])
         self.assertFoundFiles(self.of,
