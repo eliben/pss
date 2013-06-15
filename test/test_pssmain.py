@@ -19,6 +19,7 @@ from test.utils import (
 class TestPssMain(unittest.TestCase):
     testdir1 = path_to_testdir('testdir1')
     testdir2 = path_to_testdir('testdir2')
+    test_types = path_to_testdir('test_types')
     of = None
 
     def setUp(self):
@@ -183,6 +184,26 @@ class TestPssMain(unittest.TestCase):
         self.assertFoundFiles(self.of,
                 ['testdir2/somescript'])
 
+        # try some option mix-n-matching
+
+        # just a pattern type
+        self.of = MockOutputFormatter('test_types')
+        self._run_main(['--scons', '-f'], dir=self.test_types)
+        self.assertFoundFiles(self.of,
+                ['test_types/a.scons'])
+
+        # pattern type + extension type
+        self.of = MockOutputFormatter('test_types')
+        self._run_main(['--scons', '--lua', '-f'], dir=self.test_types)
+        self.assertFoundFiles(self.of,
+                ['test_types/a.scons', 'test_types/a.lua'])
+
+        # as before, with include filter
+        self.of = MockOutputFormatter('test_types')
+        self._run_main(['--scons', '--lua', '-g', 'lua'], dir=self.test_types)
+        self.assertFoundFiles(self.of,
+                ['test_types/a.lua'])
+
     def test_only_find_files_g(self):
         self._run_main(['--cc', '-g', r'.*y\.'])
         self.assertFoundFiles(self.of,
@@ -237,6 +258,17 @@ class TestPssMain(unittest.TestCase):
         self.assertEqual(sorted(of.output), sorted(
                 outputs('test_types/a.java') +
                 outputs('test_types/a.js')))
+
+        # include js and scons
+        of = MockOutputFormatter('test_types')
+        self._run_main(
+            ['abc', '--js', '--scons'],
+            output_formatter=of,
+            dir=rootdir)
+
+        self.assertEqual(sorted(of.output), sorted(
+                outputs('test_types/a.js') +
+                outputs('test_types/a.scons')))
 
         # empty include_types - so include all known types
         of = MockOutputFormatter('test_types')
