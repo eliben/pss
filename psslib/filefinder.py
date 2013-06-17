@@ -71,12 +71,12 @@ class FileFinder(object):
         self.recurse = recurse
         self.search_extensions = set(search_extensions)
         self.ignore_extensions = set(ignore_extensions)
-        self.search_patterns = [re.compile(p) for p in search_patterns]
-        self.ignore_patterns = [re.compile(p) for p in ignore_patterns]
-        self.filter_include_patterns = [
-            re.compile(p) for p in filter_include_patterns]
-        self.filter_exclude_patterns = [
-            re.compile(p) for p in filter_exclude_patterns]
+        self.search_pattern = self._merge_regex_patterns(search_patterns)
+        self.ignore_pattern = self._merge_regex_patterns(ignore_patterns)
+        self.filter_include_pattern = self._merge_regex_patterns(
+                                                filter_include_patterns)
+        self.filter_exclude_pattern = self._merge_regex_patterns(
+                                                filter_exclude_patterns)
 
         # Distinguish between dirs (like "foo") and paths (like "foo/bar")
         # to ignore.
@@ -113,6 +113,15 @@ class FileFinder(object):
                     if not self.recurse:
                         break
 
+    def _merge_regex_patterns(self, patterns):
+        """ patterns is a sequence of strings describing regexes. Merge
+            them into a single compiled regex.
+        """
+        if len(patterns) == 0:
+            return None
+        one_pattern = '|'.join('(?:{0})'.format(p) for p in patterns)
+        return re.compile(one_pattern)
+
     def _should_ignore_dir(self, dirpath):
         """ Should the given directory be ignored?
         """
@@ -122,8 +131,9 @@ class FileFinder(object):
             # If we have paths to ignore, things are more difficult...
             for ignored_path in self.ignore_paths:
                 found_i = dirpath.rfind(ignored_path)
-                if (    found_i == 0 or (
-                        found_i > 0 and dirpath[found_i - 1] == os.sep)):
+                if (found_i == 0 or (
+                    found_i > 0 and dirpath[found_i - 1] == os.sep)
+                    ):
                     return True
         return False
 
@@ -135,23 +145,20 @@ class FileFinder(object):
         root, ext = os.path.splitext(filename)
 
         # The ignores take precedence.
-        # TODO: optimize all pattern searches to a single regex
-        if ext in self.ignore_extensions:
-            return False
-        if any(pat.search(filename) for pat in self.ignore_patterns):
+        if (ext in self.ignore_extensions or
+            self.ignore_pattern and self.ignore_pattern.search(filename)
+            ):
             return False
 
-        # Try to find a match either in search_extensions OR search_patterns.
+        # Try to find a match either in search_extensions OR search_pattern.
         # If neither is specified, we have a match by definition.
         have_match = False
-        if not self.search_extensions and not self.search_patterns:
+        if not self.search_extensions and not self.search_pattern:
             # Both empty: means all extensions and patterns are interesting.
             have_match = True
         if self.search_extensions and ext in self.search_extensions:
             have_match = True
-        if (self.search_patterns and (
-                any(pat.search(filename) for pat in self.search_patterns))
-            ):
+        if self.search_pattern and self.search_pattern.search(filename):
            have_match = True
 
         if not have_match:
@@ -159,12 +166,13 @@ class FileFinder(object):
 
         # Now onto filters. Only files matches that don't trigger the exclude
         # filters and do trigger the include filters (if any exists) go through.
-        if any(pat.search(filename) for pat in self.filter_exclude_patterns):
+        if (self.filter_exclude_pattern and
+            self.filter_exclude_pattern.search(filename)
+            ):
             return False
 
-        if (self.filter_include_patterns and
-            not any(pat.search(filename)
-                    for pat in self.filter_include_patterns)
+        if (self.filter_include_pattern and
+            not self.filter_include_pattern.search(filename)
             ):
             return False
 

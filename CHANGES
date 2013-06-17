@@ -1,6 +1,13 @@
 Changelog
 =========
 
++ Version 1.39 (??)
+
+  - Fixed a number of problems with mixing regex pattern and extensions in file
+    searching (see Github issues #2 and #3).
+  - Sped up multiple searching for multiple regex file patterns (such as
+    '--cmake --make') by ~10%.
+
 + Version 1.38 (23.03.2013)
 
   - Issue #39: Fix regex matching which was broken by the non-regex optimization
