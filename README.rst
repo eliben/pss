@@ -25,9 +25,7 @@ Installing
     > pip install pss
 
 Alternatively, you can download the source distribution either from PyPi or
-go to the *Downloads* tab on the `pss project page <https://github.com/eliben/pss>`_
-and pick the version you're interested in from *Tags*. When you unzip the
-source distribution, run::
+from the main Github project page. When you unzip the source distribution, run::
 
     > python setup.py install
 
