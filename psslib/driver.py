@@ -18,129 +18,138 @@ from .utils import istextfile
 from .py3compat import str2bytes
 
 
-class TypeValue(object):
-    EXTENSION, PATTERN = range(2)
+def extension_to_pattern(extension):
+    """ Convert given file extension (including leading '.') to regex pattern. """
+    return '.+' + re.escape(extension) + '$'
 
-    def __init__(self, kind, value):
-        self.kind = kind
-        self.value = value
+def _extensions_to_patterns(extensions):
+    return [extension_to_pattern(e) for e in extensions]
+
+def pattern_to_extension(pattern):
+    """ Convert given regex pattern back to file extension, or return original
+        pattern if we can't (used only by --help-types).
+    """
+    if pattern.startswith(r'.+\.') and pattern.endswith('$'):
+        return pattern[3:-1]
+    else:
+        return pattern
 
 
 TYPE_MAP = {
     'actionscript':
-        TypeValue(TypeValue.EXTENSION, ['.as', '.mxml']),
+        _extensions_to_patterns(['.as', '.mxml']),
     'ada':
-        TypeValue(TypeValue.EXTENSION, ['.ada', '.adb', '.ads']),
+        _extensions_to_patterns(['.ada', '.adb', '.ads']),
     'batch':
-        TypeValue(TypeValue.EXTENSION, ['.bat', '.cmd']),
+        _extensions_to_patterns(['.bat', '.cmd']),
     'asm':
-        TypeValue(TypeValue.EXTENSION, ['.asm', '.s', '.S']),
+        _extensions_to_patterns(['.asm', '.s', '.S']),
     'cc':
-        TypeValue(TypeValue.EXTENSION, ['.c', '.h', '.xs']),
+        _extensions_to_patterns(['.c', '.h', '.xs']),
     'cfg':
-        TypeValue(TypeValue.EXTENSION, ['.cfg', '.conf', '.config']),
+        _extensions_to_patterns(['.cfg', '.conf', '.config']),
     'cfmx':
-        TypeValue(TypeValue.EXTENSION, ['.cfc', '.cfm', '.cfml']),
+        _extensions_to_patterns(['.cfc', '.cfm', '.cfml']),
     'cmake':
-        TypeValue(TypeValue.PATTERN, ['(CMake(Lists|Funcs).txt|\.cmake$)']),
+        ['(CMake(Lists|Funcs).txt|\.cmake$)'],
     'cpp':
-        TypeValue(TypeValue.EXTENSION, ['.cpp', '.cc', '.cxx', '.m', '.hpp', '.hh', '.h', '.hxx']),
+        _extensions_to_patterns(['.cpp', '.cc', '.cxx', '.m', '.hpp', '.hh', '.h', '.hxx']),
     'csharp':
-        TypeValue(TypeValue.EXTENSION, ['.cs']),
+        _extensions_to_patterns(['.cs']),
     'css':
-        TypeValue(TypeValue.EXTENSION, ['.css']),
+        _extensions_to_patterns(['.css']),
     'cython':
-        TypeValue(TypeValue.EXTENSION, ['.pyx', '.pxd', '.pyxbld']),
+        _extensions_to_patterns(['.pyx', '.pxd', '.pyxbld']),
     'elisp':
-        TypeValue(TypeValue.EXTENSION, ['.el', '.elisp']),
+        _extensions_to_patterns(['.el', '.elisp']),
     'erlang':
-        TypeValue(TypeValue.EXTENSION, ['.erl', '.hrl']),
+        _extensions_to_patterns(['.erl', '.hrl']),
     'fortran':
-        TypeValue(TypeValue.EXTENSION, ['.f', '.f77', '.f90', '.F90', '.f95', '.F95', '.f03', '.for', '.ftn', '.fpp']),
+        _extensions_to_patterns(['.f', '.f77', '.f90', '.F90', '.f95', '.F95', '.f03', '.for', '.ftn', '.fpp']),
     'haskell':
-        TypeValue(TypeValue.EXTENSION, ['.hs', '.lhs']),
+        _extensions_to_patterns(['.hs', '.lhs']),
     'hh':
-        TypeValue(TypeValue.EXTENSION, ['.h']),
+        _extensions_to_patterns(['.h']),
     'html':
-        TypeValue(TypeValue.EXTENSION, ['.htm', '.html', '.shtml', '.xhtml']),
+        _extensions_to_patterns(['.htm', '.html', '.shtml', '.xhtml']),
     'inc':
-        TypeValue(TypeValue.EXTENSION, ['.inc', '.inl']),
+        _extensions_to_patterns(['.inc', '.inl']),
     'java':
-        TypeValue(TypeValue.EXTENSION, ['.java', '.properties']),
+        _extensions_to_patterns(['.java', '.properties']),
     'js':
-        TypeValue(TypeValue.EXTENSION, ['.js']),
+        _extensions_to_patterns(['.js']),
     'json':
-        TypeValue(TypeValue.EXTENSION, ['.json']),
+        _extensions_to_patterns(['.json']),
     'jsp':
-        TypeValue(TypeValue.EXTENSION, ['.jsp']),
+        _extensions_to_patterns(['.jsp']),
     'lisp':
-        TypeValue(TypeValue.EXTENSION, ['.lisp', '.lsp', '.cl']),
+        _extensions_to_patterns(['.lisp', '.lsp', '.cl']),
     'llvm':
-        TypeValue(TypeValue.EXTENSION, ['.ll']),
+        _extensions_to_patterns(['.ll']),
     'lua':
-        TypeValue(TypeValue.EXTENSION, ['.lua']),
+        _extensions_to_patterns(['.lua']),
     'make':
-        TypeValue(TypeValue.PATTERN, ['([Mm]akefile|.mk$)']),
+        ['([Mm]akefile|.mk$)'],
     'mason':
-        TypeValue(TypeValue.EXTENSION, ['.mas', '.mthml', '.mpl', '.mtxt']),
+        _extensions_to_patterns(['.mas', '.mthml', '.mpl', '.mtxt']),
     'objc':
-        TypeValue(TypeValue.EXTENSION, ['.m', '.h']),
+        _extensions_to_patterns(['.m', '.h']),
     'objcpp':
-        TypeValue(TypeValue.EXTENSION, ['.mm', '.h']),
+        _extensions_to_patterns(['.mm', '.h']),
     'ocaml':
-        TypeValue(TypeValue.EXTENSION, ['.ml', '.mli']),
+        _extensions_to_patterns(['.ml', '.mli']),
     'parrot':
-        TypeValue(TypeValue.EXTENSION, ['.pir', '.pasm', '.pmc', '.ops', '.pod', '.pg', '.tg']),
+        _extensions_to_patterns(['.pir', '.pasm', '.pmc', '.ops', '.pod', '.pg', '.tg']),
     'perl':
-        TypeValue(TypeValue.EXTENSION, ['.pl', '.pm', '.pod', '.t']),
+        _extensions_to_patterns(['.pl', '.pm', '.pod', '.t']),
     'php':
-        TypeValue(TypeValue.EXTENSION, ['.php', '.phpt', '.php3', '.php4', '.php5', '.phtml']),
+        _extensions_to_patterns(['.php', '.phpt', '.php3', '.php4', '.php5', '.phtml']),
     'plone':
-        TypeValue(TypeValue.EXTENSION, ['.pt', '.cpt', '.metadata', '.cpy', '.py']),
+        _extensions_to_patterns(['.pt', '.cpt', '.metadata', '.cpy', '.py']),
     'py':
-        TypeValue(TypeValue.EXTENSION, ['.py']),
+        _extensions_to_patterns(['.py']),
     'python':
-        TypeValue(TypeValue.EXTENSION, ['.py']),
+        _extensions_to_patterns(['.py']),
     'rake':
-        TypeValue(TypeValue.PATTERN, ['[Rr]akefile']),
+        ['[Rr]akefile'],
     'rst':
-        TypeValue(TypeValue.EXTENSION, ['.rst', '.rest']),
+        _extensions_to_patterns(['.rst', '.rest']),
     'rb':
-        TypeValue(TypeValue.EXTENSION, ['.rb']),
+        _extensions_to_patterns(['.rb']),
     'ruby':
-        TypeValue(TypeValue.EXTENSION, ['.rb', '.rhtml', '.rjs', '.rxml', '.erb', '.rake']),
+        _extensions_to_patterns(['.rb', '.rhtml', '.rjs', '.rxml', '.erb', '.rake']),
     'scala':
-        TypeValue(TypeValue.EXTENSION, ['.scala']),
+        _extensions_to_patterns(['.scala']),
     'scheme':
-        TypeValue(TypeValue.EXTENSION, ['.scm', '.ss']),
+        _extensions_to_patterns(['.scm', '.ss']),
     'scons':
-        TypeValue(TypeValue.PATTERN, ['(SConstruct|.scons$)']),
+        ['(SConstruct|.scons$)'],
     'shell':
-        TypeValue(TypeValue.EXTENSION, ['.sh', '.bash', '.csh', '.tcsh', '.ksh', '.zsh']),
+        _extensions_to_patterns(['.sh', '.bash', '.csh', '.tcsh', '.ksh', '.zsh']),
     'smalltalk':
-        TypeValue(TypeValue.EXTENSION, ['.st']),
+        _extensions_to_patterns(['.st']),
     'sql':
-        TypeValue(TypeValue.EXTENSION, ['.sql', '.ctl']),
+        _extensions_to_patterns(['.sql', '.ctl']),
     'tablegen':
-        TypeValue(TypeValue.EXTENSION, ['.td']),
+        _extensions_to_patterns(['.td']),
     'tcl':
-        TypeValue(TypeValue.EXTENSION, ['.tck', '.itcl', '.itk']),
+        _extensions_to_patterns(['.tck', '.itcl', '.itk']),
     'tex':
-        TypeValue(TypeValue.EXTENSION, ['.tex', '.cls', '.sty']),
+        _extensions_to_patterns(['.tex', '.cls', '.sty']),
     'tt':
-        TypeValue(TypeValue.EXTENSION, ['.tt', '.tt2', '.ttml']),
+        _extensions_to_patterns(['.tt', '.tt2', '.ttml']),
     'txt':
-        TypeValue(TypeValue.EXTENSION, ['.txt', '.text']),
+        _extensions_to_patterns(['.txt', '.text']),
     'vb':
-        TypeValue(TypeValue.EXTENSION, ['.bas', '.cls', '.frm', '.ctl', '.vb', '.resx']),
+        _extensions_to_patterns(['.bas', '.cls', '.frm', '.ctl', '.vb', '.resx']),
     'vim':
-        TypeValue(TypeValue.EXTENSION, ['.vim']),
+        _extensions_to_patterns(['.vim']),
     'withoutext':
-        TypeValue(TypeValue.EXTENSION, ['']),
+        [],
     'xml':
-        TypeValue(TypeValue.EXTENSION, ['.xml', '.dtd', '.xslt', '.ent']),
+        _extensions_to_patterns(['.xml', '.dtd', '.xslt', '.ent']),
     'yaml':
-        TypeValue(TypeValue.EXTENSION, ['.yaml', '.yml']),
+        _extensions_to_patterns(['.yaml', '.yml']),
 }
 
 IGNORED_DIRS = set([
@@ -213,28 +222,19 @@ def pss_run(roots,
         ignore_dirs = ((IGNORED_DIRS | set(add_ignored_dirs))
                         - set(remove_ignored_dirs))
 
-    search_extensions = set()
-    ignore_extensions = set()
     search_patterns = set()
     ignore_patterns = set()
     filter_include_patterns = set()
     filter_exclude_patterns = set()
 
-    # Populate the *pattern and *extensions sets separately. Although the
-    # conditions are similar, this results in simpler code at the cost of a bit
-    # of duplication. Merging all together results in an undreadable soup of
-    # IFs
     if not search_all_files_and_dirs and not search_all_types:
         filter_exclude_patterns = IGNORED_FILE_PATTERNS
 
-        if include_types:
-            for typ in include_types:
-                if TYPE_MAP[typ].kind == TypeValue.PATTERN:
-                    search_patterns.update(TYPE_MAP[typ].value)
+        for typ in (include_types or TYPE_MAP):
+            search_patterns.update(TYPE_MAP[typ])
 
         for typ in exclude_types:
-            if TYPE_MAP[typ].kind == TypeValue.PATTERN:
-                ignore_patterns.update(TYPE_MAP[typ].value)
+            ignore_patterns.update(TYPE_MAP[typ])
     else:
         # all files are searched
         pass
@@ -243,32 +243,11 @@ def pss_run(roots,
     if type_pattern is not None:
         filter_include_patterns.add(type_pattern)
 
-    if not search_all_files_and_dirs and not search_all_types:
-        if include_types:
-            search_extensions.clear()
-            for typ in include_types:
-                if TYPE_MAP[typ].kind == TypeValue.EXTENSION:
-                    search_extensions.update(TYPE_MAP[typ].value)
-        else:
-            for typeval in TYPE_MAP.values():
-                if typeval.kind == TypeValue.EXTENSION:
-                    search_extensions.update(typeval.value)
-                else:
-                    search_patterns.update(typeval.value)
-        for typ in exclude_types:
-            if TYPE_MAP[typ].kind == TypeValue.EXTENSION:
-                ignore_extensions.update(TYPE_MAP[typ].value)
-    else:
-        # An empty search_extensions means all extensions are searched
-        pass
-
     filefinder = FileFinder(
             roots=roots,
             recurse=recurse,
             find_only_text_files=textonly,
             ignore_dirs=ignore_dirs,
-            search_extensions=search_extensions,
-            ignore_extensions=ignore_extensions,
             search_patterns=search_patterns,
             ignore_patterns=ignore_patterns,
             filter_include_patterns=filter_include_patterns,

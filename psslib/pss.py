@@ -14,7 +14,8 @@ import optparse
 
 from psslib import __version__
 from psslib.driver import (pss_run, TYPE_MAP,
-        IGNORED_DIRS, IGNORED_FILE_PATTERNS, PssOnlyFindFilesOption)
+        IGNORED_DIRS, IGNORED_FILE_PATTERNS, PssOnlyFindFilesOption,
+        extension_to_pattern, pattern_to_extension)
 
 
 def main(argv=sys.argv, output_formatter=None):
@@ -346,7 +347,7 @@ def print_help_types():
     for typ in sorted(TYPE_MAP.keys()):
         typestr = '--[no]%s' % typ
         print('    %-21s' % typestr, end='')
-        print(' '.join(TYPE_MAP[typ].value))
+        print(' '.join(pattern_to_extension(p) for p in TYPE_MAP[typ]))
     print()
 
 
