@@ -343,10 +343,10 @@ the type in search and --no<type> excludes it.
 def print_help_types():
     print(HELP_TYPES_PREAMBLE)
 
-    for typ in sorted(TYPE_MAP.keys()):
+    for typ in sorted(TYPE_MAP):
         typestr = '--[no]%s' % typ
         print('    %-21s' % typestr, end='')
-        print(' '.join(TYPE_MAP[typ].value))
+        print(' '.join(TYPE_MAP[typ].extensions + TYPE_MAP[typ].patterns))
     print()
 
 
