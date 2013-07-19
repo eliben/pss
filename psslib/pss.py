@@ -146,6 +146,7 @@ def main(argv=sys.argv, output_formatter=None):
                 do_colors=options.do_colors,
                 match_color_str=options.color_match,
                 filename_color_str=options.color_filename,
+                lineno_color_str=options.color_lineno,
                 do_break=options.do_break,
                 do_heading=options.do_heading,
                 prefix_filename_to_file_matches=options.prefix_filename,
@@ -279,6 +280,9 @@ def parse_cmdline(cmdline_args):
     group_output.add_option('--color-filename', metavar='FORE,BACK,STYLE',
         action='store', dest='color_filename',
         help='Set the color for emitted filenames')
+    group_output.add_option('--color-lineno', metavar='FORE,BACK,STYLE',
+        action='store', dest='color_lineno',
+        help='Set the color for line numbers')
     group_output.add_option('--nobreak',
         action='store_false', dest='do_break', default=sys.stdout.isatty(),
         help='Print no break between results from different files')
