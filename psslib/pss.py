@@ -13,7 +13,7 @@ import optparse
 
 
 from psslib import __version__
-from psslib.driver import (pss_run, TYPE_MAP,
+from psslib.driver import (pss_run, TYPE_MAP, TypeSpec,
         IGNORED_DIRS, IGNORED_FILE_PATTERNS, PssOnlyFindFilesOption)
 
 
@@ -28,6 +28,28 @@ def main(argv=sys.argv, output_formatter=None):
             the default.
     """
     options, args, optparser = parse_cmdline(argv[1:])
+
+    # Handle --type-set and --type-add, which modify driver.TYPE_MAP
+    #
+    type_specs = (options.type_sets or []) + (options.type_additions or [])
+    for spec in type_specs:
+        if '=' not in spec:
+            optparser.error('argument must be in TYPE=PATTERN format')
+
+        typ, pattern = spec.split('=', 1)
+        if spec in (options.type_sets or []):
+            # It's a --type-set, replace existing type definition
+            TYPE_MAP[typ] = TypeSpec([], [])
+        if typ not in TYPE_MAP:
+            optparser.error('type %r not found, use --type-set' % typ)
+
+        if pattern.startswith('.'):
+            for extension in pattern.split(','):
+                if not extension.startswith('.'):
+                    optparser.error('extension must be in .EXT format')
+                TYPE_MAP[typ].extensions.append(extension)
+        else:
+            TYPE_MAP[typ].patterns.append(pattern)
 
     # Handle the various "only find files" options.
     #
@@ -306,6 +328,14 @@ def parse_cmdline(cmdline_args):
     group_inclusion.add_option('-G',
         action='store', dest='type_pattern', metavar='REGEX',
         help='Only search files that match REGEX')
+    group_inclusion.add_option('--type-set',
+        action='append', dest='type_sets', metavar='TYPE=PATTERN',
+        help='''Set TYPE spec to files that match given PATTERN (which can be
+a regex, or a comma-separated list of file extensions including the dot)''')
+    group_inclusion.add_option('--type-add',
+        action='append', dest='type_additions', metavar='TYPE=PATTERN',
+        help='''Add to TYPE spec files that match given PATTERN (as above, but
+doesn't replace existing TYPE spec''')
     optparser.add_option_group(group_inclusion)
 
     # Parsing --<type> and --no<type> options for all supported types is
