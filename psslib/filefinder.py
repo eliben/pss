@@ -18,6 +18,8 @@ class FileFinder(object):
             recurse=True,
             ignore_dirs=[],
             find_only_text_files=False,
+            search_extensions=[],
+            ignore_extensions=[],
             search_patterns=[],
             ignore_patterns=[],
             filter_include_patterns=[],
@@ -41,13 +43,19 @@ class FileFinder(object):
                 Warning: this option makes FileFinder actually open the files
                 and read a portion from them, so it is quite slow.
 
+            search_extensions:
             search_patterns:
-                We look for these matching patterns (sequence of regexes).
-                If this is not specified, all extensions & patterns can be found
-                (assuming they're not filtered out by other criteria).
+                We look for either known extensions (sequences of strings) or
+                matching patterns (sequence of regexes).
+                If neither of these is specified, all extensions & patterns can
+                be found (assuming they're not filtered out by other criteria).
+                If either is specified, then the file name should match either
+                one of the extensions or one of the patterns.
 
+            ignore_extensions:
             ignore_patterns:
-                Regex patterns to ignore. Take precedence over search_patterns.
+                Extensions and patterns to ignore. Take precedence over search_
+                parameters.
 
             filter_include_patterns:
                 Filtering: applied as logical AND with the search criteria.
@@ -61,6 +69,8 @@ class FileFinder(object):
         # Prepare internal data structures from the parameters
         self.roots = roots
         self.recurse = recurse
+        self.search_extensions = set(search_extensions)
+        self.ignore_extensions = set(ignore_extensions)
         self.search_pattern = self._merge_regex_patterns(search_patterns)
         self.ignore_pattern = self._merge_regex_patterns(ignore_patterns)
         self.filter_include_pattern = self._merge_regex_patterns(
@@ -132,14 +142,26 @@ class FileFinder(object):
         """
         # Tries to eliminate the file by all the given search rules. If the
         # file survives until the end, it's found
+        root, ext = os.path.splitext(filename)
 
         # The ignores take precedence.
-        if self.ignore_pattern and self.ignore_pattern.search(filename):
+        if (ext in self.ignore_extensions or
+            self.ignore_pattern and self.ignore_pattern.search(filename)
+            ):
             return False
 
-        # Try to find a match in search_pattern. If not specified, we have a
-        # match by definition.
-        if self.search_pattern and not self.search_pattern.search(filename):
+        # Try to find a match either in search_extensions OR search_pattern.
+        # If neither is specified, we have a match by definition.
+        have_match = False
+        if not self.search_extensions and not self.search_pattern:
+            # Both empty: means all extensions and patterns are interesting.
+            have_match = True
+        if self.search_extensions and ext in self.search_extensions:
+            have_match = True
+        if self.search_pattern and self.search_pattern.search(filename):
+           have_match = True
+
+        if not have_match:
             return False
 
         # Now onto filters. Only files matches that don't trigger the exclude
