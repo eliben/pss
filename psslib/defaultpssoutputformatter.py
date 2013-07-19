@@ -27,6 +27,7 @@ class DefaultPssOutputFormatter(OutputFormatter):
             do_colors=True,
             match_color_str=None,
             filename_color_str=None,
+            lineno_color_str=None,
             do_heading=True,
             prefix_filename_to_file_matches=True,
             show_column_of_first_match=False,
@@ -42,6 +43,9 @@ class DefaultPssOutputFormatter(OutputFormatter):
                             colorama.Fore.BLACK + colorama.Back.YELLOW)
         self.style_filename = (decode_colorama_color(filename_color_str) or
                                colorama.Fore.MAGENTA + colorama.Style.BRIGHT)
+        self.style_lineno = (decode_colorama_color(lineno_color_str) or
+                             colorama.Fore.WHITE)
+
         colorama.init()
 
         # It's important to take sys.stdout after the call to colorama.init(),
@@ -62,7 +66,8 @@ class DefaultPssOutputFormatter(OutputFormatter):
         if self.inline_filename:
             self._emit_colored('%s' % filename, self.style_filename)
             self._emit(':')
-        self._emit('%s:' % matchresult.matching_lineno)
+        self._emit_colored('%s' % matchresult.matching_lineno, self.style_lineno)
+        self._emit(':')
         first_match_range = matchresult.matching_column_ranges[0]
         if self.show_column_of_first_match:
             self._emit('%s:' % first_match_range[0])
@@ -86,7 +91,8 @@ class DefaultPssOutputFormatter(OutputFormatter):
         if self.inline_filename:
             self._emit_colored('%s' % filename, self.style_filename)
             self._emit('-')
-        self._emit('%s-' % lineno)
+        self._emit_colored('%s' % lineno, self.style_lineno)
+        self._emit('-')
         if self.show_column_of_first_match:
             self._emit('1-')
         self._emit(line)
