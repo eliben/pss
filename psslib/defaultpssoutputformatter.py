@@ -103,7 +103,10 @@ class DefaultPssOutputFormatter(OutputFormatter):
     def _emit(self, str):
         """ Write the string to the stream.
         """
-        self.stream.write(tostring(str))
+        # Replace CR LF pairs in string with just LF (because input files are
+        # opened in binary and stdout is opened as text, otherwise on Windows
+        # we get two line breaks with CR CR LF)
+        self.stream.write(tostring(str).replace('\r\n', '\n'))
 
     def _emit_colored(self, str, style):
         """ Emit the given string with the given colorama style.
