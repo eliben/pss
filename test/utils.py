@@ -57,7 +57,7 @@ class MockOutputFormatter(OutputFormatter):
     def __init__(self, basepath):
         self.basepath = basepath
         self.output = []
-        
+
     def start_matches_in_file(self, filename):
         relpath = path_relative_to_dir(filename, self.basepath)
         self.output.append(
@@ -67,7 +67,7 @@ class MockOutputFormatter(OutputFormatter):
         relpath = path_relative_to_dir(filename, self.basepath)
         self.output.append(
             ('END_MATCHES', os.path.normpath(relpath)))
-        
+
     def matching_line(self, matchresult, filename):
         self.output.append(('MATCH',
             (matchresult.matching_lineno, matchresult.matching_column_ranges)))
