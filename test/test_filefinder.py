@@ -114,7 +114,8 @@ class TestFileFinder(unittest.TestCase):
                     [self.testdir_simple],
                     search_extensions=['.c'],
                     ignore_dirs=['anothersubdir', '.bzr',
-                                 'partialignored/thisoneisignored']),
+                                 os.path.join('partialignored',
+                                              'thisoneisignored')]),
                 [   'simple_filefinder/a.c',
                     'simple_filefinder/c.c',
                     'simple_filefinder/partialignored/found.c'])
