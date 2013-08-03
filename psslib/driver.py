@@ -92,9 +92,9 @@ TYPE_MAP = {
     'plone':
         TypeSpec(['.pt', '.cpt', '.metadata', '.cpy', '.py'], []),
     'py':
-        TypeSpec(['.py'], []),
+        TypeSpec(['.py', '.pyw'], []),
     'python':
-        TypeSpec(['.py'], []),
+        TypeSpec(['.py', '.pyw'], []),
     'rake':
         TypeSpec([], ['[Rr]akefile']),
     'rst':

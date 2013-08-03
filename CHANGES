@@ -11,6 +11,7 @@ Changelog
     Windows (pull request #7 by Ben Hoyt).
   - Added --color-line option to specify custom line number coloring (issue #11
     by Ben Hoyt).
+  - Added the .pyw extension to Python patterns (issue #12).
 
 + Version 1.38 (23.03.2013)
 
