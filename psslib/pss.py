@@ -13,7 +13,7 @@ import optparse
 
 
 from psslib import __version__
-from psslib.driver import (pss_run, TYPE_MAP,
+from psslib.driver import (pss_run, TYPE_MAP, TypeSpec,
         IGNORED_DIRS, IGNORED_FILE_PATTERNS, PssOnlyFindFilesOption)
 
 
@@ -28,6 +28,19 @@ def main(argv=sys.argv, output_formatter=None):
             the default.
     """
     options, args, optparser = parse_cmdline(argv[1:])
+
+    # Handle --type-add-pattern, which modifies driver.TYPE_MAP
+    #
+    for spec in (options.type_add_patterns or []):
+        if '=' not in spec:
+            optparser.error('argument must be in TYPE=PATTERN format')
+
+        typ, pattern = spec.split('=', 1)
+        if typ not in TYPE_MAP:
+            # Add type to TYPE_MAP if it doesn't already exist
+            TYPE_MAP[typ] = TypeSpec([], [])
+
+        TYPE_MAP[typ].patterns.append(pattern)
 
     # Handle the various "only find files" options.
     #
@@ -310,6 +323,9 @@ def parse_cmdline(cmdline_args):
     group_inclusion.add_option('-G',
         action='store', dest='type_pattern', metavar='REGEX',
         help='Only search files that match REGEX')
+    group_inclusion.add_option('--type-add-pattern',
+        action='append', dest='type_add_patterns', metavar='TYPE=PATTERN',
+        help='Add files that match given regex PATTERN to TYPE spec')
     optparser.add_option_group(group_inclusion)
 
     # Parsing --<type> and --no<type> options for all supported types is
