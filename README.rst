@@ -13,9 +13,9 @@ similar (see https://github.com/eliben/pss/wiki/pss-and-ack).
 Pre-requisites
 --------------
 
-**pss** needs only Python to run. It works with with Python versions 2.6, 2.7
-and 3.2+ on Linux and Windows. Some testing was done on Mac OS X and FreeBSD
-as well.
+**pss** needs only Python to run. It works with Python versions 2.6, 2.7 and
+3.2+ on Linux and Windows. Some testing was done on Mac OS X and FreeBSD as
+well.
 
 Installing
 ----------
