@@ -36,7 +36,7 @@ TYPE_MAP = {
     'cfmx':
         TypeSpec(['.cfc', '.cfm', '.cfml'], []),
     'cmake':
-        TypeSpec([], ['(CMake(Lists|Funcs).txt|\.cmake$)']),
+        TypeSpec(['.cmake'], ['CMake(Lists|Funcs).txt']),
     'cpp':
         TypeSpec(['.cpp', '.cc', '.cxx', '.m', '.hpp', '.hh', '.h', '.hxx'], []),
     'csharp':
@@ -51,6 +51,8 @@ TYPE_MAP = {
         TypeSpec(['.erl', '.hrl'], []),
     'fortran':
         TypeSpec(['.f', '.f77', '.f90', '.F90', '.f95', '.F95', '.f03', '.for', '.ftn', '.fpp'], []),
+    'go':
+        TypeSpec(['.go'], []),
     'haskell':
         TypeSpec(['.hs', '.lhs'], []),
     'hh':
@@ -74,7 +76,7 @@ TYPE_MAP = {
     'lua':
         TypeSpec(['.lua'], []),
     'make':
-        TypeSpec([], ['([Mm]akefile|.mk$)']),
+        TypeSpec(['.mk'], ['[Mm]akefile']),
     'mason':
         TypeSpec(['.mas', '.mthml', '.mpl', '.mtxt'], []),
     'objc':
@@ -92,9 +94,9 @@ TYPE_MAP = {
     'plone':
         TypeSpec(['.pt', '.cpt', '.metadata', '.cpy', '.py'], []),
     'py':
-        TypeSpec(['.py'], []),
+        TypeSpec(['.py', '.pyw'], []),
     'python':
-        TypeSpec(['.py'], []),
+        TypeSpec(['.py', '.pyw'], []),
     'rake':
         TypeSpec([], ['[Rr]akefile']),
     'rst':
@@ -108,7 +110,7 @@ TYPE_MAP = {
     'scheme':
         TypeSpec(['.scm', '.ss'], []),
     'scons':
-        TypeSpec([], ['(SConstruct|.scons$)']),
+        TypeSpec(['.scons'], ['SConstruct']),
     'shell':
         TypeSpec(['.sh', '.bash', '.csh', '.tcsh', '.ksh', '.zsh'], []),
     'smalltalk':

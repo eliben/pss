@@ -190,13 +190,14 @@ class TestPssMain(unittest.TestCase):
         self.of = MockOutputFormatter('test_types')
         self._run_main(['--scons', '-f'], dir=self.test_types)
         self.assertFoundFiles(self.of,
-                ['test_types/a.scons'])
+                ['test_types/a.scons', 'test_types/SConstruct'])
 
         # pattern type + extension type
         self.of = MockOutputFormatter('test_types')
         self._run_main(['--scons', '--lua', '-f'], dir=self.test_types)
         self.assertFoundFiles(self.of,
-                ['test_types/a.scons', 'test_types/a.lua'])
+                ['test_types/a.scons', 'test_types/SConstruct',
+                 'test_types/a.lua'])
 
         # as before, with include filter
         self.of = MockOutputFormatter('test_types')
@@ -209,6 +210,7 @@ class TestPssMain(unittest.TestCase):
         self._run_main(['-f'], dir=self.test_types)
         self.assertFoundFiles(self.of,
                 [   'test_types/a.scons',
+                    'test_types/SConstruct',
                     'test_types/a.lua',
                     'test_types/a.js',
                     'test_types/a.java',
@@ -221,6 +223,7 @@ class TestPssMain(unittest.TestCase):
         self._run_main(['-f', '--nobatch', '--nojava'], dir=self.test_types)
         self.assertFoundFiles(self.of,
                 [   'test_types/a.scons',
+                    'test_types/SConstruct',
                     'test_types/a.lua',
                     'test_types/a.js',
                     ])

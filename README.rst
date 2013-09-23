@@ -13,9 +13,9 @@ similar (see https://github.com/eliben/pss/wiki/pss-and-ack).
 Pre-requisites
 --------------
 
-**pss** needs only Python to run. It works with with Python versions 2.6, 2.7
-and 3.2+ on Linux and Windows. Some testing was done on Mac OS X and FreeBSD
-as well.
+**pss** needs only Python to run. It works with Python versions 2.6, 2.7 and
+3.2+ on Linux and Windows. Some testing was done on Mac OS X and FreeBSD as
+well.
 
 Installing
 ----------
@@ -58,4 +58,14 @@ License
 
 **pss** is open-source software. Its code is in the public domain. See the
 ``LICENSE`` file for more details.
+
+CI Status
+---------
+
+**pss** has automatic testing enabled through the convenient
+`Travis CI project <https://travis-ci.org>`_. Here is the latest build status:
+
+.. image:: https://travis-ci.org/eliben/pss.png?branch=master
+  :align: center
+  :target: https://travis-ci.org/eliben/pss
 

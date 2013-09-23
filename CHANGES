@@ -1,12 +1,18 @@
 Changelog
 =========
 
-+ Version 1.39 (??)
++ Version 1.39 (20.09.2013)
 
   - Fixed a number of problems with mixing regex pattern and extensions in file
     searching (see Github issues #2 and #3).
-  - Sped up multiple searching for multiple regex file patterns (such as
+  - Sped up searching for multiple regex file patterns (such as
     '--cmake --make') by ~10%.
+  - Fixed a colorama bug that caused intermittent coloring problems on 64-bit
+    Windows (pull request #7 by Ben Hoyt).
+  - Added --color-line option to specify custom line number coloring (issue #11
+    by Ben Hoyt).
+  - Added the .pyw extension to Python patterns (issue #12).
+  - Added the .go extension for Go (issue #14).
 
 + Version 1.38 (23.03.2013)
 
