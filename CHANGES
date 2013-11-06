@@ -1,6 +1,10 @@
 Changelog
 =========
 
++ Version 1.40 (??)
+
+  - Added .metadata directory to ignore list (issue #17).
+
 + Version 1.39 (20.09.2013)
 
   - Fixed a number of problems with mixing regex pattern and extensions in file
