@@ -7,7 +7,23 @@
 # This code is in the public domain
 #-------------------------------------------------------------------------------
 import os, sys
-from distutils.core import setup
+try:
+    from setuptools import setup
+    use_setuptools = True
+except ImportError:
+    from distutils.core import setup
+    use_setuptools = False
+
+if use_setuptools:
+    extra_args = {
+        'entry_points': {
+            'console_scripts': 'pss = psslib.pss:main'
+        },
+    }
+else:
+    extra_args = {
+        'scripts': ['scripts/pss.py', 'scripts/pss'],
+    }
 
 
 try:
@@ -36,6 +52,6 @@ setup(
 
     packages=['psslib', 'psslib.colorama'],
 
-    scripts=['scripts/pss.py', 'scripts/pss'],
+    **extra_args
 )
 
