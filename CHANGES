@@ -4,6 +4,7 @@ Changelog
 + Version 1.40 (??)
 
   - Added .metadata directory to ignore list (issue #17).
+  - Added the .haml extension for Ruby
 
 + Version 1.39 (20.09.2013)
 
