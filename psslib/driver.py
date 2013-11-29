@@ -42,7 +42,7 @@ TYPE_MAP = {
     'csharp':
         TypeSpec(['.cs'], []),
     'css':
-        TypeSpec(['.css'], []),
+        TypeSpec(['.css', '.less'], []),
     'cython':
         TypeSpec(['.pyx', '.pxd', '.pyxbld'], []),
     'elisp':
