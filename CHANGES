@@ -5,6 +5,7 @@ Changelog
 
   - Added .metadata directory to ignore list (issue #17).
   - Added the .haml extension for Ruby
+  - Added the .cu extension for CUDA
 
 + Version 1.39 (20.09.2013)
 

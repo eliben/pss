@@ -43,6 +43,8 @@ TYPE_MAP = {
         TypeSpec(['.cs'], []),
     'css':
         TypeSpec(['.css', '.less'], []),
+    'cuda':
+        TypeSpec(['.cu'], []),
     'cython':
         TypeSpec(['.pyx', '.pxd', '.pyxbld'], []),
     'elisp':
