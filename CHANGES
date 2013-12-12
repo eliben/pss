@@ -5,7 +5,7 @@ Changelog
 
   - Added .metadata directory to ignore list (issue #17).
   - Added the .haml extension for Ruby
-  - Added the .cu extension for CUDA
+  - Added new types: CUDA (.cu), OpenCL (.cl)
 
 + Version 1.39 (20.09.2013)
 
