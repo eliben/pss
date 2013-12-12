@@ -88,7 +88,7 @@ TYPE_MAP = {
     'ocaml':
         TypeSpec(['.ml', '.mli'], []),
     'opencl':
-        TypeSpec(['cl'], []),
+        TypeSpec(['.cl'], []),
     'parrot':
         TypeSpec(['.pir', '.pasm', '.pmc', '.ops', '.pod', '.pg', '.tg'], []),
     'perl':
