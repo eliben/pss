@@ -5,4 +5,4 @@ build
 *.orig
 tags
 .tox
-
+pss.egg-info
