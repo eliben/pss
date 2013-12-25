@@ -6,6 +6,8 @@ Changelog
   - Added .metadata directory to ignore list (issue #17).
   - Added the .haml extension for Ruby
   - Added new types: CUDA (.cu), OpenCL (.cl)
+  - Use new capabilities of setuptools if available, when creating a
+    distribution for Windows (pull request #18)
 
 + Version 1.39 (20.09.2013)
 
