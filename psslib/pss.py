@@ -59,6 +59,9 @@ def main(argv=sys.argv, output_formatter=None):
     if options.help_types:
         print_help_types()
         sys.exit(0)
+    elif options.show_type_list:
+        show_type_list()
+        sys.exit(0)
     elif (len(args) == 0 and search_pattern_expected) or options.help:
         optparser.print_help()
         print(DESCRIPTION_AFTER_USAGE)
@@ -198,6 +201,12 @@ def parse_cmdline(cmdline_args):
     optparser.add_option('--help',
         action='store_true', dest='help',
         help='Display this information')
+
+    # This option is for internal usage by the bash completer, so we're hiding
+    # it from the --help output
+    optparser.add_option('--show-type-list',
+        action='store_true', dest='show_type_list',
+        help=optparse.SUPPRESS_HELP)
 
     group_searching = optparse.OptionGroup(optparser, 'Searching')
     group_searching.add_option('-i', '--ignore-case',
@@ -352,6 +361,10 @@ def print_help_types():
         print('    %-21s' % typestr, end='')
         print(' '.join(TYPE_MAP[typ].extensions + TYPE_MAP[typ].patterns))
     print()
+
+
+def show_type_list():
+    print(' '.join(('--%s' % typ) for typ in TYPE_MAP))
 
 
 def _splice_comma_names(namelist):
