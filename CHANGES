@@ -6,6 +6,7 @@ Changelog
   - Added .metadata directory to ignore list (issue #17).
   - Added the .haml extension for Ruby
   - Added new types: CUDA (.cu), OpenCL (.cl)
+  - Added --td as a short-name for --tablegen
   - Use new capabilities of setuptools if available, when creating a
     distribution for Windows (pull request #18)
   - Added Bash completion script in tools/pss-bash-completion.bash, along with a

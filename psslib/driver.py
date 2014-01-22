@@ -125,6 +125,8 @@ TYPE_MAP = {
         TypeSpec(['.td'], []),
     'tcl':
         TypeSpec(['.tck', '.itcl', '.itk'], []),
+    'td':  # short-name for --tablegen
+        TypeSpec(['.td'], []),
     'tex':
         TypeSpec(['.tex', '.cls', '.sty'], []),
     'tt':
