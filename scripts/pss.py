@@ -1,3 +1,4 @@
 #!/usr/bin/env python
-from psslib.pss import main; main()
-
+import sys
+from psslib.pss import main
+sys.exit(main())

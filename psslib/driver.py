@@ -275,6 +275,8 @@ def pss_run(roots,
             literal_pattern=literal_pattern,
             max_match_count=max_match_count)
 
+    match_found = False
+
     # All systems go...
     #
     for filepath in filefinder.files():
@@ -283,6 +285,7 @@ def pss_run(roots,
         if (    only_find_files and
                 only_find_files_option == PssOnlyFindFilesOption.ALL_FILES):
             output_formatter.found_filename(filepath)
+            match_found = True
             continue
         # The main path: do matching inside the file.
         # Some files appear to be binary - they are not of a known file type
@@ -300,6 +303,7 @@ def pss_run(roots,
                     if matches:
                         output_formatter.binary_file_matches(
                                 'Binary file %s matches\n' % filepath)
+                        match_found = True
                     continue
                 # istextfile does some reading on fileobj, so rewind it
                 fileobj.seek(0)
@@ -315,6 +319,7 @@ def pss_run(roots,
                             only_find_files_option == PssOnlyFindFilesOption.FILES_WITHOUT_MATCHES))
                     if found:
                         output_formatter.found_filename(filepath)
+                        match_found = True
                     continue
 
                 # This is the "normal path" when we examine and display the
@@ -323,6 +328,7 @@ def pss_run(roots,
                 if not matches:
                     # Nothing to see here... move along
                     continue
+                match_found =True
                 output_formatter.start_matches_in_file(filepath)
                 if ncontext_before > 0 or ncontext_after > 0:
                     # If context lines should be printed, we have to read in the
@@ -366,6 +372,9 @@ def pss_run(roots,
         except (OSError, IOError):
             # There was a problem opening or reading the file, so ignore it.
             pass
+
+    return match_found
+
 
 def _pattern_has_uppercase(pattern):
     """ Check whether the given regex pattern has uppercase letters to match
