@@ -26,6 +26,10 @@ def main(argv=sys.argv, output_formatter=None):
         output_formatter:
             An OutputFormatter object to emit output to. Set to None for
             the default.
+
+        return:
+            Return code to be used when exiting to system.
+            0: Match found or help/version printed. 1: No match. 2: Error.
     """
     try:
         options, args, optparser = parse_cmdline(argv[1:])

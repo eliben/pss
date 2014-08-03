@@ -192,10 +192,13 @@ def pss_run(roots,
         ncontext_after=0,
         ):
     """ The main pss invocation function - handles all PSS logic.
+
         For documentation of options, see the --help output of the pss script,
         and study how its command-line arguments are parsed and passed to
         this function. Besides, most options are passed verbatim to submodules
         and documented there. I don't like to repeat myself too much :-)
+
+        Returns True/False depending was match found or not.
     """
     # Set up a default output formatter, if none is provided
     #
