@@ -18,7 +18,7 @@ class TestDriver(unittest.TestCase):
         self.of = MockOutputFormatter('testdir1')
 
     def test_basic(self):
-        pss_run(
+        match_found = pss_run(
             roots=[self.testdir1],
             pattern='abc',
             output_formatter=self.of,
@@ -29,6 +29,8 @@ class TestDriver(unittest.TestCase):
                     'testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]) +
                 self._gen_outputs_in_file(
                     'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])))
+
+        self.assertEquals(match_found, True)
 
     def _gen_outputs_in_file(self, filename, outputs):
         """ Helper method for constructing a list of output pairs in the format
