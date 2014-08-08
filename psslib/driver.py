@@ -198,7 +198,7 @@ def pss_run(roots,
         this function. Besides, most options are passed verbatim to submodules
         and documented there. I don't like to repeat myself too much :-)
 
-        Returns True/False depending was match found or not.
+        Returns True if a match was found, False otherwise.
     """
     # Set up a default output formatter, if none is provided
     #
