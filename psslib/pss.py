@@ -26,8 +26,17 @@ def main(argv=sys.argv, output_formatter=None):
         output_formatter:
             An OutputFormatter object to emit output to. Set to None for
             the default.
+
+        return:
+            Return code to be used when exiting to system.
+            0: Match found or help/version printed. 1: No match. 2: Error.
     """
-    options, args, optparser = parse_cmdline(argv[1:])
+    try:
+        options, args, optparser = parse_cmdline(argv[1:])
+    except VersionPrinted:
+        return 0
+    except SystemExit:
+        return 2
 
     # Handle the various "only find files" options.
     #
@@ -58,14 +67,14 @@ def main(argv=sys.argv, output_formatter=None):
     # without arguments.
     if options.help_types:
         print_help_types()
-        sys.exit(0)
+        return 0
     elif options.show_type_list:
         show_type_list()
-        sys.exit(0)
+        return 0
     elif (len(args) == 0 and search_pattern_expected) or options.help:
         optparser.print_help()
         print(DESCRIPTION_AFTER_USAGE)
-        sys.exit(0)
+        return 0
 
     # Unpack args. If roots are not specified, the current directory is the
     # only root. If no search pattern is expected, the whole of 'args' is roots.
@@ -104,7 +113,8 @@ def main(argv=sys.argv, output_formatter=None):
     # Finally, invoke pss_run with the default output formatter
     #
     try:
-        pss_run(roots=roots,
+        match_found = pss_run(
+                roots=roots,
                 pattern=pattern,
                 output_formatter=output_formatter,
                 only_find_files=only_find_files,
@@ -136,7 +146,12 @@ def main(argv=sys.argv, output_formatter=None):
                 ncontext_after=ncontext_after)
     except KeyboardInterrupt:
         print('<<interrupted - exiting>>')
-        sys.exit(0)
+        return 2
+    except Exception as err:
+        print('<<unexpected error: %s>>' % err)
+        return 2
+    else:
+        return 0 if match_found else 1
 
 
 DESCRIPTION = r'''
@@ -188,7 +203,7 @@ def parse_cmdline(cmdline_args):
         triple: options, args, parser -- the first two being the result of
         OptionParser.parse_args, and the third the parser object itself.`
     """
-    optparser = optparse.OptionParser(
+    optparser = PssOptionParser(
         usage='usage: %prog [options] <pattern> [files]',
         description=DESCRIPTION,
         prog='pss',
@@ -380,4 +395,19 @@ def _splice_comma_names(namelist):
             newlist.append(name)
     return newlist
 
+
+class PssOptionParser(optparse.OptionParser):
+    """Option parser that separates using --version from using invalid options.
+
+       By default optparse uses SystemExit with both. This parser uses custom
+       VersionPrinted exception with --version.
+    """
+
+    def print_version(self, file=None):
+        optparse.OptionParser.print_version(self, file)
+        raise VersionPrinted()
+
+
+class VersionPrinted(Exception):
+    pass
 

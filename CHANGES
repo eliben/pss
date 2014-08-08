@@ -11,6 +11,8 @@ Changelog
     distribution for Windows (pull request #18)
   - Added Bash completion script in tools/pss-bash-completion.bash, along with a
     special option for pss to dump the list of types for it.
+  - Exit with a return code similarly as ack and grep (issue #24).
+    0: Match found or help/version printed. 1: No match. 2: Error.
 
 + Version 1.39 (20.09.2013)
 

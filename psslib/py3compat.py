@@ -22,6 +22,7 @@ identity_func = lambda x: x
 # in py2.
 #
 if PY3:
+    from io import StringIO
     def str2bytes(s):
         return s.encode('latin1')
     def int2byte(i):
@@ -29,6 +30,7 @@ if PY3:
     def bytes2str(b):
         return b.decode('utf-8')
 else:
+    from StringIO import StringIO
     str2bytes = identity_func
     int2byte = chr
     bytes2str = identity_func
@@ -41,4 +43,3 @@ def tostring(b):
         return bytes2str(b)
     else:
         return b
-

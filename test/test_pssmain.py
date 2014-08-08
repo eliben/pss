@@ -12,6 +12,7 @@ import unittest
 sys.path.insert(0, '.')
 sys.path.insert(0, '..')
 from psslib.pss import main
+from psslib.py3compat import StringIO
 from test.utils import (
         path_to_testdir, MockOutputFormatter, filter_out_path)
 
@@ -263,7 +264,7 @@ class TestPssMain(unittest.TestCase):
                 ['testdir1/subdir1/filey.c'])
 
         self.of = MockOutputFormatter('testdir1')
-        self._run_main(['-g', r'\.qqq'])
+        self._run_main(['-g', r'\.qqq'], expected_rc=1)
         self.assertFoundFiles(self.of, [])
 
         self.of = MockOutputFormatter('testdir1')
@@ -292,7 +293,7 @@ class TestPssMain(unittest.TestCase):
         # .rb files have some weird characters in them - this is a sanity
         # test that shows that pss won't crash while decoding these files
         #
-        self._run_main(['ttt', '--ruby'])
+        self._run_main(['ttt', '--ruby'], expected_rc=1)
 
     def test_include_types(self):
         rootdir = path_to_testdir('test_types')
@@ -356,10 +357,32 @@ class TestPssMain(unittest.TestCase):
                 self._gen_outputs_in_file(
                     'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])))
 
-    def _run_main(self, args, dir=None, output_formatter=None):
-        main(
+    def test_return_code(self):
+        # 0: match found or help/version printed
+        # 1: no match
+        # 2: error
+        sys.stdout = StringIO()  # help is not printed through output_formatter
+        sys.stderr = StringIO()  # errors by optparse go here
+        try:
+            for args, expected in [(['--help'], 0),
+                                   (['--version'], 0),
+                                   ([], 0),  # prints help
+                                   (['abc', self.testdir1], 0),
+                                   (['--py', 'abc', self.testdir1], 1),
+                                   (['no match here', self.testdir1], 1),
+                                   (['--invalid'], 2),
+                                   ([['invalid arg causes error']], 2)]:
+                rc = main(['pss'] + args, output_formatter=self.of)
+                self.assertEquals(rc, expected)
+        finally:
+            sys.stdout = sys.__stdout__
+            sys.stderr = sys.__stderr__
+
+    def _run_main(self, args, dir=None, output_formatter=None, expected_rc=0):
+        rc = main(
             argv=[''] + args + [dir or self.testdir1],
             output_formatter=output_formatter or self.of)
+        self.assertEquals(rc, expected_rc)
 
     def _gen_outputs_in_file(self, filename, outputs, add_end=True):
         """ Helper method for constructing a list of output pairs in the format
