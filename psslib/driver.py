@@ -135,8 +135,12 @@ TYPE_MAP = {
         TypeSpec(['.txt', '.text'], []),
     'vb':
         TypeSpec(['.bas', '.cls', '.frm', '.ctl', '.vb', '.resx'], []),
+    'verilog':
+        TypeSpec(['.v', '.sv'], []),
     'vim':
         TypeSpec(['.vim'], []),
+    'vhdl':
+        TypeSpec(['.vhd', '.vhdl'], []),
     'withoutext':
         TypeSpec([''], []),
     'xml':
@@ -418,5 +422,3 @@ def _build_match_context_dict(matches, ncontext_before, ncontext_after):
             if ncontext not in d:
                 d[ncontext] = LINE_CONTEXT, None
     return d
-
-
