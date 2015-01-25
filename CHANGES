@@ -1,6 +1,10 @@
 Changelog
 =========
 
++ Version 1.41 (??)
+
+  - Added --vhdl and --verilog types (pull request #29)
+
 + Version 1.40 (03.11.2014)
 
   - Added .metadata directory to ignore list (issue #17).
