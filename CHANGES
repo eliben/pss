@@ -4,6 +4,7 @@ Changelog
 + Version 1.41 (??)
 
   - Added --julia, --vhdl and --verilog types (pull requests #29, #30)
+  - Colorama updated to newer version (#33)
 
 + Version 1.40 (03.11.2014)
 
