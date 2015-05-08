@@ -1,9 +1,4 @@
-Copyright (c) 2010 Jonathan Hartley <tartley@tartley.com>
-
-Released under the New BSD license (reproduced below), or alternatively you may
-use this software under any OSI approved open source license such as those at
-http://opensource.org/licenses/alphabetical
-
+Copyright (c) 2010 Jonathan Hartley
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -16,7 +11,7 @@ modification, are permitted provided that the following conditions are met:
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
 
-* Neither the name(s) of the copyright holders, nor those of its contributors
+* Neither the name of the copyright holders, nor those of its contributors
   may be used to endorse or promote products derived from this software without
   specific prior written permission.
 
