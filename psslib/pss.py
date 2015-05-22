@@ -16,6 +16,15 @@ from psslib import __version__
 from psslib.driver import (pss_run, TYPE_MAP,
         IGNORED_DIRS, IGNORED_FILE_PATTERNS, PssOnlyFindFilesOption)
 
+def _merge_configuration(argv):
+    result = list(argv)
+    if os.path.isfile('.pss'):
+        import io
+        with io.open('.pss', mode='r', encoding='utf-8') as f:
+            lines = f.read().splitlines()
+            if lines:
+                result = [result[0]] + lines + result[1:]
+    return result
 
 def main(argv=sys.argv, output_formatter=None):
     """ Main pss
@@ -31,6 +40,7 @@ def main(argv=sys.argv, output_formatter=None):
             Return code to be used when exiting to system.
             0: Match found or help/version printed. 1: No match. 2: Error.
     """
+    argv = _merge_configuration(argv)
     try:
         options, args, optparser = parse_cmdline(argv[1:])
     except VersionPrinted:
