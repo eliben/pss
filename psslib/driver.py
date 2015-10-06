@@ -99,6 +99,8 @@ TYPE_MAP = {
         TypeSpec(['.php', '.phpt', '.php3', '.php4', '.php5', '.phtml'], []),
     'plone':
         TypeSpec(['.pt', '.cpt', '.metadata', '.cpy', '.py'], []),
+    'proto':
+        TypeSpec(['.proto'], []),
     'py':
         TypeSpec(['.py', '.pyw'], []),
     'python':
