@@ -83,6 +83,8 @@ TYPE_MAP = {
         TypeSpec(['.mk'], ['[Mm]akefile']),
     'mason':
         TypeSpec(['.mas', '.mthml', '.mpl', '.mtxt'], []),
+    'md':
+        TypeSpec(['.md'], []),
     'objc':
         TypeSpec(['.m', '.h'], []),
     'objcpp':
