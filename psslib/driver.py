@@ -198,6 +198,7 @@ def pss_run(roots,
         do_heading=True,
         prefix_filename_to_file_matches=True,
         show_column_of_first_match=False,
+        universal_newlines=False,
         ncontext_before=0,
         ncontext_after=0,
         ):
@@ -271,10 +272,14 @@ def pss_run(roots,
     # Set up the content matcher
     #
 
-    if pattern is None:
-        pattern = b''
+    if universal_newlines:
+        if pattern is None:
+            pattern = ''
     else:
-        pattern = str2bytes(pattern)
+        if pattern is None:
+            pattern = b''
+        else:
+            pattern = str2bytes(pattern)
 
     if (    not ignore_case and
             (smart_case and not _pattern_has_uppercase(pattern))):
@@ -308,7 +313,8 @@ def pss_run(roots,
         # full work.
         #
         try:
-            with open(filepath, 'rb') as fileobj:
+            openmode = 'rU' if universal_newlines else 'rb'
+            with open(filepath, openmode) as fileobj:
                 if not istextfile(fileobj):
                     # istextfile does some reading on fileobj, so rewind it
                     fileobj.seek(0)

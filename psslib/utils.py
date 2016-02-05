@@ -6,7 +6,7 @@
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
 #-------------------------------------------------------------------------------
-from .py3compat import int2byte
+from .py3compat import int2byte, str2bytes
 from . import colorama
 
 
@@ -21,6 +21,12 @@ def istextfile(fileobj, blocksize=512):
         are NUL ('\x00') bytes in the block, assume this is a binary file.
     """
     block = fileobj.read(blocksize)
+
+    # With -U the file will be open in text mode,
+    # so a read (in python 3) won't return bytes.
+    if not isinstance(block, bytes):
+        block = str2bytes(block)
+
     if b'\x00' in block:
         # Files with null bytes are binary
         return False
