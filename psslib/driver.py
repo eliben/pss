@@ -35,6 +35,10 @@ TYPE_MAP = {
         TypeSpec(['.cfg', '.conf', '.config'], []),
     'cfmx':
         TypeSpec(['.cfc', '.cfm', '.cfml'], []),
+    'clj':
+        TypeSpec(['.clj'], []),
+    'clojure':
+        TypeSpec(['.clj'], []),
     'cmake':
         TypeSpec(['.cmake'], ['CMake(Lists|Funcs).txt']),
     'cpp':
