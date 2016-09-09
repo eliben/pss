@@ -25,10 +25,12 @@ TYPE_MAP = {
         TypeSpec(['.as', '.mxml'], []),
     'ada':
         TypeSpec(['.ada', '.adb', '.ads'], []),
-    'batch':
-        TypeSpec(['.bat', '.cmd'], []),
     'asm':
         TypeSpec(['.asm', '.s', '.S'], []),
+    'batch':
+        TypeSpec(['.bat', '.cmd'], []),
+    'bazel':
+        TypeSpec(['.bzl'], ['BUILD']),
     'cc':
         TypeSpec(['.c', '.h', '.xs'], []),
     'cfg':
