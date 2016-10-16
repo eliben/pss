@@ -142,6 +142,7 @@ def main(argv=sys.argv, output_formatter=None):
                 do_heading=options.do_heading,
                 prefix_filename_to_file_matches=options.prefix_filename,
                 show_column_of_first_match=options.show_column,
+                universal_newlines=options.universal_newlines,
                 ncontext_before=ncontext_before,
                 ncontext_after=ncontext_after)
     except KeyboardInterrupt:
@@ -240,6 +241,9 @@ def parse_cmdline(cmdline_args):
     group_searching.add_option('-Q', '--literal',
         action='store_true', dest='literal', default=False,
         help='Quote all metacharacters; the pattern is literal')
+    group_searching.add_option('-U', '--universal-newlines',
+        action='store_true', dest='universal_newlines', default=False,
+        help='Use PEP 278 universal newline support when opening files')
     optparser.add_option_group(group_searching)
 
     group_output = optparse.OptionGroup(optparser, 'Search output')

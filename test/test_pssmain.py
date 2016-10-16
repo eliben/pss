@@ -289,6 +289,14 @@ class TestPssMain(unittest.TestCase):
         self.assertEqual(binary_match[0], 'BINARY_MATCH')
         self.assertTrue(binary_match[1].find('zb.erl') > 0)
 
+    def test_binary_matches_universal_newlines(self):
+        # make sure -U doesn't break binary matching
+        self._run_main(['-U', '-G', 'zb', 'cde'])
+
+        binary_match = self.of.output[-1]
+        self.assertEqual(binary_match[0], 'BINARY_MATCH')
+        self.assertTrue(binary_match[1].find('zb.erl') > 0)
+
     def test_weird_chars(self):
         # .rb files have some weird characters in them - this is a sanity
         # test that shows that pss won't crash while decoding these files
@@ -377,6 +385,21 @@ class TestPssMain(unittest.TestCase):
         finally:
             sys.stdout = sys.__stdout__
             sys.stderr = sys.__stderr__
+
+    def test_universal_newlines(self):
+        of = MockOutputFormatter('testdir3')
+        self._run_main(['-U', '--match=test$'],
+                       dir=path_to_testdir('testdir3'),
+                       output_formatter=of)
+        self.assertEqual(sorted(of.output),
+                         sorted(
+                             self._gen_outputs_in_file(
+                                'testdir3/lfnewlines.txt', [('MATCH', (1, [(10, 14)]))]) +
+                             self._gen_outputs_in_file(
+                                'testdir3/crlfnewlines.txt', [('MATCH', (1, [(10, 14)]))]) +
+                             self._gen_outputs_in_file(
+                                'testdir3/crnewlines.txt', [('MATCH', (1, [(10, 14)]))])
+                         ))
 
     def _run_main(self, args, dir=None, output_formatter=None, expected_rc=0):
         rc = main(
