@@ -53,6 +53,8 @@ TYPE_MAP = {
         TypeSpec(['.cu'], []),
     'cython':
         TypeSpec(['.pyx', '.pxd', '.pyxbld'], []),
+    'dart':
+        TypeSpec(['.dart'], []),
     'elisp':
         TypeSpec(['.el', '.elisp'], []),
     'erlang':
