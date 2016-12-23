@@ -401,6 +401,14 @@ class TestPssMain(unittest.TestCase):
                                 'testdir3/crnewlines.txt', [('MATCH', (1, [(10, 14)]))])
                          ))
 
+    def test_options_from_file(self):
+        confdir = path_to_testdir('config_files')
+        configfile = os.path.join(confdir, "test_pssmain.cfg")
+        self._run_main(['@' + configfile])
+        self.assertFoundFiles(self.of,
+                ['testdir1/filea.c', 'testdir1/filea.h',
+                'testdir1/subdir1/filey.c', 'testdir1/subdir1/filez.c'])
+
     def _run_main(self, args, dir=None, output_formatter=None, expected_rc=0):
         rc = main(
             argv=[''] + args + [dir or self.testdir1],
