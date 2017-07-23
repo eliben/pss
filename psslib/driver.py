@@ -65,6 +65,8 @@ TYPE_MAP = {
         TypeSpec(['.go'], []),
     'haskell':
         TypeSpec(['.hs', '.lhs'], []),
+    'hs':
+        TypeSpec(['.hs', '.lhs'], []),
     'hh':
         TypeSpec(['.h'], []),
     'html':
