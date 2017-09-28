@@ -144,7 +144,7 @@ TYPE_MAP = {
     'td':  # short-name for --tablegen
         TypeSpec(['.td'], []),
     'terraform':
-        TypeSpec(['.tf']. []),
+        TypeSpec(['.tf'], []),
     'tex':
         TypeSpec(['.tex', '.cls', '.sty'], []),
     'tt':
