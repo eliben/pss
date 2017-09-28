@@ -143,6 +143,8 @@ TYPE_MAP = {
         TypeSpec(['.tck', '.itcl', '.itk'], []),
     'td':  # short-name for --tablegen
         TypeSpec(['.td'], []),
+    'terraform':
+        TypeSpec(['.tf'], []),
     'tex':
         TypeSpec(['.tex', '.cls', '.sty'], []),
     'tt':
