@@ -75,6 +75,8 @@ TYPE_MAP = {
         TypeSpec(['.inc', '.inl'], []),
     'java':
         TypeSpec(['.java', '.properties'], []),
+    'jinja2':
+        TypeSpec(['.j2'], []),
     'js':
         TypeSpec(['.js'], []),
     'json':
