@@ -58,10 +58,3 @@ class OutputFormatter(object):
             matching their contents).
         """
         raise NotImplementedError()
-
-
-#-------------------------------------------------------------------------------
-if __name__ == '__main__':
-    of = OutputFormatter()
-    of.start_matches_in_file('f')
-

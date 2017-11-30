@@ -126,5 +126,3 @@ class DefaultPssOutputFormatter(OutputFormatter):
 
     def _emitline(self, line=''):
         self._emit(line + '\n')
-
-
