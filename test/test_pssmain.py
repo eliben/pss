@@ -381,7 +381,9 @@ class TestPssMain(unittest.TestCase):
                                    (['--invalid'], 2),
                                    ([['invalid arg causes error']], 2)]:
                 rc = main(['pss'] + args, output_formatter=self.of)
-                self.assertEquals(rc, expected)
+                self.assertEquals(rc, expected,
+                                  'for {} {} got rc={}'.format(
+                                      args, expected, rc))
         finally:
             sys.stdout = sys.__stdout__
             sys.stderr = sys.__stderr__

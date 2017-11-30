@@ -33,7 +33,8 @@ def main(argv=sys.argv, output_formatter=None):
     """
     try:
         options, args, optparser = parse_cmdline(argv[1:])
-    except VersionPrinted:
+    except HelpOrVersionPrinted:
+        print(DESCRIPTION_AFTER_USAGE)
         return 0
     except SystemExit:
         return 2
@@ -71,8 +72,11 @@ def main(argv=sys.argv, output_formatter=None):
     elif options.show_type_list:
         show_type_list()
         return 0
-    elif (len(args) == 0 and search_pattern_expected) or options.help:
-        optparser.print_help()
+    elif len(args) == 0 and search_pattern_expected:
+        try:
+            optparser.print_help()
+        except HelpOrVersionPrinted:
+            pass
         print(DESCRIPTION_AFTER_USAGE)
         return 0
 
@@ -209,15 +213,11 @@ def parse_cmdline(cmdline_args):
         usage='usage: %prog [options] <pattern> [files]',
         description=DESCRIPTION,
         prog='pss',
-        add_help_option=False,  # -h is a real option
         version='pss %s' % __version__)
 
     optparser.add_option('--help-types',
         action='store_true', dest='help_types',
         help='Display supported file types')
-    optparser.add_option('--help',
-        action='store_true', dest='help',
-        help='Display this information')
 
     # This option is for internal usage by the bash completer, so we're hiding
     # it from the --help output
@@ -254,13 +254,13 @@ def parse_cmdline(cmdline_args):
     group_output.add_option('-m', '--max-count',
         action='store', dest='max_count', metavar='NUM', default=sys.maxsize,
         type='int', help='Stop searching in each file after NUM matches')
-    group_output.add_option('-H', '--with-filename',
+    group_output.add_option('--with-filename',
         action='store_true', dest='prefix_filename', default=True,
         help=' '.join(r'''Print the filename before matches (default). If
         --noheading is specified, the filename will be prepended to each
         matching line. Otherwise it is printed once for all the matches
         in the file.'''.split()))
-    group_output.add_option('-h', '--no-filename',
+    group_output.add_option('--no-filename',
         action='store_false', dest='prefix_filename',
         help='Suppress printing the filename before matches')
     group_output.add_option('--line',
@@ -411,17 +411,20 @@ def _splice_comma_names(namelist):
 
 
 class PssOptionParser(optparse.OptionParser):
-    """Option parser that separates using --version from using invalid options.
+    """Option parser that separates using --help and --version from
+       using invalid options.
 
        By default optparse uses SystemExit with both. This parser uses custom
-       VersionPrinted exception with --version.
+       HelpOrVersionPrinted exception with --help and --version.
     """
-
     def print_version(self, file=None):
         optparse.OptionParser.print_version(self, file)
-        raise VersionPrinted()
+        raise HelpOrVersionPrinted()
+
+    def print_help(self):
+        optparse.OptionParser.print_help(self)
+        raise HelpOrVersionPrinted()
 
 
-class VersionPrinted(Exception):
+class HelpOrVersionPrinted(Exception):
     pass
-
