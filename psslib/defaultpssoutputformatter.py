@@ -30,6 +30,7 @@ class DefaultPssOutputFormatter(OutputFormatter):
             lineno_color_str=None,
             do_heading=True,
             prefix_filename_to_file_matches=True,
+            show_line_of_match=True,
             show_column_of_first_match=False,
             stream=None):
         self.do_colors = do_colors
@@ -37,6 +38,7 @@ class DefaultPssOutputFormatter(OutputFormatter):
         self.do_heading = do_heading
         self.inline_filename = (True if prefix_filename_to_file_matches and not do_heading
                                 else False)
+        self.show_line_of_match = show_line_of_match
         self.show_column_of_first_match = show_column_of_first_match
 
         self.style_match = (decode_colorama_color(match_color_str) or
@@ -66,8 +68,9 @@ class DefaultPssOutputFormatter(OutputFormatter):
         if self.inline_filename:
             self._emit_colored('%s' % filename, self.style_filename)
             self._emit(':')
-        self._emit_colored('%s' % matchresult.matching_lineno, self.style_lineno)
-        self._emit(':')
+        if self.show_line_of_match:
+            self._emit_colored('%s' % matchresult.matching_lineno, self.style_lineno)
+            self._emit(':')
         first_match_range = matchresult.matching_column_ranges[0]
         if self.show_column_of_first_match:
             self._emit('%s:' % first_match_range[0])
@@ -91,8 +94,9 @@ class DefaultPssOutputFormatter(OutputFormatter):
         if self.inline_filename:
             self._emit_colored('%s' % filename, self.style_filename)
             self._emit('-')
-        self._emit_colored('%s' % lineno, self.style_lineno)
-        self._emit('-')
+        if self.show_line_of_match:
+            self._emit_colored('%s' % lineno, self.style_lineno)
+            self._emit('-')
         if self.show_column_of_first_match:
             self._emit('1-')
         self._emit(line)
