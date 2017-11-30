@@ -34,7 +34,6 @@ def main(argv=sys.argv, output_formatter=None):
     try:
         options, args, optparser = parse_cmdline(argv[1:])
     except HelpOrVersionPrinted:
-        print(DESCRIPTION_AFTER_USAGE)
         return 0
     except SystemExit:
         return 2
@@ -423,6 +422,7 @@ class PssOptionParser(optparse.OptionParser):
 
     def print_help(self):
         optparse.OptionParser.print_help(self)
+        print(DESCRIPTION_AFTER_USAGE)
         raise HelpOrVersionPrinted()
 
 
