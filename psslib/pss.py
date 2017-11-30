@@ -141,6 +141,7 @@ def main(argv=sys.argv, output_formatter=None):
                 do_break=options.do_break,
                 do_heading=options.do_heading,
                 prefix_filename_to_file_matches=options.prefix_filename,
+                show_line_of_match=options.show_line,
                 show_column_of_first_match=options.show_column,
                 universal_newlines=options.universal_newlines,
                 ncontext_before=ncontext_before,
@@ -262,9 +263,18 @@ def parse_cmdline(cmdline_args):
     group_output.add_option('-h', '--no-filename',
         action='store_false', dest='prefix_filename',
         help='Suppress printing the filename before matches')
+    group_output.add_option('--line',
+        action='store_true', dest='show_line', default=True,
+        help='Print the line number before matches (default)')
+    group_output.add_option('--noline',
+        action='store_false', dest='show_line',
+        help='Suppress printing the line number before matches')
     group_output.add_option('--column',
         action='store_true', dest='show_column',
         help='Show the column number of the first match')
+    group_output.add_option('--nocolumn',
+        action='store_false', dest='show_column',
+        help='Suppress showing the column number of the first match (default)')
     group_output.add_option('-A', '--after-context',
         action='store', dest='after_context', metavar='NUM', default=0,
         type='int', help='Print NUM lines of context after each match')
