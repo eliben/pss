@@ -119,6 +119,8 @@ TYPE_MAP = {
         TypeSpec(['.py', '.pyw'], []),
     'python':
         TypeSpec(['.py', '.pyw'], []),
+    'r':
+        TypeSpec(['.R', '.Rmd'], []),
     'rake':
         TypeSpec([], ['[Rr]akefile']),
     'rst':
@@ -173,7 +175,7 @@ IGNORED_DIRS = set([
     'blib', '_build', '.bzr', '.cdv', 'cover_db', '__pycache__',
     'CVS', '_darcs', '~.dep', '~.dot', '.git', '.hg', '~.nib',
     '.pc', '~.plst', 'RCS', 'SCCS', '_sgbak', '.svn', '.tox',
-    '.metadata', '.cover'])
+    '.metadata', '.cover', '.Rproj.user', '.Rhistory'])
 
 IGNORED_FILE_PATTERNS = set([r'~$', r'#.+#$', r'[._].*\.swp$', r'core\.\d+$'])
 
