@@ -48,7 +48,7 @@ TYPE_MAP = {
     'csharp':
         TypeSpec(['.cs'], []),
     'css':
-        TypeSpec(['.css', '.less'], []),
+        TypeSpec(['.css', '.less', '.scss'], []),
     'cuda':
         TypeSpec(['.cu'], []),
     'cython':
@@ -78,7 +78,7 @@ TYPE_MAP = {
     'jinja2':
         TypeSpec(['.j2'], []),
     'js':
-        TypeSpec(['.js'], []),
+        TypeSpec(['.js', '.jsx'], []),
     'json':
         TypeSpec(['.json'], []),
     'jsp':
@@ -155,6 +155,8 @@ TYPE_MAP = {
         TypeSpec(['.tt', '.tt2', '.ttml'], []),
     'txt':
         TypeSpec(['.txt', '.text'], []),
+    'typescript':
+        TypeSpec(['.ts', '.tsx'], []),
     'vb':
         TypeSpec(['.bas', '.cls', '.frm', '.ctl', '.vb', '.resx'], []),
     'verilog':
