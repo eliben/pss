@@ -231,7 +231,6 @@ def pss_run(roots,
         Returns True if a match was found, False otherwise.
     """
     # Set up a default output formatter, if none is provided
-    #
     if output_formatter is None:
         output_formatter = DefaultPssOutputFormatter(
             do_colors=do_colors,
@@ -244,7 +243,6 @@ def pss_run(roots,
             show_column_of_first_match=show_column_of_first_match)
 
     # Set up the FileFinder
-    #
     if search_all_files_and_dirs:
         ignore_dirs = set()
     else:
@@ -259,7 +257,10 @@ def pss_run(roots,
     filter_include_patterns = set()
     filter_exclude_patterns = set()
 
-    if not search_all_files_and_dirs and not search_all_types:
+    if search_all_files_and_dirs or search_all_types:
+        # Don't apply restrictions
+        pass
+    else:
         filter_exclude_patterns = IGNORED_FILE_PATTERNS
 
         for typ in (include_types or TYPE_MAP):
@@ -269,9 +270,6 @@ def pss_run(roots,
         for typ in exclude_types:
             ignore_extensions.update(TYPE_MAP[typ].extensions)
             ignore_patterns.update(TYPE_MAP[typ].patterns)
-    else:
-        # all files are searched
-        pass
 
     # type_pattern (-g/-G) is an AND filter to the search criteria
     if type_pattern is not None:
