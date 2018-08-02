@@ -272,6 +272,12 @@ class TestPssMain(unittest.TestCase):
         self.assertFoundFiles(self.of,
                 ['testdir1/subdir1/ppp.qqq'])
 
+    def test_only_find_files_G(self):
+        # A combination of -G and -f is similar to -g
+        self._run_main(['--cc', '-f', '-G', '.*y\.'])
+        self.assertFoundFiles(self.of,
+                ['testdir1/subdir1/filey.c'])
+
     def test_only_find_files_l(self):
         self._run_main(['--cc', 'abc', '-l'])
         self.assertFoundFiles(self.of,
