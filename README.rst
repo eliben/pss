@@ -48,9 +48,9 @@ How to use it?
 --------------
 
 **pss** is meant to be executed from the command line. Running it with no
-arguments or with ``-h`` will print a detailed usage message. 
+arguments or with ``-h`` will print a detailed usage message.
 
-For some detailed usage examples, check out the 
+For some detailed usage examples, check out the
 Usage wiki page - https://github.com/eliben/pss/wiki/Usage-samples
 
 License

@@ -1,6 +1,16 @@
 Changelog
 =========
 
++ Version 1.42 (??)
+
+  - Added a new option: --exclude-pattern to exclude files matching a regex.
+    This is the inverse of -G, since negative regexes are sometimes tricky to
+    craft. Also -G got a synonym: --include-pattern
+  - Added new types: JSX, TypeScript, SCSS, R, Jinja2, Terraform, Dart
+  - Added an options to suppress printing line numbers (#41)
+  - Made --hs a synonym for --haskell
+  - Added support for universal newlines (#36)
+
 + Version 1.41 (10.09.2016)
 
   - Added --julia, --vhdl and --verilog types (pull requests #29, #30).
@@ -94,21 +104,20 @@ Changelog
     passing the source directory to a Python interpreter.
   - Fixed a problem with the max-count option that was broken in some cases.
   - Fixed some encoding issues, and better handling of non-ASCII files when
-    running on Python 3 (also reported in Issues #10 and #12). 
+    running on Python 3 (also reported in Issues #10 and #12).
   - Issue #2: pss will now ignore broken symlinks (won't list them or try to
     read them).
   - Issue #5: When the output of pss is redirected, by default colors won't
     be applied (unless forced with --color). Pull request #2 by Pekka Klärck.
   - Issue #6: Support -l and -L options (only show files with/without matches)
-  - Issue #8: When Ctrl+C is hit, print a succinct error message instead of 
+  - Issue #8: When Ctrl+C is hit, print a succinct error message instead of
     the full stack trace.
 
 + Version 0.32 (14.10.2011)
 
-  - Move pss.py from scripts/ to psslib/, leaving just a wrapper call to 
+  - Move pss.py from scripts/ to psslib/, leaving just a wrapper call to
     pss.py's main() in scripts/pss.py and scripts/pss. This is better than
     the previous solution of having a symlink in scripts/ because pip on
     Python 2.6 doesn't handle symlinks too well.
 
 + Version 0.31 - Initial public release (14.10.2011)
-
