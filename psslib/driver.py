@@ -199,7 +199,7 @@ def pss_run(roots,
         remove_ignored_dirs=[],
         recurse=True,
         textonly=False,
-        type_pattern=None, # for -G and -g
+        include_pattern=None, # for -G and -g
         exclude_pattern=None,
         include_types=[],  # empty means all known types are included
         exclude_types=[],
@@ -272,9 +272,9 @@ def pss_run(roots,
             ignore_extensions.update(TYPE_MAP[typ].extensions)
             ignore_patterns.update(TYPE_MAP[typ].patterns)
 
-    # type_pattern (-g/-G) is an AND filter to the search criteria
-    if type_pattern is not None:
-        filter_include_patterns.add(type_pattern)
+    # include_pattern (-g/-G) is an AND filter to the search criteria
+    if include_pattern is not None:
+        filter_include_patterns.add(include_pattern)
 
     if exclude_pattern is not None:
         filter_exclude_patterns.add(exclude_pattern)

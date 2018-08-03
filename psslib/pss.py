@@ -50,7 +50,7 @@ def main(argv=sys.argv, output_formatter=None):
     elif options.find_files_matching_pattern is not None:
         only_find_files = True
         search_pattern_expected = False
-        options.type_pattern = options.find_files_matching_pattern
+        options.include_pattern = options.find_files_matching_pattern
     elif options.find_files_with_matches:
         only_find_files = True
         only_find_files_option = PssOnlyFindFilesOption.FILES_WITH_MATCHES
@@ -128,7 +128,7 @@ def main(argv=sys.argv, output_formatter=None):
                 remove_ignored_dirs=remove_ignored_dirs,
                 recurse=options.recurse,
                 textonly=options.textonly,
-                type_pattern=options.type_pattern,
+                include_pattern=options.include_pattern,
                 exclude_pattern=options.exclude_pattern,
                 include_types=include_types,
                 exclude_types=exclude_types,
@@ -345,8 +345,8 @@ def parse_cmdline(cmdline_args):
         action='store_true', dest='textonly', default=False,
         help='''Restrict the search to only textual files.
         Warning: with this option the search is likely to run much slower''')
-    group_inclusion.add_option('-G',
-        action='store', dest='type_pattern', metavar='REGEX',
+    group_inclusion.add_option('-G', '--include-pattern',
+        action='store', dest='include_pattern', metavar='REGEX',
         help='Only search files that match REGEX')
     group_inclusion.add_option('--exclude-pattern',
                                action='store', dest='exclude_pattern',
