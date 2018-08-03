@@ -173,13 +173,14 @@ TYPE_MAP = {
         TypeSpec(['.yaml', '.yml'], []),
 }
 
-IGNORED_DIRS = set([
+IGNORED_DIRS = frozenset([
     'blib', '_build', '.bzr', '.cdv', 'cover_db', '__pycache__',
     'CVS', '_darcs', '~.dep', '~.dot', '.git', '.hg', '~.nib',
     '.pc', '~.plst', 'RCS', 'SCCS', '_sgbak', '.svn', '.tox',
     '.metadata', '.cover', '.Rproj.user', '.Rhistory'])
 
-IGNORED_FILE_PATTERNS = set([r'~$', r'#.+#$', r'[._].*\.swp$', r'core\.\d+$'])
+IGNORED_FILE_PATTERNS = frozenset(
+    [r'~$', r'#.+#$', r'[._].*\.swp$', r'core\.\d+$'])
 
 
 class PssOnlyFindFilesOption:
@@ -262,7 +263,7 @@ def pss_run(roots,
         # Don't apply restrictions
         pass
     else:
-        filter_exclude_patterns = IGNORED_FILE_PATTERNS.copy()
+        filter_exclude_patterns = set(IGNORED_FILE_PATTERNS)
 
         for typ in (include_types or TYPE_MAP):
             search_extensions.update(TYPE_MAP[typ].extensions)
