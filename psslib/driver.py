@@ -200,6 +200,7 @@ def pss_run(roots,
         recurse=True,
         textonly=False,
         type_pattern=None, # for -G and -g
+        exclude_pattern=None,
         include_types=[],  # empty means all known types are included
         exclude_types=[],
         ignore_case=False,
@@ -274,6 +275,9 @@ def pss_run(roots,
     # type_pattern (-g/-G) is an AND filter to the search criteria
     if type_pattern is not None:
         filter_include_patterns.add(type_pattern)
+
+    if exclude_pattern is not None:
+        filter_exclude_patterns.add(exclude_pattern)
 
     filefinder = FileFinder(
             roots=roots,

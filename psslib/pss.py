@@ -129,6 +129,7 @@ def main(argv=sys.argv, output_formatter=None):
                 recurse=options.recurse,
                 textonly=options.textonly,
                 type_pattern=options.type_pattern,
+                exclude_pattern=options.exclude_pattern,
                 include_types=include_types,
                 exclude_types=exclude_types,
                 ignore_case=options.ignore_case,
@@ -347,6 +348,10 @@ def parse_cmdline(cmdline_args):
     group_inclusion.add_option('-G',
         action='store', dest='type_pattern', metavar='REGEX',
         help='Only search files that match REGEX')
+    group_inclusion.add_option('--exclude-pattern',
+                               action='store', dest='exclude_pattern',
+                               metavar='REGEX',
+                               help='Exclude files that match REGEX')
     optparser.add_option_group(group_inclusion)
 
     # Parsing --<type> and --no<type> options for all supported types is
