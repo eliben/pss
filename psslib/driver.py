@@ -262,7 +262,7 @@ def pss_run(roots,
         # Don't apply restrictions
         pass
     else:
-        filter_exclude_patterns = IGNORED_FILE_PATTERNS
+        filter_exclude_patterns = IGNORED_FILE_PATTERNS.copy()
 
         for typ in (include_types or TYPE_MAP):
             search_extensions.update(TYPE_MAP[typ].extensions)
@@ -278,7 +278,6 @@ def pss_run(roots,
 
     if exclude_pattern is not None:
         filter_exclude_patterns.add(exclude_pattern)
-
     filefinder = FileFinder(
             roots=roots,
             recurse=recurse,

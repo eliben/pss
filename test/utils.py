@@ -85,4 +85,3 @@ class MockOutputFormatter(OutputFormatter):
         relpath = path_relative_to_dir(filename, self.basepath)
         self.output.append((
             'FOUND_FILENAME', os.path.normpath(relpath)))
-
