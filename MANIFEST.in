@@ -5,6 +5,3 @@ include README.rst
 include LICENSE
 include CHANGES
 include __main__.py
-
-
-
