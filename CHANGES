@@ -7,7 +7,7 @@ Changelog
     This is the inverse of -G, since negative regexes are sometimes tricky to
     craft. Also -G got a synonym: --include-pattern
   - Added new types: JSX, TypeScript, SCSS, R, Jinja2, Terraform, Dart
-  - Added an options to suppress printing line numbers (#41)
+  - Added options to suppress printing line numbers (#41)
   - Made --hs a synonym for --haskell
   - Added support for universal newlines (#36)
 
