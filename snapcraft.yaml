@@ -1,0 +1,21 @@
+name: pss
+version: git
+summary: command line search inside source code tree
+description: |
+  Recursively search for the pattern in source code files. `pss`
+  knows which extensions and file names to search and which to ignore,
+  skips directories like ``.git``, colors its output in a helpful way,
+  and does much more.
+ 
+confinement: devmode
+
+apps:
+  pss:
+    command: __main__.py
+
+parts:
+  pss:
+    plugin: python
+    source: .
+    source-type: git
+
