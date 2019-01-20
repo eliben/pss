@@ -55,6 +55,8 @@ TYPE_MAP = {
         TypeSpec(['.pyx', '.pxd', '.pyxbld'], []),
     'dart':
         TypeSpec(['.dart'], []),
+    'docker':
+        TypeSpec([], ['Dockerfile', 'Dockerfile\.(\w+)']),
     'elisp':
         TypeSpec(['.el', '.elisp'], []),
     'erlang':
