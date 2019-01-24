@@ -1,3 +1,0 @@
-ggk
-xabc
-
