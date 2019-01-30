@@ -153,6 +153,8 @@ TYPE_MAP = {
         TypeSpec(['.tf', '.tfvars', '.hcl', '.tfstate'], []),
     'tex':
         TypeSpec(['.tex', '.cls', '.sty'], []),
+    'toml':
+        TypeSpec(['.toml'], []),
     'tt':
         TypeSpec(['.tt', '.tt2', '.ttml'], []),
     'txt':
