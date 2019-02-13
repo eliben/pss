@@ -7,13 +7,10 @@
 # This code is in the public domain
 #-------------------------------------------------------------------------------
 import collections
-import os
-import re
 import sys
 
 from .filefinder import FileFinder
 from .contentmatcher import ContentMatcher
-from .matchresult import MatchResult
 from .defaultpssoutputformatter import DefaultPssOutputFormatter
 from .utils import istextfile
 from .py3compat import str2bytes
