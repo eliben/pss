@@ -177,8 +177,8 @@ Run with --help-types for more help on how to select file types.
 
 def _ignored_dirs_as_string():
     s = ['    ']
-    for i, dir in enumerate(IGNORED_DIRS):
-        s.append('%-9s' % dir)
+    for i, dir in enumerate(sorted(IGNORED_DIRS)):
+        s.append('%-13s' % dir)
         if i % 4 == 3:
             s.append('\n    ')
     return ' '.join(s)
