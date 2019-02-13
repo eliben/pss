@@ -7,13 +7,10 @@
 # This code is in the public domain
 #-------------------------------------------------------------------------------
 import collections
-import os
-import re
 import sys
 
 from .filefinder import FileFinder
 from .contentmatcher import ContentMatcher
-from .matchresult import MatchResult
 from .defaultpssoutputformatter import DefaultPssOutputFormatter
 from .utils import istextfile
 from .py3compat import str2bytes
@@ -181,7 +178,7 @@ IGNORED_DIRS = frozenset([
     'blib', '_build', '.bzr', '.cdv', 'cover_db', '__pycache__',
     'CVS', '_darcs', '~.dep', '~.dot', '.git', '.hg', '~.nib',
     '.pc', '~.plst', 'RCS', 'SCCS', '_sgbak', '.svn', '.tox',
-    '.metadata', '.cover', '.Rproj.user', '.Rhistory'])
+    '.metadata', '.cover', '.Rproj.user', '.Rhistory', 'node_modules'])
 
 IGNORED_FILE_PATTERNS = frozenset(
     [r'~$', r'#.+#$', r'[._].*\.swp$', r'core\.\d+$'])
