@@ -257,8 +257,9 @@ def pss_run(roots,
     ignore_extensions = set()
     search_patterns = set()
     ignore_patterns = set()
-    filter_include_patterns = set()
-    filter_exclude_patterns = set()
+    # include_pattern (-g/-G) is an AND filter to the search criteria
+    filter_include_patterns = set(include_pattern)
+    filter_exclude_patterns = set(exclude_pattern)
 
     if search_all_files_and_dirs or search_all_types:
         # Don't apply restrictions
@@ -274,12 +275,6 @@ def pss_run(roots,
             ignore_extensions.update(TYPE_MAP[typ].extensions)
             ignore_patterns.update(TYPE_MAP[typ].patterns)
 
-    # include_pattern (-g/-G) is an AND filter to the search criteria
-    if include_pattern is not None:
-        filter_include_patterns.add(include_pattern)
-
-    if exclude_pattern is not None:
-        filter_exclude_patterns.add(exclude_pattern)
     filefinder = FileFinder(
             roots=roots,
             recurse=recurse,
