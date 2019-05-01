@@ -201,8 +201,8 @@ def pss_run(roots,
         remove_ignored_dirs=[],
         recurse=True,
         textonly=False,
-        include_pattern=None, # for -G and -g
-        exclude_pattern=None,
+        include_patterns=[], # for -G and -g
+        exclude_patterns=[],
         include_types=[],  # empty means all known types are included
         exclude_types=[],
         ignore_case=False,
@@ -257,15 +257,15 @@ def pss_run(roots,
     ignore_extensions = set()
     search_patterns = set()
     ignore_patterns = set()
-    # include_pattern (-g/-G) is an AND filter to the search criteria
-    filter_include_patterns = set(include_pattern)
-    filter_exclude_patterns = set(exclude_pattern)
+    # include_patterns (-g/-G) is an AND filter to the search criteria
+    filter_include_patterns = set(include_patterns)
+    filter_exclude_patterns = set(exclude_patterns)
 
     if search_all_files_and_dirs or search_all_types:
         # Don't apply restrictions
         pass
     else:
-        filter_exclude_patterns = set(IGNORED_FILE_PATTERNS)
+        filter_exclude_patterns |= set(IGNORED_FILE_PATTERNS)
 
         for typ in (include_types or TYPE_MAP):
             search_extensions.update(TYPE_MAP[typ].extensions)
