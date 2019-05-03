@@ -7,7 +7,7 @@ from psslib.driver import pss_run
 from test.utils import concat, path_to_testdir, MockOutputFormatter
 
 
-def _gen_outputs_in_file(filename, outputs):
+def matches(filename, outputs):
     """ Helper function for constructing a list of output pairs in the format
         of MockOutputFormatter, delimited from both ends with START_MATCHES
         and END_MATCHES for the given filename.
@@ -41,10 +41,8 @@ class TestDriver(unittest.TestCase):
         self.assertEqual(
             sorted(self.of1.output),
             sorted(concat(
-                _gen_outputs_in_file('testdir1/filea.c',
-                                     [('MATCH', (2, [(4, 7)]))]),
-                _gen_outputs_in_file('testdir1/filea.h',
-                                     [('MATCH', (1, [(8, 11)]))]),
+                matches('testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]),
+                matches('testdir1/filea.h', [('MATCH', (1, [(8, 11)]))]),
             )))
 
         self.assertEquals(match_found, True)
@@ -123,20 +121,13 @@ class TestDriver(unittest.TestCase):
         self.assertEqual(
             sorted(self.of4.output),
             sorted(concat(
-                _gen_outputs_in_file('testdir4/file1.py',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/file2.py',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/file1.txt',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/file2.txt',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/main1.py',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/main2.py',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/main3.py',
-                                     [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/file1.py' , [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/file2.py' , [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/file1.txt', [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/file2.txt', [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/main1.py' , [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/main2.py' , [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/main3.py' , [('MATCH', (1, [(0, 4)]))]),
             )))
 
         self.assertEquals(match_found, True)
@@ -173,16 +164,11 @@ class TestDriver(unittest.TestCase):
         self.assertEqual(
             sorted(self.of4.output),
             sorted(concat(
-                _gen_outputs_in_file('testdir4/file1.py',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/file2.py',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/main1.txt',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/main2.txt',
-                                     [('MATCH', (1, [(0, 4)]))]),
-                _gen_outputs_in_file('testdir4/main3.txt',
-                                     [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/file1.py' , [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/file2.py' , [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/main1.txt', [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/main2.txt', [('MATCH', (1, [(0, 4)]))]),
+                matches('testdir4/main3.txt', [('MATCH', (1, [(0, 4)]))]),
             )))
 
         self.assertEquals(match_found, True)
