@@ -12,6 +12,13 @@ import platform
 from psslib.outputformatter import OutputFormatter
 
 
+def concat(*args):
+    res = []
+    for arg in args:
+        res += arg
+    return res
+
+
 def path_to_testdir(testdir_name):
     """ Given a name of a test directory, find its full path.
     """
