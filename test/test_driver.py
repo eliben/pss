@@ -4,7 +4,7 @@ import unittest
 sys.path.insert(0, '.')
 sys.path.insert(0, '..')
 from psslib.driver import pss_run
-from test.utils import concat, path_to_testdir, MockOutputFormatter
+from test.utils import path_to_testdir, MockOutputFormatter
 
 
 def matches(filename, outputs):
@@ -40,10 +40,10 @@ class TestDriver(unittest.TestCase):
 
         self.assertEqual(
             sorted(self.of1.output),
-            sorted(concat(
-                matches('testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]),
-                matches('testdir1/filea.h', [('MATCH', (1, [(8, 11)]))]),
-            )))
+            sorted(
+                matches('testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]) +
+                matches('testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])
+            ))
 
         self.assertEquals(match_found, True)
 
@@ -55,15 +55,15 @@ class TestDriver(unittest.TestCase):
             only_find_files=True,
             include_types=['cc'])
 
-        self.assertEqual(
-            sorted(self.of1.output),
-            sorted([
-                ('FOUND_FILENAME', 'testdir1/filea.c'),
-                ('FOUND_FILENAME', 'testdir1/filea.h'),
-                ('FOUND_FILENAME', 'testdir1/subdir1/filey.c'),
-                ('FOUND_FILENAME', 'testdir1/subdir1/filez.c'),
-                ]
-            ))
+        self.assertFoundFiles(
+            self.of1,
+            [
+            'testdir1/filea.c',
+            'testdir1/filea.h',
+            'testdir1/subdir1/filey.c',
+            'testdir1/subdir1/filez.c',
+            ]
+        )
 
         self.assertEquals(match_found, True)
 
@@ -75,15 +75,15 @@ class TestDriver(unittest.TestCase):
             only_find_files=True,
             include_patterns=['file[12]'])
 
-        self.assertEqual(
-            sorted(self.of4.output),
-            sorted([
-                ('FOUND_FILENAME', 'testdir4/file1.py'),
-                ('FOUND_FILENAME', 'testdir4/file2.py'),
-                ('FOUND_FILENAME', 'testdir4/file1.txt'),
-                ('FOUND_FILENAME', 'testdir4/file2.txt'),
-                ]
-            ))
+        self.assertFoundFiles(
+            self.of4,
+            [
+            'testdir4/file1.py',
+            'testdir4/file2.py',
+            'testdir4/file1.txt',
+            'testdir4/file2.txt',
+            ]
+        )
 
         self.assertEquals(match_found, True)
 
@@ -95,18 +95,18 @@ class TestDriver(unittest.TestCase):
             only_find_files=True,
             include_patterns=['file[12]', 'main\d.py'])
 
-        self.assertEqual(
-            sorted(self.of4.output),
-            sorted([
-                ('FOUND_FILENAME', 'testdir4/file1.py' ),
-                ('FOUND_FILENAME', 'testdir4/file2.py' ),
-                ('FOUND_FILENAME', 'testdir4/file1.txt'),
-                ('FOUND_FILENAME', 'testdir4/file2.txt'),
-                ('FOUND_FILENAME', 'testdir4/main1.py' ),
-                ('FOUND_FILENAME', 'testdir4/main2.py' ),
-                ('FOUND_FILENAME', 'testdir4/main3.py' ),
-                ]
-            ))
+        self.assertFoundFiles(
+            self.of4,
+            [
+            'testdir4/file1.py',
+            'testdir4/file2.py',
+            'testdir4/file1.txt',
+            'testdir4/file2.txt',
+            'testdir4/main1.py',
+            'testdir4/main2.py',
+            'testdir4/main3.py',
+            ]
+        )
 
         self.assertEquals(match_found, True)
 
@@ -120,15 +120,15 @@ class TestDriver(unittest.TestCase):
 
         self.assertEqual(
             sorted(self.of4.output),
-            sorted(concat(
-                matches('testdir4/file1.py' , [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/file2.py' , [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/file1.txt', [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/file2.txt', [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/main1.py' , [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/main2.py' , [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/main3.py' , [('MATCH', (1, [(0, 4)]))]),
-            )))
+            sorted(
+                matches('testdir4/file1.py' , [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/file2.py' , [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/file1.txt', [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/file2.txt', [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/main1.py' , [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/main2.py' , [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/main3.py' , [('MATCH', (1, [(0, 4)]))])
+            ))
 
         self.assertEquals(match_found, True)
 
@@ -140,16 +140,16 @@ class TestDriver(unittest.TestCase):
             only_find_files=True,
             exclude_patterns=['file[12].txt', 'file3', 'main.*.py'])
 
-        self.assertEqual(
-            sorted(self.of4.output),
-            sorted([
-                ('FOUND_FILENAME', 'testdir4/file1.py' ),
-                ('FOUND_FILENAME', 'testdir4/file2.py' ),
-                ('FOUND_FILENAME', 'testdir4/main1.txt'),
-                ('FOUND_FILENAME', 'testdir4/main2.txt'),
-                ('FOUND_FILENAME', 'testdir4/main3.txt'),
-                ]
-            ))
+        self.assertFoundFiles(
+            self.of4,
+            [
+            'testdir4/file1.py',
+            'testdir4/file2.py',
+            'testdir4/main1.txt',
+            'testdir4/main2.txt',
+            'testdir4/main3.txt',
+            ]
+        )
 
         self.assertEquals(match_found, True)
 
@@ -163,15 +163,19 @@ class TestDriver(unittest.TestCase):
 
         self.assertEqual(
             sorted(self.of4.output),
-            sorted(concat(
-                matches('testdir4/file1.py' , [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/file2.py' , [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/main1.txt', [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/main2.txt', [('MATCH', (1, [(0, 4)]))]),
-                matches('testdir4/main3.txt', [('MATCH', (1, [(0, 4)]))]),
-            )))
+            sorted(
+                matches('testdir4/file1.py' , [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/file2.py' , [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/main1.txt', [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/main2.txt', [('MATCH', (1, [(0, 4)]))]) +
+                matches('testdir4/main3.txt', [('MATCH', (1, [(0, 4)]))])
+            ))
 
         self.assertEquals(match_found, True)
+
+    def assertFoundFiles(self, output_formatter, expected_list):
+        self.assertEqual(sorted(output_formatter.output),
+            sorted(('FOUND_FILENAME', f) for f in expected_list))
 
 
 #------------------------------------------------------------------------------
