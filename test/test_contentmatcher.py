@@ -24,7 +24,7 @@ many lines and linen too! even a spline yess
 
 text2 = r'''creampie
 apple pie and plum pie
-pierre is $\k jkm
+pierre is $\t jkm
 dptr .*n and again some pie
 '''
 
@@ -119,10 +119,10 @@ class TestContentMatcher(unittest.TestCase):
         cm = ContentMatcher('.*n', literal_pattern=True)
         self.assertMatches(cm, text2, [(4, [(5, 8)])])
 
-        cm = ContentMatcher(r'$\k', literal_pattern=True)
+        cm = ContentMatcher(r'$\t', literal_pattern=True)
         self.assertMatches(cm, text2, [(3, [(10, 13)])])
 
-        cm = ContentMatcher(r'$\k', literal_pattern=False)
+        cm = ContentMatcher(r'$\t', literal_pattern=False)
         self.assertMatches(cm, text2, [])
 
 
