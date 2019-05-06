@@ -9,5 +9,3 @@ suite = unittest.TestLoader().loadTestsFromNames([
     'test_pssmain'
 ])
 unittest.TextTestRunner(verbosity=1).run(suite)
-
-
