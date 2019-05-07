@@ -47,10 +47,10 @@ def main(argv=sys.argv, output_formatter=None):
     if options.find_files:
         only_find_files = True
         search_pattern_expected = False
-    elif options.find_files_matching_pattern is not None:
+    elif options.find_files_matching_patterns:
         only_find_files = True
         search_pattern_expected = False
-        options.include_pattern = options.find_files_matching_pattern
+        options.include_patterns = options.find_files_matching_patterns
     elif options.find_files_with_matches:
         only_find_files = True
         only_find_files_option = PssOnlyFindFilesOption.FILES_WITH_MATCHES
@@ -128,8 +128,8 @@ def main(argv=sys.argv, output_formatter=None):
                 remove_ignored_dirs=remove_ignored_dirs,
                 recurse=options.recurse,
                 textonly=options.textonly,
-                include_pattern=options.include_pattern,
-                exclude_pattern=options.exclude_pattern,
+                include_patterns=options.include_patterns,
+                exclude_patterns=options.exclude_patterns,
                 include_types=include_types,
                 exclude_types=exclude_types,
                 ignore_case=options.ignore_case,
@@ -312,7 +312,8 @@ def parse_cmdline(cmdline_args):
         action='store_true', dest='find_files',
         help='Only print the names of found files. The pattern must not be specified')
     group_filefinding.add_option('-g',
-        action='store', dest='find_files_matching_pattern', metavar='REGEX',
+        action='append', dest='find_files_matching_patterns',
+        metavar='REGEX', default=[],
         help='Same as -f, but only print files matching REGEX')
     group_filefinding.add_option('-l', '--files-with-matches',
         action='store_true', dest='find_files_with_matches',
@@ -346,12 +347,11 @@ def parse_cmdline(cmdline_args):
         help='''Restrict the search to only textual files.
         Warning: with this option the search is likely to run much slower''')
     group_inclusion.add_option('-G', '--include-pattern',
-        action='store', dest='include_pattern', metavar='REGEX',
+        action='append', dest='include_patterns', metavar='REGEX', default=[],
         help='Only search files that match REGEX')
     group_inclusion.add_option('--exclude-pattern',
-                               action='store', dest='exclude_pattern',
-                               metavar='REGEX',
-                               help='Exclude files that match REGEX')
+        action='append', dest='exclude_patterns', metavar='REGEX', default=[],
+        help='Exclude files that match REGEX')
     optparser.add_option_group(group_inclusion)
 
     # Parsing --<type> and --no<type> options for all supported types is
