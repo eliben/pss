@@ -62,6 +62,8 @@ TYPE_MAP = {
         TypeSpec(['.f', '.f77', '.f90', '.F90', '.f95', '.F95', '.f03', '.for', '.ftn', '.fpp'], []),
     'go':
         TypeSpec(['.go'], []),
+    'gomod':
+        TypeSpec([], ['go\.mod']),
     'haskell':
         TypeSpec(['.hs', '.lhs'], []),
     'hs':
