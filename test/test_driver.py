@@ -9,9 +9,8 @@ from test.utils import path_to_testdir, MockOutputFormatter
 
 class TestDriver(unittest.TestCase):
     # Just basic sanity tests for pss_run
-    # Do all the heavy testing in test_pssmain.py, because it also testse the
+    # Do all the heavy testing in test_pssmain.py, because it also tests the
     # cmdline argument parsing and combination logic.
-    #
     testdir1 = path_to_testdir('testdir1')
 
     def setUp(self):
