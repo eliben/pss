@@ -20,6 +20,7 @@ from test.utils import (
 class TestPssMain(unittest.TestCase):
     testdir1 = path_to_testdir('testdir1')
     testdir2 = path_to_testdir('testdir2')
+    testdir4 = path_to_testdir('testdir4')
     test_types = path_to_testdir('test_types')
     of = None
 
@@ -272,6 +273,31 @@ class TestPssMain(unittest.TestCase):
         self.assertFoundFiles(self.of,
                 ['testdir1/subdir1/ppp.qqq'])
 
+    def test_only_find_files_gg(self):
+        self.of = MockOutputFormatter('testdir4')
+        self._run_main(['-g', r'file1', '-g', r'main\d.py'], dir=self.testdir4)
+        self.assertFoundFiles(self.of,
+                ['testdir4/file1.py',
+                 'testdir4/file1.txt',
+                 'testdir4/main1.py',
+                 'testdir4/main2.py',
+                 'testdir4/main3.py',
+                ])
+
+    def test_only_find_files_ggg(self):
+        self.of = MockOutputFormatter('testdir4')
+        self._run_main(['-g', r'file1', '-g', r'main[12].py', '-g', r'.*2.*'],
+                dir=self.testdir4)
+        self.assertFoundFiles(self.of,
+                ['testdir4/file1.py',
+                 'testdir4/file1.txt',
+                 'testdir4/file2.py',
+                 'testdir4/file2.txt',
+                 'testdir4/main1.py',
+                 'testdir4/main2.py',
+                 'testdir4/main2.txt',
+                ])
+
     def test_only_find_files_G(self):
         # A combination of -G and -f is similar to -g
         self._run_main(['--cc', '-f', '-G', '.*y\.'])
@@ -283,11 +309,90 @@ class TestPssMain(unittest.TestCase):
         self.assertFoundFiles(self.of,
                 ['testdir1/subdir1/filey.c'])
 
+    def test_only_find_files_GG(self):
+        self.of = MockOutputFormatter('testdir4')
+        # A combination of -G and -f is similar to -g
+        self._run_main(['-f', '-G', r'file1', '-G', r'main\d.py'],
+                dir=self.testdir4)
+        self.assertFoundFiles(self.of,
+                ['testdir4/file1.py',
+                 'testdir4/file1.txt',
+                 'testdir4/main1.py',
+                 'testdir4/main2.py',
+                 'testdir4/main3.py',
+                ])
+
+        self.of = MockOutputFormatter('testdir4')
+        self._run_main(['-f', '--include-pattern', r'file1',
+            '--include-pattern', r'main\d.py'], dir=self.testdir4)
+        self.assertFoundFiles(self.of,
+                ['testdir4/file1.py',
+                 'testdir4/file1.txt',
+                 'testdir4/main1.py',
+                 'testdir4/main2.py',
+                 'testdir4/main3.py',
+                ])
+
+    def test_only_find_files_GGG(self):
+        self.of = MockOutputFormatter('testdir4')
+        # A combination of -G and -f is similar to -g
+        self._run_main(['-f', '-G', r'file1', '-G', r'main[12].py',
+            '-G', r'.*2.*'], dir=self.testdir4)
+        self.assertFoundFiles(self.of,
+                ['testdir4/file1.py',
+                 'testdir4/file1.txt',
+                 'testdir4/file2.py',
+                 'testdir4/file2.txt',
+                 'testdir4/main1.py',
+                 'testdir4/main2.py',
+                 'testdir4/main2.txt',
+                ])
+
+        self.of = MockOutputFormatter('testdir4')
+        self._run_main(['-f', '--include-pattern', r'file1',
+            '--include-pattern', r'main[12].py', '--include-pattern', r'.*2.*'],
+            dir=self.testdir4)
+        self.assertFoundFiles(self.of,
+                ['testdir4/file1.py',
+                 'testdir4/file1.txt',
+                 'testdir4/file2.py',
+                 'testdir4/file2.txt',
+                 'testdir4/main1.py',
+                 'testdir4/main2.py',
+                 'testdir4/main2.txt',
+                ])
+
     def test_only_find_files_exclude_pattern(self):
         self._run_main(['--cc', '-f', '--exclude-pattern', 'ea'])
         self.assertFoundFiles(self.of,
                 ['testdir1/subdir1/filey.c',
                  'testdir1/subdir1/filez.c'])
+
+    def test_only_find_files_exclude_pattern_twice(self):
+        self.of = MockOutputFormatter('testdir4')
+        self._run_main(['-f', '--exclude-pattern', 'file1',
+            '--exclude-pattern', 'file\d.txt'], dir=self.testdir4)
+        self.assertFoundFiles(self.of,
+                ['testdir4/file2.py',
+                 'testdir4/file3.py',
+                 'testdir4/main1.py',
+                 'testdir4/main2.py',
+                 'testdir4/main3.py',
+                 'testdir4/main1.txt',
+                 'testdir4/main2.txt',
+                 'testdir4/main3.txt'])
+
+    def test_only_find_files_exclude_pattern_thrice(self):
+        self.of = MockOutputFormatter('testdir4')
+        self._run_main(['-f', '--exclude-pattern', 'file1',
+            '--exclude-pattern', 'file\d.txt',
+            '--exclude-pattern', 'main.*.txt'], dir=self.testdir4)
+        self.assertFoundFiles(self.of,
+                ['testdir4/file2.py',
+                 'testdir4/file3.py',
+                 'testdir4/main1.py',
+                 'testdir4/main2.py',
+                 'testdir4/main3.py'])
 
     def test_only_find_files_l(self):
         self._run_main(['--cc', 'abc', '-l'])
