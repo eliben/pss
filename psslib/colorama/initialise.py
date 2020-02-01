@@ -1,23 +1,21 @@
 # Copyright Jonathan Hartley 2013. BSD 3-Clause license, see LICENSE file.
 import atexit
-import contextlib
 import sys
 
 from .ansitowin32 import AnsiToWin32
 
 
-orig_stdout = None
-orig_stderr = None
+orig_stdout = sys.stdout
+orig_stderr = sys.stderr
 
-wrapped_stdout = None
-wrapped_stderr = None
+wrapped_stdout = sys.stdout
+wrapped_stderr = sys.stderr
 
 atexit_done = False
 
 
 def reset_all():
-    if AnsiToWin32 is not None:    # Issue #74: objects might become None at exit
-        AnsiToWin32(orig_stdout).reset_all()
+    AnsiToWin32(orig_stdout).reset_all()
 
 
 def init(autoreset=False, convert=None, strip=None, wrap=True):
@@ -26,11 +24,6 @@ def init(autoreset=False, convert=None, strip=None, wrap=True):
         raise ValueError('wrap=False conflicts with any other arg=True')
 
     global wrapped_stdout, wrapped_stderr
-    global orig_stdout, orig_stderr
-
-    orig_stdout = sys.stdout
-    orig_stderr = sys.stderr
-
     if sys.stdout is None:
         wrapped_stdout = None
     else:
@@ -55,15 +48,6 @@ def deinit():
         sys.stderr = orig_stderr
 
 
-@contextlib.contextmanager
-def colorama_text(*args, **kwargs):
-    init(*args, **kwargs)
-    try:
-        yield
-    finally:
-        deinit()
-
-
 def reinit():
     if wrapped_stdout is not None:
         sys.stdout = wrapped_stdout
@@ -78,3 +62,5 @@ def wrap_stream(stream, convert, strip, autoreset, wrap):
         if wrapper.should_wrap():
             stream = wrapper.stream
     return stream
+
+

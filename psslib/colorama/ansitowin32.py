@@ -3,14 +3,18 @@ import re
 import sys
 import os
 
-from .ansi import AnsiFore, AnsiBack, AnsiStyle, Style, BEL
+from .ansi import AnsiFore, AnsiBack, AnsiStyle, Style
 from .winterm import WinTerm, WinColor, WinStyle
-from .win32 import windll, winapi_test
+from .win32 import windll
 
 
 winterm = None
 if windll is not None:
     winterm = WinTerm()
+
+
+def is_a_tty(stream):
+    return hasattr(stream, 'isatty') and stream.isatty()
 
 
 class StreamWrapper(object):
@@ -28,37 +32,8 @@ class StreamWrapper(object):
     def __getattr__(self, name):
         return getattr(self.__wrapped, name)
 
-    def __enter__(self, *args, **kwargs):
-        # special method lookup bypasses __getattr__/__getattribute__, see
-        # https://stackoverflow.com/questions/12632894/why-doesnt-getattr-work-with-exit
-        # thus, contextlib magic methods are not proxied via __getattr__
-        return self.__wrapped.__enter__(*args, **kwargs)
-
-    def __exit__(self, *args, **kwargs):
-        return self.__wrapped.__exit__(*args, **kwargs)
-
     def write(self, text):
         self.__convertor.write(text)
-
-    def isatty(self):
-        stream = self.__wrapped
-        if 'PYCHARM_HOSTED' in os.environ:
-            if stream is not None and (stream is sys.__stdout__ or stream is sys.__stderr__):
-                return True
-        try:
-            stream_isatty = stream.isatty
-        except AttributeError:
-            return False
-        else:
-            return stream_isatty()
-
-    @property
-    def closed(self):
-        stream = self.__wrapped
-        try:
-            return stream.closed
-        except AttributeError:
-            return True
 
 
 class AnsiToWin32(object):
@@ -67,8 +42,8 @@ class AnsiToWin32(object):
     sequences from the text, and if outputting to a tty, will convert them into
     win32 function calls.
     '''
-    ANSI_CSI_RE = re.compile('\001?\033\\[((?:\\d|;)*)([a-zA-Z])\002?')   # Control Sequence Introducer
-    ANSI_OSC_RE = re.compile('\001?\033\\]([^\a]*)(\a)\002?')             # Operating System Command
+    ANSI_CSI_RE = re.compile('\033\[((?:\d|;)*)([a-zA-Z])')     # Control Sequence Introducer
+    ANSI_OSC_RE = re.compile('\033\]((?:.|;)*?)(\x07)')         # Operating System Command
 
     def __init__(self, wrapped, convert=None, strip=None, autoreset=False):
         # The wrapped stream (normally sys.stdout or sys.stderr)
@@ -81,20 +56,16 @@ class AnsiToWin32(object):
         self.stream = StreamWrapper(wrapped, self)
 
         on_windows = os.name == 'nt'
-        # We test if the WinAPI works, because even if we are on Windows
-        # we may be using a terminal that doesn't support the WinAPI
-        # (e.g. Cygwin Terminal). In this case it's up to the terminal
-        # to support the ANSI codes.
-        conversion_supported = on_windows and winapi_test()
+        on_emulated_windows = on_windows and 'TERM' in os.environ
 
         # should we strip ANSI sequences from our output?
         if strip is None:
-            strip = conversion_supported or (not self.stream.closed and not self.stream.isatty())
+            strip = on_windows and not on_emulated_windows
         self.strip = strip
 
         # should we should convert ANSI sequences into win32 calls?
         if convert is None:
-            convert = conversion_supported and not self.stream.closed and self.stream.isatty()
+            convert = on_windows and not wrapped.closed and not on_emulated_windows and is_a_tty(wrapped)
         self.convert = convert
 
         # dict of ansi codes to win32 functions and parameters
@@ -170,7 +141,7 @@ class AnsiToWin32(object):
     def reset_all(self):
         if self.convert:
             self.call_win32('m', (0,))
-        elif not self.strip and not self.stream.closed:
+        elif not self.strip and not self.wrapped.closed:
             self.wrapped.write(Style.RESET_ALL)
 
 
@@ -247,12 +218,11 @@ class AnsiToWin32(object):
             start, end = match.span()
             text = text[:start] + text[end:]
             paramstring, command = match.groups()
-            if command == BEL:
-                if paramstring.count(";") == 1:
-                    params = paramstring.split(";")
-                    # 0 - change title and icon (we will only change title)
-                    # 1 - change icon (we don't support this)
-                    # 2 - change title
-                    if params[0] in '02':
-                        winterm.set_title(params[1])
+            if command in '\x07':       # \x07 = BEL
+                params = paramstring.split(";")
+                # 0 - change title and icon (we will only change title)
+                # 1 - change icon (we don't support this)
+                # 2 - change title
+                if params[0] in '02':
+                    winterm.set_title(params[1])
         return text

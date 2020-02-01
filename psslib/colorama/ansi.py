@@ -6,47 +6,44 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 
 CSI = '\033['
 OSC = '\033]'
-BEL = '\a'
+BEL = '\007'
 
 
 def code_to_chars(code):
     return CSI + str(code) + 'm'
 
-def set_title(title):
-    return OSC + '2;' + title + BEL
-
-def clear_screen(mode=2):
-    return CSI + str(mode) + 'J'
-
-def clear_line(mode=2):
-    return CSI + str(mode) + 'K'
-
 
 class AnsiCodes(object):
-    def __init__(self):
-        # the subclasses declare class attributes which are numbers.
-        # Upon instantiation we define instance attributes, which are the same
-        # as the class attributes but wrapped with the ANSI escape sequence
-        for name in dir(self):
+    def __init__(self, codes):
+        for name in dir(codes):
             if not name.startswith('_'):
-                value = getattr(self, name)
+                value = getattr(codes, name)
                 setattr(self, name, code_to_chars(value))
 
 
 class AnsiCursor(object):
     def UP(self, n=1):
-        return CSI + str(n) + 'A'
+        return CSI + str(n) + "A"
     def DOWN(self, n=1):
-        return CSI + str(n) + 'B'
+        return CSI + str(n) + "B"
     def FORWARD(self, n=1):
-        return CSI + str(n) + 'C'
+        return CSI + str(n) + "C"
     def BACK(self, n=1):
-        return CSI + str(n) + 'D'
+        return CSI + str(n) + "D"
     def POS(self, x=1, y=1):
-        return CSI + str(y) + ';' + str(x) + 'H'
+        return CSI + str(y) + ";" + str(x) + "H"
+
+def set_title(title):
+    return OSC + "2;" + title + BEL
+
+def clear_screen(mode=2):
+    return CSI + str(mode) + "J"
+
+def clear_line(mode=2):
+    return CSI + str(mode) + "K"
 
 
-class AnsiFore(AnsiCodes):
+class AnsiFore:
     BLACK           = 30
     RED             = 31
     GREEN           = 32
@@ -68,7 +65,7 @@ class AnsiFore(AnsiCodes):
     LIGHTWHITE_EX   = 97
 
 
-class AnsiBack(AnsiCodes):
+class AnsiBack:
     BLACK           = 40
     RED             = 41
     GREEN           = 42
@@ -90,13 +87,13 @@ class AnsiBack(AnsiCodes):
     LIGHTWHITE_EX   = 107
 
 
-class AnsiStyle(AnsiCodes):
+class AnsiStyle:
     BRIGHT    = 1
     DIM       = 2
     NORMAL    = 22
     RESET_ALL = 0
 
-Fore   = AnsiFore()
-Back   = AnsiBack()
-Style  = AnsiStyle()
+Fore = AnsiCodes( AnsiFore )
+Back = AnsiCodes( AnsiBack )
+Style = AnsiCodes( AnsiStyle )
 Cursor = AnsiCursor()
