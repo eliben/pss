@@ -27,9 +27,14 @@ class WinTerm(object):
         self._default_fore = self._fore
         self._default_back = self._back
         self._default_style = self._style
+        # In order to emulate LIGHT_EX in windows, we borrow the BRIGHT style.
+        # So that LIGHT_EX colors and BRIGHT style do not clobber each other,
+        # we track them separately, since LIGHT_EX is overwritten by Fore/Back
+        # and BRIGHT is overwritten by Style codes.
+        self._light = 0
 
     def get_attrs(self):
-        return self._fore + self._back * 16 + self._style
+        return self._fore + self._back * 16 + (self._style | self._light)
 
     def set_attrs(self, value):
         self._fore = value & 7
@@ -39,21 +44,28 @@ class WinTerm(object):
     def reset_all(self, on_stderr=None):
         self.set_attrs(self._default)
         self.set_console(attrs=self._default)
+        self._light = 0
 
     def fore(self, fore=None, light=False, on_stderr=False):
         if fore is None:
             fore = self._default_fore
         self._fore = fore
+        # Emulate LIGHT_EX with BRIGHT Style
         if light:
-            self._style |= WinStyle.BRIGHT
+            self._light |= WinStyle.BRIGHT
+        else:
+            self._light &= ~WinStyle.BRIGHT
         self.set_console(on_stderr=on_stderr)
 
     def back(self, back=None, light=False, on_stderr=False):
         if back is None:
             back = self._default_back
         self._back = back
+        # Emulate LIGHT_EX with BRIGHT_BACKGROUND Style
         if light:
-            self._style |= WinStyle.BRIGHT_BACKGROUND
+            self._light |= WinStyle.BRIGHT_BACKGROUND
+        else:
+            self._light &= ~WinStyle.BRIGHT_BACKGROUND
         self.set_console(on_stderr=on_stderr)
 
     def style(self, style=None, on_stderr=False):
@@ -80,8 +92,8 @@ class WinTerm(object):
 
     def set_cursor_position(self, position=None, on_stderr=False):
         if position is None:
-            #I'm not currently tracking the position, so there is no default.
-            #position = self.get_position()
+            # I'm not currently tracking the position, so there is no default.
+            # position = self.get_position()
             return
         handle = win32.STDOUT
         if on_stderr:
@@ -111,12 +123,15 @@ class WinTerm(object):
         if mode == 0:
             from_coord = csbi.dwCursorPosition
             cells_to_erase = cells_in_screen - cells_before_cursor
-        if mode == 1:
+        elif mode == 1:
             from_coord = win32.COORD(0, 0)
             cells_to_erase = cells_before_cursor
         elif mode == 2:
             from_coord = win32.COORD(0, 0)
             cells_to_erase = cells_in_screen
+        else:
+            # invalid mode
+            return
         # fill the entire screen with blanks
         win32.FillConsoleOutputCharacter(handle, ' ', cells_to_erase, from_coord)
         # now set the buffer's attributes accordingly
@@ -136,12 +151,15 @@ class WinTerm(object):
         if mode == 0:
             from_coord = csbi.dwCursorPosition
             cells_to_erase = csbi.dwSize.X - csbi.dwCursorPosition.X
-        if mode == 1:
+        elif mode == 1:
             from_coord = win32.COORD(0, csbi.dwCursorPosition.Y)
             cells_to_erase = csbi.dwCursorPosition.X
         elif mode == 2:
             from_coord = win32.COORD(0, csbi.dwCursorPosition.Y)
             cells_to_erase = csbi.dwSize.X
+        else:
+            # invalid mode
+            return
         # fill the entire screen with blanks
         win32.FillConsoleOutputCharacter(handle, ' ', cells_to_erase, from_coord)
         # now set the buffer's attributes accordingly
