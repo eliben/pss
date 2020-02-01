@@ -6,6 +6,7 @@
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
 #-------------------------------------------------------------------------------
+import os
 import sys
 
 from .outputformatter import OutputFormatter
@@ -48,7 +49,15 @@ class DefaultPssOutputFormatter(OutputFormatter):
         self.style_lineno = (decode_colorama_color(lineno_color_str) or
                              colorama.Fore.WHITE)
 
-        colorama.init()
+        # colorama.init is doing something strange on Linux, by emitting a color
+        # reset sequence when it shouldn't. This causes strange errors when
+        # piping pss output to other unixy tools.
+        # I tried upgrading to a new version of colorama (see git log) but that
+        # stopped colors entirely, so I reverted it.
+        # Resorting to not running colorama.init() on Linux machines, since the
+        # docs say it's only needed on Windows anyway.
+        if os.name != 'posix':
+            colorama.init()
 
         # It's important to take sys.stdout after the call to colorama.init(),
         # because colorama.init() assigns a wrapped stream to sys.stdout and
