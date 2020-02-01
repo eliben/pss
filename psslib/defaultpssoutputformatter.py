@@ -48,7 +48,6 @@ class DefaultPssOutputFormatter(OutputFormatter):
         self.style_lineno = (decode_colorama_color(lineno_color_str) or
                              colorama.Fore.WHITE)
 
-        # TODO: this is the culprit
         colorama.init()
 
         # It's important to take sys.stdout after the call to colorama.init(),
@@ -114,8 +113,6 @@ class DefaultPssOutputFormatter(OutputFormatter):
     def _emit(self, str):
         """ Write the string to the stream.
         """
-        ts = tostring(str)
-        #print("emitting \"", ts, "\"")
         self.stream.write(tostring(str))
 
     def _emit_colored(self, str, style):
