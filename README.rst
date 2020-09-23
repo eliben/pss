@@ -1,3 +1,12 @@
+===
+pss
+===
+
+
+.. image:: https://github.com/eliben/pss/workflows/pss-tests/badge.svg
+  :align: center
+  :target: https://github.com/eliben/pss/actions
+
 Introduction: what is pss?
 --------------------------
 
@@ -58,13 +67,3 @@ License
 
 **pss** is open-source software. Its code is in the public domain. See the
 ``LICENSE`` file for more details.
-
-CI Status
----------
-
-**pss** has automatic testing enabled through the convenient
-`Travis CI project <https://travis-ci.org>`_. Here is the latest build status:
-
-.. image:: https://travis-ci.org/eliben/pss.png?branch=master
-  :align: center
-  :target: https://travis-ci.org/eliben/pss
