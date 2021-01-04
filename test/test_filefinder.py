@@ -186,7 +186,7 @@ class TestFileFinder(unittest.TestCase):
         self.assertPathsEqual(
                 self._find_files(
                     [self.testdir_simple],
-                    filter_exclude_patterns=['~$', '#.+#$', '\w{3}\.'],
+                    filter_exclude_patterns=['~$', '#.+#$', r'\w{3}\.'],
                     search_patterns=[r't[^./\\]*\.c']),
                 [   'simple_filefinder/anothersubdir/deep/t.cpp',
                     'simple_filefinder/anothersubdir/deep/tt.cpp'])

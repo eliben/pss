@@ -53,7 +53,7 @@ TYPE_MAP = {
     'dart':
         TypeSpec(['.dart'], []),
     'docker':
-        TypeSpec([], ['Dockerfile', 'Dockerfile\.(\w+)']),
+        TypeSpec([], ['Dockerfile', r'Dockerfile\.(\w+)']),
     'elisp':
         TypeSpec(['.el', '.elisp'], []),
     'erlang':
@@ -63,7 +63,7 @@ TYPE_MAP = {
     'go':
         TypeSpec(['.go'], []),
     'gomod':
-        TypeSpec([], ['go\.mod']),
+        TypeSpec([], [r'go\.mod']),
     'haskell':
         TypeSpec(['.hs', '.lhs'], []),
     'hs':
