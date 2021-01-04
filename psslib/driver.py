@@ -120,6 +120,8 @@ TYPE_MAP = {
         TypeSpec(['.py', '.pyw'], []),
     'python':
         TypeSpec(['.py', '.pyw'], []),
+    'qml':
+        TypeSpec(['.qml'], []),
     'r':
         TypeSpec(['.R', '.Rmd'], []),
     'rake':
