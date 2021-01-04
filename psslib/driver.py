@@ -13,7 +13,7 @@ from .filefinder import FileFinder
 from .contentmatcher import ContentMatcher
 from .defaultpssoutputformatter import DefaultPssOutputFormatter
 from .utils import istextfile
-from .py3compat import str2bytes
+from .py3compat import PY3, str2bytes
 
 TypeSpec = collections.namedtuple('TypeSpec', ['extensions', 'patterns'])
 
@@ -299,11 +299,13 @@ def pss_run(roots,
     if universal_newlines:
         if pattern is None:
             pattern = ''
+        openmode = 'r' if PY3 else 'rU'
     else:
         if pattern is None:
             pattern = b''
         else:
             pattern = str2bytes(pattern)
+        openmode = 'rb'
 
     if (    not ignore_case and
             (smart_case and not _pattern_has_uppercase(pattern))):
@@ -337,7 +339,6 @@ def pss_run(roots,
         # full work.
         #
         try:
-            openmode = 'rU' if universal_newlines else 'rb'
             with open(filepath, openmode) as fileobj:
                 if not istextfile(fileobj):
                     # istextfile does some reading on fileobj, so rewind it
