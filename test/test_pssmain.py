@@ -503,9 +503,9 @@ class TestPssMain(unittest.TestCase):
                                    (['--invalid'], 2),
                                    ([['invalid arg causes error']], 2)]:
                 rc = main(['pss'] + args, output_formatter=self.of)
-                self.assertEquals(rc, expected,
-                                  'for {} {} got rc={}'.format(
-                                      args, expected, rc))
+                self.assertEqual(rc, expected,
+                                 'for {} {} got rc={}'.format(
+                                     args, expected, rc))
         finally:
             sys.stdout = sys.__stdout__
             sys.stderr = sys.__stderr__
@@ -529,7 +529,7 @@ class TestPssMain(unittest.TestCase):
         rc = main(
             argv=[''] + args + [dir or self.testdir1],
             output_formatter=output_formatter or self.of)
-        self.assertEquals(rc, expected_rc)
+        self.assertEqual(rc, expected_rc)
 
     def _gen_outputs_in_file(self, filename, outputs, add_end=True):
         """ Helper method for constructing a list of output pairs in the format

@@ -44,7 +44,7 @@ class TestDriver(unittest.TestCase):
                 matches('testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])
             ))
 
-        self.assertEquals(match_found, True)
+        self.assertEqual(match_found, True)
 
     def test_only_find_files_with_include_types(self):
         match_found = pss_run(
@@ -64,7 +64,7 @@ class TestDriver(unittest.TestCase):
             ]
         )
 
-        self.assertEquals(match_found, True)
+        self.assertEqual(match_found, True)
 
     def test_only_find_files_with_include_pattern(self):
         match_found = pss_run(
@@ -84,7 +84,7 @@ class TestDriver(unittest.TestCase):
             ]
         )
 
-        self.assertEquals(match_found, True)
+        self.assertEqual(match_found, True)
 
     def test_only_find_files_with_include_patterns(self):
         match_found = pss_run(
@@ -107,7 +107,7 @@ class TestDriver(unittest.TestCase):
             ]
         )
 
-        self.assertEquals(match_found, True)
+        self.assertEqual(match_found, True)
 
     def test_find_in_files_with_include_patterns(self):
         match_found = pss_run(
@@ -129,7 +129,7 @@ class TestDriver(unittest.TestCase):
                 matches('testdir4/main3.py' , [('MATCH', (1, [(0, 4)]))])
             ))
 
-        self.assertEquals(match_found, True)
+        self.assertEqual(match_found, True)
 
     def test_only_find_files_with_exclude_patterns(self):
         match_found = pss_run(
@@ -150,7 +150,7 @@ class TestDriver(unittest.TestCase):
             ]
         )
 
-        self.assertEquals(match_found, True)
+        self.assertEqual(match_found, True)
 
     def test_find_in_files_with_exclude_patterns(self):
         match_found = pss_run(
@@ -170,7 +170,7 @@ class TestDriver(unittest.TestCase):
                 matches('testdir4/main3.txt', [('MATCH', (1, [(0, 4)]))])
             ))
 
-        self.assertEquals(match_found, True)
+        self.assertEqual(match_found, True)
 
     def assertFoundFiles(self, output_formatter, expected_list):
         self.assertEqual(sorted(output_formatter.output),
