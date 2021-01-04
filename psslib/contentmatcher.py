@@ -126,7 +126,7 @@ class ContentMatcher(object):
         """ A "simple" pattern that can be matched with str.find and doesn't
             require a regex engine.
         """
-        return bool(re.match('[\w_]+$', tostring(pattern)))
+        return bool(re.match(r'[\w_]+$', tostring(pattern)))
 
     def _create_regex(self,
             pattern,

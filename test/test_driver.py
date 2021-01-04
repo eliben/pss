@@ -92,7 +92,7 @@ class TestDriver(unittest.TestCase):
             pattern='Test',
             output_formatter=self.of4,
             only_find_files=True,
-            include_patterns=['file[12]', 'main\d.py'])
+            include_patterns=['file[12]', r'main\d.py'])
 
         self.assertFoundFiles(
             self.of4,
@@ -115,7 +115,7 @@ class TestDriver(unittest.TestCase):
             pattern='Test',
             output_formatter=self.of4,
             only_find_files=False,
-            include_patterns=['file[12]', 'main\d.py'])
+            include_patterns=['file[12]', r'main\d.py'])
 
         self.assertEqual(
             sorted(self.of4.output),
