@@ -1,4 +1,4 @@
-recursive-include psslib *.py 
+recursive-include psslib *.py
 recursive-include scripts *.py pss
 prune test
 include README.rst

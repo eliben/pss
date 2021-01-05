@@ -1,6 +1,14 @@
 Changelog
 =========
 
++ Version 1.43 (05.01.2021)
+
+  - Added new types: QML, TypeScript, go.mod, Toml, Dockerfile.
+  - Support for multiple include and exclude patterns (#56)
+  - Improve compatibility with newer versions of Python 3
+  - Updated version of colorama which fixed some old-standing issues with color
+    output.
+
 + Version 1.42 (06.08.2018)
 
   - Added a new option: --exclude-pattern to exclude files matching a regex.
