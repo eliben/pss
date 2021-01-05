@@ -537,7 +537,7 @@ class TestPssMain(unittest.TestCase):
             output_formatter=output_formatter or self.of)
         self.assertEqual(rc, expected_rc)
 
-    def _gen_outputs_in_file(self, filename, outputs, add_end=True):
+    def _gen_outputs_in_file(self, filename, outputs, add_end=None):
         """ Helper method for constructing a list of output pairs in the format
             of MockOutputFormatter, delimited from both ends with START_MATCHES
             and END_MATCHES for the given filename.
@@ -545,6 +545,8 @@ class TestPssMain(unittest.TestCase):
         seq = []
         seq.append(('START_MATCHES', os.path.normpath(filename)))
         seq.extend(outputs)
+        if add_end is None:
+            add_end = sys.stdout.isatty()
         if add_end:
             seq.append(('END_MATCHES', os.path.normpath(filename)))
         return seq
