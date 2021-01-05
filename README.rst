@@ -2,7 +2,6 @@
 pss
 ===
 
-
 .. image:: https://github.com/eliben/pss/workflows/pss-tests/badge.svg
   :align: center
   :target: https://github.com/eliben/pss/actions
@@ -13,7 +12,7 @@ Introduction: what is pss?
 **pss** is a power-tool for searching inside source code files. **pss**
 searches recursively within a directory tree, knows which extensions and
 file names to search and which to ignore, automatically skips directories
-you wouldn't want to search in (for example ``.svn`` or ``.git``), colors
+you wouldn't want to search in (for example ``.git`` or ``.svn``), colors
 its output in a helpful way, and does much more.
 
 If you're familiar with the **ack** tool, then you will find **pss** very
@@ -22,18 +21,18 @@ similar (see https://github.com/eliben/pss/wiki/pss-and-ack).
 Pre-requisites
 --------------
 
-**pss** needs only Python to run. It works with Python versions 2.6, 2.7 and
-3.2+ on Linux and Windows. Some testing was done on Mac OS X and FreeBSD as
-well.
+**pss** needs only Python to run. It being tested with Python versions 2.7 and
+3.6+ on Linux, Mac OS and Windows. Earlier versions of Python 3.x may work as
+well, but this isn't guaranteed.
 
 Installing
 ----------
 
-**pss** can be installed from PyPi (Python package index)::
+**pss** can be installed from PyPI (Python Package Index)::
 
     > pip install pss
 
-Alternatively, you can download the source distribution either from PyPi or
+Alternatively, you can download the source distribution either from PyPI or
 from the main Github project page. When you unzip the source distribution, run::
 
     > python setup.py install
