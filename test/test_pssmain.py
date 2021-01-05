@@ -29,6 +29,12 @@ class TestPssMain(unittest.TestCase):
 
     def test_basic(self):
         self._run_main(['abc', '--cc'])
+        print(sorted(self.of.output))
+        print(sorted(self._gen_outputs_in_file(
+                    'testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]) +
+                self._gen_outputs_in_file(
+                    'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])))
+
         self.assertEqual(sorted(self.of.output),
                 sorted(self._gen_outputs_in_file(
                     'testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]) +
