@@ -31,7 +31,7 @@ class TestPssMain(unittest.TestCase):
         self._run_main(['abc', '--cc'])
         self.assertEqual(sorted(self.of.output),
                 sorted(self._gen_outputs_in_file(
-                    'testdir1/filea.c', [('MATCH', (2, [(4, 7)]))]) +
+                    'testdir1/filea.c', [('MTCH', (2, [(4, 7)]))]) +
                 self._gen_outputs_in_file(
                     'testdir1/filea.h', [('MATCH', (1, [(8, 11)]))])))
 
