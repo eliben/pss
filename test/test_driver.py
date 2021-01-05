@@ -174,7 +174,7 @@ class TestDriver(unittest.TestCase):
 
     def assertFoundFiles(self, output_formatter, expected_list):
         self.assertEqual(sorted(output_formatter.output),
-            sorted(('FOUND_FILENAME', f) for f in expected_list))
+            sorted(('FOUND_FILENAME', os.path.normpath(f)) for f in expected_list))
 
 
 #------------------------------------------------------------------------------
