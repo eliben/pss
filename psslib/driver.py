@@ -41,7 +41,7 @@ TYPE_MAP = {
     'cmake':
         TypeSpec(['.cmake'], ['CMake(Lists|Funcs).txt']),
     'cpp':
-        TypeSpec(['.cpp', '.cc', '.cxx', '.m', '.hpp', '.hh', '.h', '.hxx'], []),
+        TypeSpec(['.cpp', '.cc', '.cxx', '.m', '.hpp', '.hh', '.h', '.hxx', '.lzz'], []),
     'csharp':
         TypeSpec(['.cs'], []),
     'css':
