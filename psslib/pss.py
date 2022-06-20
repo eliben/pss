@@ -1,8 +1,8 @@
 #-------------------------------------------------------------------------------
 # pss: pss.py
 #
-# Top-level script. Run without arguments or with -h to see usage help.
-# To actually run it, import and invoke 'main' from a runnable script
+# Main command-line entry-point that parses command-line arguments, prints
+# help/usage, etc. Invoked when `pss.py` is run.
 #
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain

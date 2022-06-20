@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # pss: driver.py
 #
-# Top-level functions and data used to execute pss.
+# Top-level API entry-point.
 #
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
