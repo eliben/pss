@@ -21,6 +21,7 @@ class TestPssMain(unittest.TestCase):
     testdir1 = path_to_testdir('testdir1')
     testdir2 = path_to_testdir('testdir2')
     testdir4 = path_to_testdir('testdir4')
+    test_case_dir = path_to_testdir('test-case-dir')
     test_types = path_to_testdir('test_types')
     of = None
 
@@ -42,6 +43,46 @@ class TestPssMain(unittest.TestCase):
                     'testdir1/subdir1/someada.adb',
                     [   ('MATCH', (4, [(18, 21)])),
                         ('MATCH', (14, [(15, 18)]))]))
+
+    def test_case_of_match(self):
+        # Nothing will be found with the wrong case
+        of = MockOutputFormatter('test-case-dir')
+        self._run_main(['second', '--cc'],
+                dir=self.test_case_dir, output_formatter=of, expected_rc=1)
+        self.assertEqual(of.output, [])
+
+        # ... but will be found with -i, however the case is specified
+        of = MockOutputFormatter('test-case-dir')
+        self._run_main(['second', '--cc', '-i'],
+                dir=self.test_case_dir, output_formatter=of)
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'test-case-dir/file.c',
+                    [('MATCH', (3, [(6, 12)]))]))
+
+        of = MockOutputFormatter('test-case-dir')
+        self._run_main(['seconD', '--cc', '-i'],
+                dir=self.test_case_dir, output_formatter=of)
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'test-case-dir/file.c',
+                    [('MATCH', (3, [(6, 12)]))]))
+
+        # ... will also be found with --smart-case as long as the pattern is
+        # all lowercase.
+        of = MockOutputFormatter('test-case-dir')
+        self._run_main(['second', '--cc', '--smart-case'],
+                dir=self.test_case_dir, output_formatter=of)
+        self.assertEqual(of.output,
+                self._gen_outputs_in_file(
+                    'test-case-dir/file.c',
+                    [('MATCH', (3, [(6, 12)]))]))
+
+        # ... but not with --smart-case if the pattern has uppercase in it
+        of = MockOutputFormatter('test-case-dir')
+        self._run_main(['seconD', '--cc', '--smart-case'],
+                dir=self.test_case_dir, output_formatter=of, expected_rc=1)
+        self.assertEqual(of.output, [])
 
     def test_whole_words(self):
         # without whole word matching

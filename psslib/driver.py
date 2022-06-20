@@ -13,7 +13,7 @@ from .filefinder import FileFinder
 from .contentmatcher import ContentMatcher
 from .defaultpssoutputformatter import DefaultPssOutputFormatter
 from .utils import istextfile
-from .py3compat import PY3, str2bytes
+from .py3compat import PY3, str2bytes, bytes2str
 
 TypeSpec = collections.namedtuple('TypeSpec', ['extensions', 'patterns'])
 
@@ -430,7 +430,7 @@ def _pattern_has_uppercase(pattern):
     # Somewhat rough - check for uppercase chars not following an escape
     # char (which may mean valid regex flags like \A or \B)
     skipnext = False
-    for c in pattern:
+    for c in bytes2str(pattern):
         if skipnext:
             skipnext = False
             continue
