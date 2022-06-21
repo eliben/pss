@@ -6,13 +6,11 @@
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
 #-------------------------------------------------------------------------------
+from io import StringIO
 import os, sys
 import unittest
 
-sys.path.insert(0, '.')
-sys.path.insert(0, '..')
 from psslib.pss import main
-from psslib.py3compat import StringIO
 from test.utils import (
         path_to_testdir, MockOutputFormatter, filter_out_path)
 

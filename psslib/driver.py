@@ -13,7 +13,6 @@ from .filefinder import FileFinder
 from .contentmatcher import ContentMatcher
 from .defaultpssoutputformatter import DefaultPssOutputFormatter
 from .utils import istextfile
-from .py3compat import PY3, str2bytes, bytes2str
 
 TypeSpec = collections.namedtuple('TypeSpec', ['extensions', 'patterns'])
 
@@ -303,12 +302,12 @@ def pss_run(roots,
     if universal_newlines:
         if pattern is None:
             pattern = ''
-        openmode = 'r' if PY3 else 'rU'
+        openmode = 'r'
     else:
         if pattern is None:
             pattern = b''
         else:
-            pattern = str2bytes(pattern)
+            pattern = pattern.encode('utf-8')
         openmode = 'rb'
 
     if (    not ignore_case and
@@ -430,7 +429,7 @@ def _pattern_has_uppercase(pattern):
     # Somewhat rough - check for uppercase chars not following an escape
     # char (which may mean valid regex flags like \A or \B)
     skipnext = False
-    for c in bytes2str(pattern):
+    for c in pattern.decode('utf-8'):
         if skipnext:
             skipnext = False
             continue

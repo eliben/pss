@@ -6,12 +6,11 @@
 # Eli Bendersky (eliben@gmail.com)
 # This code is in the public domain
 #-------------------------------------------------------------------------------
-from .py3compat import int2byte, str2bytes
 from . import colorama
 
 
 _text_characters = (
-        b''.join(int2byte(i) for i in range(32, 127)) +
+        b''.join(bytes((i,)) for i in range(32, 127)) +
         b'\n\r\t\f\b')
 
 def istextfile(fileobj, blocksize=512):
@@ -25,7 +24,7 @@ def istextfile(fileobj, blocksize=512):
     # With -U the file will be open in text mode,
     # so a read (in python 3) won't return bytes.
     if not isinstance(block, bytes):
-        block = str2bytes(block)
+        block = block.encode('utf-8')
 
     if b'\x00' in block:
         # Files with null bytes are binary
