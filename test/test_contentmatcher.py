@@ -1,8 +1,4 @@
-try:
-    from cStringIO import StringIO
-except ImportError:
-    # python 3
-    from io import StringIO
+from io import StringIO
 
 import os
 import pprint
