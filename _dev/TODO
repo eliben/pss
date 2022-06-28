@@ -5,7 +5,7 @@ New version
 * Update psslib/__init__.py
 * Update setup.py
 * Update CHANGES
-* Tag in hg
+* git tag
 
 Distribution
 ------------
@@ -19,14 +19,10 @@ Preparing a new release
 * Make sure new version was updated everywhere appropriate
 * Packaging done on Linux - run ``python setup.py build sdist`` (no 'upload' yet)
 * Untar the created ``dist/pss-x.y.tar.gz`` and make sure everything looks ok
-* Create a virtual env for Python 2:
-  (``virtualenv -p /usr/bin/python2 ~/test/venv/ZZZ``)
+* Create a virtual env for Python
 * Use that virtual env executable to install the source tarball
 * Run ``~/test/venv/bin/pss`` and see it's OK
 * Run ``~/test/venv/bin/python <path to pss dir>`` and see it's OK (this tests
   module invocation with __main__.py)
-* Repeat these virtual env steps for Python 3 as well
 * Now build with upload to send it to PyPi
 * Test with pip install from some new virtualenv
-* Test on Windows with pip install
-

@@ -1,6 +1,12 @@
 Changelog
 =========
 
++ Version 1.44 (28.06.2022)
+
+  - Fixed a bug in --smart-case with Python 3 (#67)
+  - Added Rust to known types
+  - Python 2.7 support dropped; pss Python 3-only now.
+
 + Version 1.43 (05.01.2021)
 
   - Added new types: QML, TypeScript, go.mod, Toml, Dockerfile.
