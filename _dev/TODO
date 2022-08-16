@@ -15,7 +15,7 @@ python setup.py build sdist upload
 Preparing a new release
 -----------------------
 
-* Run all tests with Python 2 & 3 before packaging, on Windows & Linux (tox)
+* Run all tests with 3 before packaging
 * Make sure new version was updated everywhere appropriate
 * Packaging done on Linux - run ``python setup.py build sdist`` (no 'upload' yet)
 * Untar the created ``dist/pss-x.y.tar.gz`` and make sure everything looks ok
