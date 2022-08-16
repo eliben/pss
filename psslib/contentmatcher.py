@@ -10,7 +10,7 @@
 import re
 import sys
 
-from .py3compat import tostring
+from .utils import tostring
 from .matchresult import MatchResult
 
 

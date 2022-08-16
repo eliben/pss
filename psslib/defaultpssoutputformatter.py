@@ -10,8 +10,7 @@ import os
 import sys
 
 from .outputformatter import OutputFormatter
-from .py3compat import tostring
-from .utils import decode_colorama_color
+from .utils import decode_colorama_color, tostring
 from . import colorama
 
 

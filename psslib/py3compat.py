@@ -14,11 +14,3 @@ assert PY3, '''\
 Python 2 is no longer supported by pss; if you need to use Python 2,
 please download an older pss version (such as version 1.43).
 '''
-
-def tostring(b):
-    """ Convert the given bytes or string object to string
-    """
-    if isinstance(b, bytes):
-        return b.decode('utf-8')
-    else:
-        return b

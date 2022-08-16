@@ -13,6 +13,14 @@ _text_characters = (
         b''.join(bytes((i,)) for i in range(32, 127)) +
         b'\n\r\t\f\b')
 
+def tostring(b):
+    """ Convert the given bytes or string object to string
+    """
+    if isinstance(b, bytes):
+        return b.decode('utf-8')
+    else:
+        return b
+
 def istextfile(fileobj, blocksize=512):
     """ Uses heuristics to guess whether the given file is text or binary,
         by reading a single block of bytes from the file.
