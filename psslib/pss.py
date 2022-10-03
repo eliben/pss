@@ -332,10 +332,10 @@ def parse_cmdline(cmdline_args):
         help='All files are searched, including those in ignored directories')
     group_inclusion.add_option('--ignore-dir',
         action='append', dest='ignored_dirs', metavar='name',
-        help='Add directory to the list of ignored dirs')
+        help='Add directory (or several comma-separated directories) to the list of ignored dirs')
     group_inclusion.add_option('--noignore-dir',
         action='append', dest='noignored_dirs', metavar='name',
-        help='Remove directory from the list of ignored dirs')
+        help='Remove directory (or several comma-separated directories) from the list of ignored dirs')
     group_inclusion.add_option('-r', '-R', '--recurse',
         action='store_true', dest='recurse', default=True,
         help='Recurse into subdirectories (default)')
