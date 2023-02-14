@@ -175,6 +175,8 @@ TYPE_MAP = {
         TypeSpec(['.vim'], []),
     'vhdl':
         TypeSpec(['.vhd', '.vhdl'], []),
+    'wasm':
+        TypeSpec(['.wat'], []),
     'withoutext':
         TypeSpec([''], []),
     'xml':
