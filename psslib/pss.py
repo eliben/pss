@@ -292,7 +292,7 @@ def parse_cmdline(cmdline_args):
         help='Do not highlight the matching text (this is the default when output is redirected)')
     group_output.add_option('--color-match', metavar='FORE,BACK,STYLE',
         action='store', dest='color_match',
-        help='Set the color for matches')
+        help='Set the color for matches. Examples: "RED", "BLUE,WHITE"')
     group_output.add_option('--color-filename', metavar='FORE,BACK,STYLE',
         action='store', dest='color_filename',
         help='Set the color for emitted filenames')
