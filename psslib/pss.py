@@ -1,3 +1,4 @@
+
 #-------------------------------------------------------------------------------
 # pss: pss.py
 #
@@ -349,7 +350,7 @@ def parse_cmdline(cmdline_args):
     group_inclusion.add_option('-G', '--include-pattern',
         action='append', dest='include_patterns', metavar='REGEX', default=[],
         help='Only search files that match REGEX')
-    group_inclusion.add_option('--exclude-pattern',
+    group_inclusion.add_option('-E', '--exclude-pattern',
         action='append', dest='exclude_patterns', metavar='REGEX', default=[],
         help='Exclude files that match REGEX')
     optparser.add_option_group(group_inclusion)
