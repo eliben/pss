@@ -163,6 +163,8 @@ TYPE_MAP = {
         TypeSpec(['.tt', '.tt2', '.ttml'], []),
     'txt':
         TypeSpec(['.txt', '.text'], []),
+    'txtar':
+        TypeSpec(['.txtar'], []),
     'ts':
         TypeSpec(['.ts', '.tsx'], []),
     'typescript':
