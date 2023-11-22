@@ -1,6 +1,12 @@
 Changelog
 =========
 
++ Version 1.45 (2023.11.22)
+
+  - Adding support to known files: .txtar, .wat
+  - Adding .ipynb_checkpoints to IGNORED_DIRS (#74)
+  - Clean up testing setup; support newer Python versions
+
 + Version 1.44 (2022.06.28)
 
   - Fixed a bug in --smart-case with Python 3 (#67)
