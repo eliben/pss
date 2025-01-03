@@ -402,6 +402,10 @@ class TestPssMain(unittest.TestCase):
                 ])
 
     def test_only_find_files_exclude_pattern(self):
+        self._run_main(['--cc', '-f', '-E', 'ea'])
+        self.assertFoundFiles(self.of,
+                ['testdir1/subdir1/filey.c',
+                 'testdir1/subdir1/filez.c'])
         self._run_main(['--cc', '-f', '--exclude-pattern', 'ea'])
         self.assertFoundFiles(self.of,
                 ['testdir1/subdir1/filey.c',
