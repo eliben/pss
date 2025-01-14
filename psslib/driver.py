@@ -194,7 +194,7 @@ IGNORED_DIRS = frozenset([
     'CVS', '_darcs', '~.dep', '~.dot', '.git', '.hg', '~.nib',
     '.pc', '~.plst', 'RCS', 'SCCS', '_sgbak', '.svn', '.tox',
     '.metadata', '.cover', '.Rproj.user', '.Rhistory', 'node_modules',
-    '.mypy_cache', '.ipynb_checkpoints'])
+    '.mypy_cache', '.venv', '.ipynb_checkpoints'])
 
 IGNORED_FILE_PATTERNS = frozenset(
     [r'~$', r'#.+#$', r'[._].*\.swp$', r'core\.\d+$'])
