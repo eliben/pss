@@ -58,7 +58,7 @@ TYPE_MAP = {
     'erlang':
         TypeSpec(['.erl', '.hrl'], []),
     'forth':
-        TypeSpec(['.fs'], []),
+        TypeSpec(['.fs', '.4th'], []),
     'fortran':
         TypeSpec(['.f', '.f77', '.f90', '.F90', '.f95', '.F95', '.f03', '.for', '.ftn', '.fpp'], []),
     'go':
