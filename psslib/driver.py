@@ -180,9 +180,9 @@ TYPE_MAP = {
     'vhdl':
         TypeSpec(['.vhd', '.vhdl'], []),
     'wasm':
-        TypeSpec(['.wat'], []),
+        TypeSpec(['.wat', '.wast'], []),
     'wat':
-        TypeSpec(['.wat'], []),
+        TypeSpec(['.wat', '.wast'], []),
     'withoutext':
         TypeSpec([''], []),
     'xml':
