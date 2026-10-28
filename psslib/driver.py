@@ -87,6 +87,8 @@ TYPE_MAP = {
         TypeSpec(['.jsp'], []),
     'julia':
         TypeSpec(['.jl'], []),
+    'lean':
+        TypeSpec(['.lean'], []),
     'lisp':
         TypeSpec(['.lisp', '.lsp', '.cl'], []),
     'llvm':
